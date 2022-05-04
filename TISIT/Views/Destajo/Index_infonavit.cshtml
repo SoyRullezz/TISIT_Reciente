@@ -1,0 +1,183 @@
+﻿@model List<CAS_1._1._1.Models.destajos_admin>
+@{
+    ViewBag.Title = "Destajos Aministrativos";
+    Layout = "~/Views/Shared/_Layout4.cshtml";
+
+    var predio = new List<CAS_1._1._1.Models.predios>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        predio = cnx.predios.ToList();
+    }
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+</style>
+<h2>Listado</h2>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+
+<br />
+<table id="table_predios_g" class="table table-bordered">
+    <thead style="background-color: #2A3F54; color: white">
+        <tr>
+            <th>#</th>
+            <th>#Predio</th>
+            <th>Predio</th>
+            <th>N° Semana</th>
+            <th>Semana</th>
+            <th>Elaboro</th>
+            <th>Reviso</th>
+            <th>Autorizo</th>
+            <th style="text-align: center">Opciones</th>
+        </tr>
+    </thead>
+    <tbody style="background-color: white" id="tabla_seccion_bus">
+        @foreach (var f in Model)
+        {
+        <tr>
+            <td>@f.id_destajos_admin</td>
+            <td>@f.id_predio</td>
+            <td>@f.predio</td>
+            <td>@f.n_semana</td>
+            <td>
+
+                <span>Del </span> @f.fecha_inicio.ToLongDateString()
+                <br />
+                <span>al </span> @f.fecha_fin.ToLongDateString()
+            </td>
+            <td>@f.elaboro</td>
+            <td>@f.reviso</td>
+            <td>@f.autorizo</td>
+            <td style="text-align: center">
+                @{
+                    var ver_inf = false;
+                    var trab = new List<CAS_1._1._1.Models.trabajadores_destajos_admin>
+                        ();
+                    string cadena = "SELECT a.* FROM Detalle_asig_trabajador_detajo d INNER JOIN trabajadores_destajos_admin a ON d.id_trabajador=a.id_trabajador WHERE d.id_destajos_admin=" + f.id_destajos_admin;
+                    using (var cnx = new CAS_1._1._1.Models.conexion())
+                    {
+                        trab = cnx.Database.SqlQuery<CAS_1._1._1.Models.trabajadores_destajos_admin>
+                            (cadena).ToList();
+                    }
+                    foreach (var item in trab)
+                    {
+                        if (item.inf != null)
+                        {
+                            ver_inf = true;
+                        }
+                    }
+
+                    if (ver_inf)
+                    {
+                        <label style="font-weight:900; color:#57837B; font-family:'Yu Gothic'">AGREGADO</label>
+                    }
+                    else
+                    {
+                        <div style="display:flex; justify-content:space-between">
+                            <button class="btn btn-secondary" type="button"
+                                    data-target="#modal_detalle_destajo" data-toggle="modal"
+                                    data-backdrop="static" data-keyboard="false"
+                                    onclick="detalle_destajo('@f.id_destajos_admin')">
+                                <span class="glyphicon glyphicon-eye-open"> Detalle destajo</span>
+                            </button>
+                            <button class="btn btn-warning" type="button" id="btn_act" name="btn_act" onclick="location.href='../Destajo/Index_Agr_infonavit?id=@f.id_destajos_admin'"><span class="glyphicon glyphicon-usd"> Añadir infonavit</span></button>
+                        </div>
+                    }
+                }
+
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<br />
+<br />
+@Html.Partial("_Modal_Detalle_Destajo")
+@Html.Partial("_Modal_Trabajador")
+<script>
+
+    $(document).ready(function () {
+        $('#table_predios').DataTable();
+    });
+    $(document).ready(function () {
+        $('#table_predios_g').DataTable();
+    });
+    var table = $('#table_predios').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+    var table = $('#table_predios_g').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+    seleccionar = function (registro) {
+        $.post(
+            '/Destajo/seleccionar', {
+            registro: registro//en este caso sería el codigo
+        }, function (res) {
+            $('#tabla_selec').html(res)
+        });
+    };
+
+    /*
+                bus_sec = function () {
+                    $.post(
+                        '/Destajo/bus_sec', {
+                            tipo_bus: $('#tipo_bus').val(),//--Este es el id del combobox
+                            registro: $('#registro').val() //-- este es el id de caja de texto
+                    }, function (res) {
+                            $('#table_predios_g').html(res)//--id de la tabla
+                    });
+                };
+                */
+</script>

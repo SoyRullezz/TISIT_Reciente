@@ -1,0 +1,316 @@
+﻿@model List<CAS_1._1._1.Models.destajos_material>
+@using CAS_1._1._1.Models;
+@{
+    ViewBag.Title = "Destajos Aministrativos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var predio = new List<CAS_1._1._1.Models.predios>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        predio = cnx.predios.ToList();
+    }
+
+
+
+    string res = "";
+    var conceptps = new List<CAS_1._1._1.Models.Conceptos_material>();
+    conceptps = destajos_material.det_des(ViewBag.id_destajo_pasado);
+
+    var des = new List<destajos_material>();
+    des = destajos_material.info_pdf(ViewBag.id_destajo_pasado);
+
+    var f_i = ViewBag.inicio_semana;
+    var f_f = ViewBag.fin_semana;
+
+
+
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    .hidden-small {
+        visibility: hidden;
+    }
+
+    .ocultar {
+        visibility: hidden;
+    }
+
+    #otro_elemento:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .linea {
+        margin: 200px;
+    }
+</style>
+<h4>Gestión de destajos</h4>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+
+<form action="/DestajoMaterial/Nueva_semana_2" method="post">
+    <table class="table">
+        <thead style="background-color: dimgray; color:white; text-align:center">
+            <tr>
+                <th>#</th>
+                <th>Predio</th>
+                <th>Destajista</th>
+                <th>Elaboro</th>
+                <th>Fecha inicio</th>
+                <th>Fecha final</th>
+            </tr>
+        </thead>
+        <tbody style="text-align:center">
+            <tr>
+                <td><input class="form-control" type="number" readonly style="font-size:15px" id="id_predio" value="@ViewBag.id_predio"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" id="predio" value="@ViewBag.predio"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" id="destajista" value="@ViewBag.destajista"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" id="elaboro" value="@ViewBag.elaboro"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" id="inicio_semana" value="@ViewBag.inicio_semana"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" id="fin_semana" value="@ViewBag.fin_semana"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            Nota 1
+            <textarea class="form-control" readonly id="nota2" style="font-size:15px; max-width:730px; max-height:150px; height:120px">@ViewBag.nota1</textarea>
+        </div>
+        <div class="col-auto">
+            Nota 2
+            <textarea class="form-control" readonly id="nota2" style="font-size:15px; max-width:730px; max-height:150px; height:120px">@ViewBag.nota2</textarea>
+        </div>
+    </div>
+    <div class="col-auto" style="margin:15px">
+        <label for="elaboro" class="visually">Observaciones</label>
+        <textarea class="form-control" readonly id="observaciones" style="font-size:15px; max-width:730px; max-height:150px; height:120px">@ViewBag.observaciones</textarea>
+    </div>
+
+
+    <!--CONCEPTOS-->
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>CONCEPTOS GUARDADOS</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table id="table_concep" class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>#</th><th>CONCEPTO</th><th>UNIDAD ELEMENTO</th><th>VOL O CONT</th><th>PX PAQUETE</th><th>VALOR TOTAL</th><th style="background-color:darkgoldenrod">ACUMULADO</th><th>ACCIÓN</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in conceptps)
+                        {
+                        <tr>
+                            <td>@a.id_concepto</td>
+                            <td>@a.concepto</td>
+                            <td>@a.unidad_elemento</td>
+                            <td>@a.vol_cont</td>
+                            <td>@a.px_paquete.ToString("$###,###,##0.00")</td>
+                            <td>@a.valor_total.ToString("$###,###,##0.00")</td>
+                            <td>@a.acum_actual_pza</td>
+                            @if (Session["" + a.id_concepto + ""] != null)
+                            {
+                                if (Session["" + a.id_concepto + ""].ToString() == "bloqueado")
+                                {
+                                    <td>
+                                        <div style='display:grid;justify-content:space-between'>
+                                            <button style="border: none; color: #212121; font-weight:bold" class="btn btn-success" type="button"
+                                                    onclick="location.href='../DestajoMaterial/Nueva_est_concepto?id_predio=@ViewBag.id_predio&predio=@ViewBag.predio&destajista=@ViewBag.destajista&inicio_semana=@f_i&fin_semana=@f_f&observaciones=@ViewBag.observaciones&nota1=@ViewBag.nota1&nota2=@ViewBag.nota2&elaboro=@ViewBag.elaboro&id_destajo=@ViewBag.id_destajo&id_destajos_material=@ViewBag.id_destajo_pasado&id_concepto=@a.id_concepto&n_semana=@ViewBag.n_semana&acum_actual_pza=@a.acum_actual_pza'">
+                                                <span class="glyphicon glyphicon-plus-sign">
+                                                </span> Agregar estimación
+                                            </button>
+
+                                            <button disabled="true" style="border: none; color:#212121; font-weight:bold" class="btn btn-warning" type="button"
+                                                    onclick="location.href='../DestajoMaterial/No_estimar?id_predio=@ViewBag.id_predio&predio=@ViewBag.predio&destajista=@ViewBag.destajista&inicio_semana=@f_i&fin_semana=@f_f&observaciones=@ViewBag.observaciones&nota1=@ViewBag.nota1&nota2=@ViewBag.nota2&elaboro=@ViewBag.elaboro&id_destajo=@ViewBag.id_destajo&id_destajos_material=@ViewBag.id_destajo_pasado&id_concepto=@a.id_concepto&n_semana=@ViewBag.n_semana&acum_actual_pza=@a.acum_actual_pza'">
+                                                <span class="glyphicon glyphicon-remove-sign">
+                                                </span> No estimar
+                                            </button>
+                                        </div>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <div style='display:grid;justify-content:space-between'>
+                                            <button style="border: none; color: #212121; font-weight:bold" class="btn btn-success" type="button"
+                                                    onclick="location.href='../DestajoMaterial/Nueva_est_concepto?id_predio=@ViewBag.id_predio&predio=@ViewBag.predio&destajista=@ViewBag.destajista&inicio_semana=@f_i&fin_semana=@f_f&observaciones=@ViewBag.observaciones&nota1=@ViewBag.nota1&nota2=@ViewBag.nota2&elaboro=@ViewBag.elaboro&id_destajo=@ViewBag.id_destajo&id_destajos_material=@ViewBag.id_destajo_pasado&id_concepto=@a.id_concepto&n_semana=@ViewBag.n_semana&acum_actual_pza=@a.acum_actual_pza'">
+                                                <span class="glyphicon glyphicon-plus-sign">
+                                                </span> Agregar estimación
+                                            </button>
+
+                                            <button style="border: none; color:#212121; font-weight:bold" class="btn btn-warning" type="button"
+                                                    onclick="location.href='../DestajoMaterial/No_estimar?id_predio=@ViewBag.id_predio&predio=@ViewBag.predio&destajista=@ViewBag.destajista&inicio_semana=@f_i&fin_semana=@f_f&observaciones=@ViewBag.observaciones&nota1=@ViewBag.nota1&nota2=@ViewBag.nota2&elaboro=@ViewBag.elaboro&id_destajo=@ViewBag.id_destajo&id_destajos_material=@ViewBag.id_destajo_pasado&id_concepto=@a.id_concepto&n_semana=@ViewBag.n_semana&acum_actual_pza=@a.acum_actual_pza'">
+                                                <span class="glyphicon glyphicon-remove-sign">
+                                                </span> No estimar
+                                            </button>
+                                        </div>
+                                    </td>
+                                }
+                            }
+                            else
+                            {
+                                <td>
+                                    <div style='display:grid;justify-content:space-between'>
+                                        <button style="border: none; color: #212121; font-weight:bold" class="btn btn-success" type="button"
+                                                onclick="location.href='../DestajoMaterial/Nueva_est_concepto?id_predio=@ViewBag.id_predio&predio=@ViewBag.predio&destajista=@ViewBag.destajista&inicio_semana=@f_i&fin_semana=@f_f&observaciones=@ViewBag.observaciones&nota1=@ViewBag.nota1&nota2=@ViewBag.nota2&elaboro=@ViewBag.elaboro&id_destajo=@ViewBag.id_destajo&id_destajos_material=@ViewBag.id_destajo_pasado&id_concepto=@a.id_concepto&n_semana=@ViewBag.n_semana&acum_actual_pza=@a.acum_actual_pza'">
+                                            <span class="glyphicon glyphicon-plus-sign">
+                                            </span> Agregar estimación
+                                        </button>
+
+                                        <button style="border: none; color:#212121; font-weight:bold" class="btn btn-warning" type="button"
+                                                onclick="location.href='../DestajoMaterial/No_estimar?id_predio=@ViewBag.id_predio&predio=@ViewBag.predio&destajista=@ViewBag.destajista&inicio_semana=@f_i&fin_semana=@f_f&observaciones=@ViewBag.observaciones&nota1=@ViewBag.nota1&nota2=@ViewBag.nota2&elaboro=@ViewBag.elaboro&id_destajo=@ViewBag.id_destajo&id_destajos_material=@ViewBag.id_destajo_pasado&id_concepto=@a.id_concepto&n_semana=@ViewBag.n_semana&acum_actual_pza=@a.acum_actual_pza'">
+                                            <span class="glyphicon glyphicon-remove-sign">
+                                            </span> No estimar
+                                        </button>
+                                    </div>
+                                </td>
+                            }
+
+
+                        </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>AGREGAR CONCEPTOS NUEVOS</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <button class="btn btn-secondary" type="button" id="verificar_predioSelec"
+                                data-target="#modal_concepto" data-toggle="modal"
+                                data-backdrop="static" data-keyboard="false">
+                            <span class="glyphicon glyphicon-list" style="color:white"> Agregar Concepto</span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>#</th><th>CONCEPTO</th><th>UNIDAD ELEMENTO</th><th>VOL O CONT</th><th>PX PAQUETE</th><th>VALOR TOTAL</th><th>EST ANTERIOR</th><th>A ESTIMAR</th><th>ACCIÓN</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--CONCEPTOS-->
+    <div class="linea"></div>
+    <!--TRABAJADORES-->
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>LISTA TRABAJADORES (Sólo trabajadores, no agregar al destajista)</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <button class="btn btn-secondary" type="button" id="verificar_predioSelec2"
+                                data-target="#modal_trabajador" data-toggle="modal"
+                                data-backdrop="static" data-keyboard="false">
+                            <span class="glyphicon glyphicon-list" style="color:white"> Agregar trabajador</span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>N° Empleado</th><th>Nombre</th><th>A.Paterno</th><th>A.Materno</th><th>Pago</th><th>ACCION</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr_trab"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--TRABAJADORES-->
+    <br /><br />
+    <button class="btn btn-danger" type="button" onclick="location.href = '../DestajoMaterial/cancelar_destajo?id_destajo=@ViewBag.id_destajo'"><span class="glyphicon glyphicon-chevron-left"> REGRESAR</span></button>
+
+
+    <button class="btn btn-success" type="button" onclick="location.href = '../DestajoMaterial/finalizar_destajo_sem?id_destajo=@ViewBag.id_destajo&destajo_pas=@ViewBag.id_destajo_pasado'"><span class="glyphicon glyphicon-ok"> AGREGAR</span></button>
+
+</form>
+<input class="form-control" type="hidden" name="id_destajos_material" id="id_destajos_material" value="@ViewBag.id_destajo_pasado">
+<input class="form-control" type="hidden" name="n_semana" id="n_semana" value="@ViewBag.n_semana">
+<input class="form-control" type="hidden" name="id_destajo" id="id_destajo" value="@ViewBag.id_destajo">
+
+@Html.Partial("_Modal_Concepto")
+@Html.Partial("_Modal_Trabajador")
+@Html.Partial("_Agregado")
+
+<script src="~/Scripts/app_material.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $.post(
+            '/DestajoMaterial/det_nueva_semana', {
+            id_destajos_material: $('#id_destajos_material').val(),
+            id_predio: $('#id_predio').val(),
+            predio: $('#predio').val(),
+            elaboro: $('#elaboro').val(),
+            destajista: $('#destajista').val(),
+            inicio_semana: $('#inicio_semana').val(),
+            fin_semana: $('#fin_semana').val(),
+            observaciones: $('#observaciones').val(),
+            nota1: $('#nota1').val(),
+            nota2: $('#nota2').val(), 
+            n_semana: $('#n_semana').val(), 
+            id_destajo: $('#id_destajo').val()
+        }, function (res) {
+            $('#tabla_atr_ant').html(res)
+        });
+    });
+
+
+
+
+    $(document).ready(function () {
+        $('#table_concep').DataTable();
+    });
+    var table = $('#table_concep').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+
+</script>

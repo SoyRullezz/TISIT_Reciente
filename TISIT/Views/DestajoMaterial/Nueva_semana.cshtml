@@ -1,0 +1,140 @@
+﻿@model CAS_1._1._1.Models.destajos_material
+@{
+    ViewBag.Title = "Nueva semana";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    .hidden-small {
+        visibility: hidden;
+    }
+
+    .ocultar {
+        visibility: hidden;
+    }
+
+    #otro_elemento:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    #div1 {
+        overflow: scroll;
+        height: 100%;
+        width: 100%;
+    }
+
+        #div1 table {
+            width: 100%;
+            background-color: lightgray;
+        }
+</style>
+<h4>@ViewBag.cambio Nueva semana del predio #@Model.id_destajos_material</h4>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+<!--SELECCIONA PREDIO-->
+<form action="/DestajoMaterial/Nueva_semana" method="post">
+    <input type="hidden" name="fecha_in_pasado" id="fecha_in_pasado" value="@Model.inicio_semana" />
+    <input type="hidden" name="id_destajo_pasado" id="id_destajo_pasado" value="@Model.id_destajos_material" />
+    <input type="hidden" name="id_destajos_material" id="id_destajos_material" value="@Model.id_destajos_material" />
+    <input type="hidden" name="n_semana" id="n_semana" value="@Model.n_semana" />
+
+
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="id_predio" class="visually"># Predio</label>
+            <input class="form-control" type="number" readonly value="@Model.id_predio" name="id_predio" id="id_predio" style="font-size:15px" required>
+        </div>
+        <div class="col-9">
+            <label for="predio" class="visually">Nombre predio</label>
+            <input class="form-control" type="text" readonly value="@Model.predio" style="font-size:15px" name="predio" id="predio" required>
+        </div>
+    </div>
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="destajista" class="visually">Destajista(Maestro)</label>
+            <input class="form-control" style="font-size:15px" type="text" name="destajista" id="destajista" value="@ViewBag.destajista" readonly>
+        </div>
+        <div class="col-auto">
+            <label for="fecha_inicio" class="visually">Fecha de inicio</label>
+            <input class="form-control" type="text" name="inicio_semana" id="inicio_semana" value="@ViewBag.p_fecha_in" style="font-size:15px" readonly>
+        </div>
+        <div class="col-auto">
+            <label for="fecha_fin" class="visually">Fecha final</label>
+            <input class="form-control" type="text" style="font-size:15px" name="fin_semana" value="@ViewBag.p_fecha_fin" id="fin_semana" readonly>
+        </div>
+        <div class="col hidden-small">
+            <input class="form-control" type="hidden" name="elaboro" id="elaboro" value="@Session["usuario"]">
+        </div>
+        <div class="col-auto">
+            <label for="estado_destajo" class="hidden-small">Estado</label>
+            @Html.CheckBox("estado_destajo", true, new { @class = "hidden-small" })
+        </div>
+    </div>
+
+    @*--------------------------------------------------*@
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <button class="btn btn-info" style="margin: 2px; font-size:15px; margin:15px" type="button" id="btn_selec" name="btn_selec" onclick="AgregarNotas();"><span class="glyphicon glyphicon-pencil"> Agregar nota</span></button>
+            <div id="notas">
+            </div>
+        </div>
+    </div>
+    <div class="col-auto" style="margin:15px">
+        <label for="elaboro" class="visually">Observaciones</label>
+        <textarea class="form-control" style="font-size:15px; max-width:730px; max-height:150px; height:120px" id="observaciones" name="observaciones"></textarea></p>
+    </div>
+    <button class="btn btn-danger" type="reset" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Resetear</span></button>
+    <button class="btn btn-success" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-chevron-right"> SIGUIENTE</span></button>
+</form>
+<input type="hidden" name="id_concepto" id="id_concepto" value="@ViewBag.id_concepto" />
+
+
+
+@Html.Partial("_Modal_Error")
+
+<script>
+
+
+    //AGREGAR NOTAS
+    var nextinput2 = 0;
+    function AgregarNotas() {
+        if (nextinput2 < 2) {
+            nextinput2++;
+            var nota = '' +
+                '<div class="row" style="padding:10px; margin:5px; font-weight:bold; display:flex; align-items:center">' +
+                '<div class="col-auto"> <p>NOTA</p>' +
+                '<p><textarea class="form-control" style="font-size:15px; width:200px; max-height:80px" id="nota' + nextinput2 + '" name="nota' + nextinput2 + '" ></textarea></p>' +
+                '</div>' +
+                '<button class="btn btn-danger remove_nota" style="margin: 0 0 0 20px" type="button" ><span class="glyphicon glyphicon-trash"> Eliminar</span></button>' +
+
+                '</div>';
+            $("#notas").append(nota);
+        }
+        else {
+            $('#modal_error_nota').modal('show');
+        }
+
+    }
+    //////////////QUITAR NOTAS
+    $('#notas').on('click', '.remove_nota', function () {
+        $(this).parent().remove();
+        nextinput2--;
+    });
+    ///////////////
+
+</script>

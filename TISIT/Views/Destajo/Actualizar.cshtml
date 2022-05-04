@@ -1,0 +1,113 @@
+﻿@model CAS_1._1._1.Models.destajos_admin
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Actualizar - Destajo";
+
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+    .hidden-small {
+        visibility: hidden;
+    }
+</style>
+<br />
+<h4>Gestión de destajos</h4>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+<form action="/Destajo/Actualizar" method="post">
+    <input type="hidden" name="id_destajos_admin" id="id_destajos_admin" value="@Model.id_destajos_admin" />
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="id_predio" class="visually"># Predio</label>
+            <input class="form-control" type="number" value="@Model.id_predio" name="id_predio" id="id_predio" style="font-size:15px" readonly>
+        </div>
+        <div class="col-auto">
+            <label for="predio" class="visually">Nombre predio</label>
+            <input class="form-control" type="text" value="@Model.predio" style="font-size:15px" name="predio" id="predio" readonly>
+        </div>
+        <div class="col-auto">
+            <label for="fecha_inicio" class="visually">Fecha de inicio</label>
+            <input class="form-control" type="date" name="fecha_inicio" id="fecha_inicio" value="@Model.fecha_inicio.ToString("yyyy-MM-dd")" style="font-size:15px" required>
+        </div><br />
+        <div class="col-auto">
+            <label for="fecha_fin" class="visually">Fecha final</label>
+            <input class="form-control" type="date" style="font-size:15px" name="fecha_fin" value="@Model.fecha_fin.ToString("yyyy-MM-dd")" id="fecha_fin" required>
+        </div>
+            @Html.CheckBox("estado_destajo", @Model.estado_destajo, new { @class = "hidden-small" })
+    </div>
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col" 
+            <label for="elaboro" class="visually">Elaboró</label>
+            <input class="form-control" type="text" value="@Model.elaboro" style="font-size:15px; width:46%" name="elaboro" id="elaboro" readonly>
+        </div>
+    </div>
+
+    @*--------------------------------------------------*@
+    <!--TRABAJADORES-->
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>TRABAJADORES AGREGADOS</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <button class="btn btn-secondary" type="button"
+                                data-target="#modal_trabajador" data-toggle="modal"
+                                data-backdrop="static" data-keyboard="false">
+                            <span class="glyphicon glyphicon-list" style="color:white"> Agregar trabajador</span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>Id personal</th><th>N° Empleado</th><th>Nombre</th><th>A.Paterno</th><th>A.Materno</th><th>Categoria</th><th>Pago día</th><th>Dias trabajados</th><th>Día extra</th><th>Subtotal</th><th>Total</th><th>ACCION</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--TRABAJADORES-->
+    @*--------------------------------------------------*@
+    <br /><br />
+    <button class="btn btn-success" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-save"> Actualizar</span></button>
+    <button class="btn btn-danger" type="reset" onclick="location.href='../Destajo/Ver_destajos'" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Regresar</span></button>
+</form>
+
+<br />
+<br />
+@Html.Partial("_Modal_Trabajador")
+@Html.Partial("_Modal_Error")
+<script>
+    $(document).ready(function () {
+        $.post(
+            '/Destajo/det_actualizar_des', {
+            id_destajos_admin: $('#id_destajos_admin').val()
+        }, function (res) {
+            $('#tabla_atr').html(res)
+        });
+    });
+
+    const fechaInput = document.querySelector('#fecha_fin');
+    fechaInput.addEventListener('input', e => {
+
+        var fechainicial = document.getElementById("fecha_inicio").value;
+        var fechafinal = document.getElementById("fecha_fin").value;
+
+        if (Date.parse(fechafinal) < Date.parse(fechainicial)) {
+            fechaInput.value = '';
+            $('#modal_error_fecha').modal('show');
+        }
+    });
+</script>

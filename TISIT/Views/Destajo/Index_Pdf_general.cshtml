@@ -1,0 +1,186 @@
+﻿@model List<CAS_1._1._1.Models.predios>
+@{
+    ViewBag.Title = "Destajos Aministrativos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var trabajadores = new List<CAS_1._1._1.Models.altausuario>();
+
+    string cadena = "SELECT a.* FROM altausuario a INNER JOIN contrato_laboral c ON c.no_empleado = a.no_empleado WHERE (c.area LIKE '%OBRAXCAMPO%') OR (c.area LIKE '%(NINGUNO)%')";
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        trabajadores = cnx.Database.SqlQuery<CAS_1._1._1.Models.altausuario>(cadena).ToList();
+    }
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+</style>
+<div>
+    <br />
+    <button class="btn btn-light" onclick="location.href='../Destajo/Ver_destajos'"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;&nbsp;&nbsp;&nbsp;REGRESAR</button>
+    <br /><br />
+</div>
+<div class="">
+    <div class="x_panel tile">
+        <div class="x_title">
+            <h2>Documento por predio</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+            <table id="table_predios" class="table table-bordered" style="font-size:14px">
+                <thead style="background-color:dimgrey; color:white">
+                    <tr>
+                        <th>#</th>
+                        <th>Predio</th>
+                        <th>Entidad</th>
+                        <th>Municipio</th>
+                        <th>Colonia</th>
+                        <th style="text-align:center">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody style="background-color:white">
+                    @foreach (var u in Model)
+                    {
+                        <tr>
+                            <td><div>@u.id_predio</div></td>
+                            <td><div>@u.predio</div></td>
+                            <td><div>@u.entidad</div></td>
+                            <td><div>@u.municipio</div></td>
+                            <td><div>@u.colonia</div></td>
+                            <td style="text-align:center">
+                                <button class="btn btn-info" style="margin: 2px; font-size:15px" type="button" id="btn_selec" name="btn_selec" onclick="location.href = '../Destajo/Pdf_general?id_predio=@u.id_predio'"><span class="glyphicon glyphicon-check"> Generar reporte</span></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button style="display:none" id="cerrar" class="collapse-link" type="button"></button>
+        </div>
+    </div>
+</div>
+
+
+<br />
+<div class="">
+    <div class="x_panel tile">
+        <div class="x_title">
+            <h2>Documento por trabajador</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table id="table_trabajadores" class="table table-bordered" style="font-size:14px">
+                <thead style="background-color:dimgrey; color:white">
+                    <tr>
+                        <th>Id personal</th>
+                        <th>N° empleado</th>
+                        <th>Nombre</th>
+                        <th>A. Paterno</th>
+                        <th>A. Materno</th>
+                        <th style="text-align:center">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody style="background-color:white">
+                    @foreach (var u in trabajadores)
+                    {
+                    <tr>
+                        <td><div>@u.id_personal</div></td>
+                        <td><div>@u.no_empleado</div></td>
+                        <td><div>@u.nombre</div></td>
+                        <td><div>@u.apaterno</div></td>
+                        <td><div>@u.amaterno</div></td>
+                        <td style="text-align:center">
+                            <button class="btn btn-info" style="margin: 2px; font-size:15px" type="button" id="btn_selec" name="btn_selec" onclick="location.href = '../Destajo/Pdf_general_por_trabajador?no_empleado=@u.no_empleado'"><span class="glyphicon glyphicon-check"> Generar reporte</span></button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            <button style="display:none" id="cerrar2" class="collapse-link" type="button"></button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#table_predios').DataTable();
+    });
+    var table = $('#table_predios').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+
+    $(document).ready(function () {
+        $('#table_trabajadores').DataTable();
+    });
+    var table = $('#table_trabajadores').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+
+    $(document).ready(function () {
+        $('#cerrar').click();
+        $('#cerrar2').click();
+    });
+</script>

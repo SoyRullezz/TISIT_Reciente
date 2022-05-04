@@ -1,0 +1,77 @@
+﻿@model CAS_1._1._1.Models.destajos_admin
+@{
+    Layout = "~/Views/Shared/_Layout4.cshtml";
+    ViewBag.Title = "Actualizar - Destajo";
+
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .hidden-small {
+        visibility: hidden;
+    }
+</style>
+<br />
+<h4>Destajo #@Model.id_destajos_admin</h4>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+<input type="hidden" name="id_destajos_admin" id="id_destajos_admin" value="@Model.id_destajos_admin" />
+<input class="form-control" type="hidden" value="@Session["usuario"]" style="font-size:15px" name="reviso" id="reviso" required>
+<input class="form-control" type="hidden" value="@Session["usuario"]" style="font-size:15px" name="autorizo" id="autorizo" required>
+
+<div class="row gap-3" style="align-items:center; margin:10px;">
+    <div class="col-auto">
+        <label for="id_predio" class="visually"># Predio</label>
+        <input class="form-control" type="number" value="@Model.id_predio" style="font-size:15px" readonly>
+    </div>
+    <div class="col-auto">
+        <label for="predio" class="visually">Nombre predio</label>
+        <input class="form-control" type="text" value="@Model.predio" style="font-size:15px" readonly>
+    </div>
+    <div class="col">
+        <label for="elaboro" class="visually">Elaboro</label>
+        <input class="form-control" type="text" value="@Model.elaboro" style="font-size:15px" readonly>
+    </div>
+</div>
+<div class="col-auto hidden-small">
+    <label for="estado_destajo" class="visually">Estado</label>
+    @Html.CheckBox("estado_destajo", @Model.estado_destajo, new { @class = "hidden-small" })
+</div>
+<br />
+<h4>Trabajadores</h4>
+<table class="table table-bordered">
+    <thead style="background-color: darkgrey; color:white">
+        <tr><th>#</th><th>Nombre</th><th>A.Paterno</th><th>A.Materno</th><th>Categoria</th><th>Pago día</th><th>Dias trabajados</th><th>Inf</th><th>Pres</th><th>Subtotal</th><th>Tiempo extra</th><th>Total</th><th>ACCION</th></tr>
+    </thead>
+    <tbody id="tabla_atr"></tbody>
+</table>
+@*--------------------------------------------------*@
+<br />
+<br />
+<div class="row gap-3" style="align-items:center; margin:10px;">
+    <button class="btn btn-success" type="button" onclick="location.href='/Destajo/Index_infonavit'"><span class="glyphicon glyphicon-save"> Listo</span></button>
+    <button class="btn btn-danger" type="reset" onclick="location.href='/Destajo/Index_infonavit'" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Regresar</span></button>
+</div>
+<br />
+@Html.Partial("_Modal_Trabajador")
+<script>
+
+    $(document).ready(function () {
+        $.post(
+            '/Destajo/det_actualizar_des_infonavit', {
+            id_destajos_admin: $('#id_destajos_admin').val()
+        }, function (res) {
+            $('#tabla_atr').html(res)
+        });
+    });
+
+</script>

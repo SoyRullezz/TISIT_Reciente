@@ -1,0 +1,163 @@
+﻿@model List<CAS_1._1._1.Models.destajos_material>
+@{
+    ViewBag.Title = "Destajos Materiales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var predio = new List<CAS_1._1._1.Models.predios>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        predio = cnx.predios.ToList();
+    }
+
+    var n_semana = 0;
+    var semana = 0;
+    foreach (var item in Model)
+    {
+
+        n_semana = item.n_semana.GetValueOrDefault();
+        semana++;
+    }
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    #div1 {
+        overflow: scroll;
+        height: 100%;
+        width: 100%;
+    }
+
+        #div1 table {
+            width: 100%;
+            background-color: lightgray;
+        }
+</style>
+<h2>TUS DESTAJOS</h2>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+
+@*---------------------- Destajo general----------------------------*@
+<button class="btn btn-light" style="font-size:12px" onclick="location.href='../DestajoMaterial/Ver_destajos_index'"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;&nbsp;&nbsp;&nbsp;REGRESAR</button>
+<br />
+<br />
+<div class="container" style="display:flex; align-items: flex-end">
+    <button class="btn btn-info" type="button" id="btn_act2" name="btn_act2" onclick="location.href='../DestajoMaterial/Index_Pdf_general'"><span class="glyphicon glyphicon-file"> Generar documento general</span></button>
+</div>
+<br />
+
+<div id="div1">
+    <table id="table_predios_g" class="table table-bordered">
+        <thead style="background-color: dimgrey; color: white">
+            <tr>
+                <th>#</th>
+                <th>Id predio</th>
+                <th>Predio</th>
+                <th>N° Semana</th>
+                <th>Semana</th>
+                <th>Destajista</th>
+                <th>Elaboro</th>
+                <th>Autorizo</th>
+                <th style="text-align: center">Mantenimiento</th>
+            </tr>
+        </thead>
+        <tbody style="background-color: white">
+            @foreach (var f in Model)
+            {
+                <tr>
+                    <td>@f.id_destajos_material</td>
+                    <td>@f.id_predio</td>
+                    <td>@f.predio</td>
+                    <td>@f.n_semana</td>
+                    <td>Del @f.inicio_semana.GetValueOrDefault().ToLongDateString() al @f.fin_semana.GetValueOrDefault().ToLongDateString()</td>
+                    <td>@f.destajista</td>
+                    <td>@f.elaboro</td>
+                    <td>@f.autorizo</td>
+                    <td style="text-align: center">
+                        <div>
+                            <button class="btn btn-secondary" type="button"
+                                    data-target="#modal_detalle_destajo" data-toggle="modal"
+                                    data-backdrop="static" data-keyboard="false"
+                                    onclick="detalles(codigo = @f.id_destajos_material)">
+                                <span class="glyphicon glyphicon-eye-open"> Detalle destajo</span>
+                            </button>
+                        </div>
+                        <div style="display:grid; grid-template-columns: repeat(2,1fr); grid-gap: 2px">
+                            @if (f.autorizo != null)
+                            {
+                                <button class="btn btn-info" type="button" id="btn_act1" name="btn_act1" onclick="location.href = '../DestajoMaterial/Pdf?id_destajos_material=@f.id_destajos_material&n_semana=@f.n_semana'"><span class="glyphicon glyphicon-file"> Generar documento</span></button>
+
+                            }
+                            else
+                            {
+                                <button class="btn btn-warning" type="button" id="btn_act" name="btn_act" onclick="location.href='../DestajoMaterial/Actualizar_semana?id_destajos_material=@f.id_destajos_material'"><span class="glyphicon glyphicon-edit"> Actualizar</span></button>
+                                <button class="btn btn-danger" type="button" id="btn_eli" name="btn_eli" onclick="location.href='../DestajoMaterial/Eliminar?id=@f.id_destajos_material'"><span class="glyphicon glyphicon-trash"> Eliminar</span></button>
+
+                            }
+                            @if (f.n_semana >= semana && f.autorizo != null)
+                            {
+                                <button class="btn btn-success" type="button" onclick="location.href = '../DestajoMaterial/Nueva_semana?id_destajos_material=@f.id_destajos_material&destajista=@f.destajista'"><span class="glyphicon glyphicon-plus"> Nueva semana</span></button>
+                            }
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+<br />
+@Html.Partial("_Modal_Detalle_Destajo")
+<script>
+    $(document).ready(function () {
+        $('#table_predios_g').DataTable();
+    });
+    var table = $('#table_predios_g').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+
+    /*
+                bus_sec = function () {
+                    $.post(
+                        '/Destajo/bus_sec', {
+                            tipo_bus: $('#tipo_bus').val(),//--Este es el id del combobox
+                            registro: $('#registro').val() //-- este es el id de caja de texto
+                    }, function (res) {
+                            $('#table_predios_g').html(res)//--id de la tabla
+                    });
+                };
+                */
+</script>

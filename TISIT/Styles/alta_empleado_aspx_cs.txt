@@ -1,0 +1,334 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.IO;
+using System.Net.Mail;
+using System.Drawing;
+using System.Data.OleDb;
+using System.Threading.Tasks;
+
+namespace (NOMBRE DEL PROYECTO)
+{
+    public partial class (NOMBRE DE LA PAGINA) : System.Web.UI.Page
+    {
+        string cs = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+        SqlConnection con = new SqlConnection("Data Source=DESKTOP-LTBTRKT;Initial Catalog=pruebatu;Integrated Security=True");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            //if (Session["usuario"] == null) { Response.Redirect("login.aspx"); }
+            consultaempleado.Visible = false;
+            btnconsultar.Visible = true;
+            if (!Page.IsPostBack)
+            {
+                GVbind();
+            }
+        }
+        public bool ExisteEmpleado(string noEmpleado)
+        {
+            bool revisar = false;
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from alta_empleados where no_empleado= '" + noEmpleado + "'", con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    revisar = true;
+                }
+                dr.Close();
+            }
+            catch (Exception)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertaError()", true);
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return revisar;
+        }
+        protected void GVbind()
+        {
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM alta_empleados where activo = 1", con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows == true)
+                {
+                    gridempleados.DataSource = dr;
+                    gridempleados.DataBind();
+                }
+            }
+        }
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            int result = 0;
+            Random r = new Random();
+            int num1 = 0;
+            num1 = r.Next(1, 100000);
+            string fecha = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(txtfecha.Text));
+            if (ExisteEmpleado(Convert.ToString(num1)) == false)
+            {
+                if (ExisteEmpleado(Convert.ToString(txtnoempleado.Text)) == false)
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("INSERT INTO alta_empleados(id_empleado,no_empleado,nombre,paterno,materno,fecha_nacimiento,curp,rfc,nss,activo) VALUES ('" + num1 + "', '" + txtnoempleado.Text + "','" + txtnombre.Text.ToUpper() + "', '" + txtpaterno.Text.ToUpper() + "', '" + txtmaterno.Text.ToUpper() + "', '" + fecha + "', '" + txtcurp.Text.ToUpper() + "', '" + txtrfc.Text.ToUpper() + "', '" + txtnss.Text.ToUpper() + "',1)", con);
+                    result = cmd.ExecuteNonQuery();
+                    if (result > 0)
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertaExito()", true);
+                        this.txtnoempleado.Text = string.Empty;
+                        this.txtnombre.Text = string.Empty;
+                        this.txtpaterno.Text = string.Empty;
+                        this.txtmaterno.Text = string.Empty;
+                        this.txtfecha.Text = string.Empty;
+                        this.txtcurp.Text = string.Empty;
+                        this.txtrfc.Text = string.Empty;
+                        this.txtnss.Text = string.Empty;
+                        GVbind();
+                    }
+                    else
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertaError()", true);
+                    }
+                }
+                else
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "ErrorEmpleado()", true);
+                }
+
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "ErrorID()", true);
+            }
+        }
+
+        protected void btnconsultar_Click(object sender, EventArgs e)
+        {
+            consultaempleado.Visible = true;
+            gridempleados.Visible = true;
+            guardardatos.Visible = false;
+            txtnoempleado.Visible = false;
+            txtnombre.Visible = false;
+            txtpaterno.Visible = false;
+            txtmaterno.Visible = false;
+            txtfecha.Visible = false;
+            txtcurp.Visible = false;
+            txtnss.Visible = false;
+            txtrfc.Visible = false;
+            btnguardar.Visible = false;
+            Label1.Visible = true;
+            txtbuscar.Visible = true;
+            btnbuscar.Visible = true;
+            btncancelar.Visible = true;
+        }
+
+        protected void btncancelar_Click(object sender, EventArgs e)
+        {
+            txtnoempleado.ReadOnly = false;
+            consultaempleado.Visible = false;
+            gridempleados.Visible = false;
+            guardardatos.Visible = true;
+            txtnoempleado.Visible = true;
+            txtnombre.Visible = true;
+            txtpaterno.Visible = true;
+            txtmaterno.Visible = true;
+            txtfecha.Visible = true;
+            txtcurp.Visible = true;
+            txtnss.Visible = true;
+            txtrfc.Visible = true;
+            btnguardar.Visible = true;
+            Label1.Visible = false;
+            txtbuscar.Visible = false;
+            btnbuscar.Visible = false;
+            btncancelar.Visible = false;
+            txteditfecha.Visible = false;
+            btncancelaredit.Visible = false;
+            btneditar.Visible = false;
+        }
+
+        protected void btnbuscar_Click(object sender, EventArgs e)
+        {
+            consultaempleado.Visible = true;
+            if (string.IsNullOrEmpty(txtbuscar.Text))
+            {
+                GVbind();
+            }
+            else
+            {
+                using (SqlConnection sqlcon = new SqlConnection(cs))
+                {
+                    sqlcon.Open();
+                    string query = "SELECT COUNT(1) FROM alta_empleados WHERE (id_empleado like '%" + txtbuscar.Text + "%' or no_empleado like '%" + txtbuscar.Text + "%' or nombre like '%" + txtbuscar.Text + "%' or paterno like '%" + txtbuscar.Text + "%' or materno like '%" + txtbuscar.Text + "%') AND activo = 0";
+                    SqlCommand sqlcmd = new SqlCommand(query, sqlcon);
+                    int count = Convert.ToInt32(sqlcmd.ExecuteScalar());
+                    sqlcon.Close();
+
+                    if (count == 0)
+                    {
+
+                        SqlCommand cmd = new SqlCommand("select * FROM alta_empleados where id_empleado like '%" + txtbuscar.Text + "%' or no_empleado like '%" + txtbuscar.Text + "%' or nombre like '%" + txtbuscar.Text + "%' or paterno like '%" + txtbuscar.Text + "%' or materno like '%" + txtbuscar.Text + "%' AND activo = 1", sqlcon);
+                        cmd.Connection = con;
+                        gridempleados.DataSourceID = "";
+                        cmd.Connection = sqlcon;
+                        sqlcon.Open();
+                        gridempleados.DataSource = cmd.ExecuteReader();
+                        gridempleados.DataBind();
+                    }
+                    else if (count == 1)
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "BAJA()", true);
+                        count = 0;
+                    }
+                }
+            }
+        }
+
+        protected void gridempleados_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            guardardatos.Visible = true;
+            txtnoempleado.Visible = true;
+            Session["id_empleado"] = HttpUtility.HtmlDecode(gridempleados.SelectedRow.Cells[0].Text);
+            txtnoempleado.Text = HttpUtility.HtmlDecode(gridempleados.SelectedRow.Cells[1].Text);
+            txtnombre.Visible = true;
+            txtnombre.Text = HttpUtility.HtmlDecode(gridempleados.SelectedRow.Cells[2].Text);
+            txtpaterno.Visible = true;
+            txtpaterno.Text = HttpUtility.HtmlDecode(gridempleados.SelectedRow.Cells[3].Text);
+            txtmaterno.Visible = true;
+            txtmaterno.Text = HttpUtility.HtmlDecode(gridempleados.SelectedRow.Cells[4].Text);
+            txteditfecha.Visible = true;
+            txteditfecha.Text = HttpUtility.HtmlDecode(gridempleados.SelectedRow.Cells[5].Text);
+            txtcurp.Visible = true;
+            txtcurp.Text = HttpUtility.HtmlDecode(gridempleados.SelectedRow.Cells[6].Text);
+            txtrfc.Visible = true;
+            txtrfc.Text = HttpUtility.HtmlDecode(gridempleados.SelectedRow.Cells[7].Text);
+            txtnss.Visible = true;
+            txtnss.Text = HttpUtility.HtmlDecode(gridempleados.SelectedRow.Cells[8].Text);
+            btneditar.Visible = true;
+            btncancelar.Visible = true;
+            btnconsultar.Visible = false;
+            btncancelaredit.Visible = true;
+        }
+
+        protected void btncancelaredit_Click(object sender, EventArgs e)
+        {
+            this.txtnoempleado.Text = string.Empty;
+            this.txtnombre.Text = string.Empty;
+            this.txtpaterno.Text = string.Empty;
+            this.txtmaterno.Text = string.Empty;
+            this.txtfecha.Text = string.Empty;
+            this.txtcurp.Text = string.Empty;
+            this.txtrfc.Text = string.Empty;
+            this.txtnss.Text = string.Empty;
+            btncancelaredit.Visible = false;
+            btneditar.Visible = false;
+            guardardatos.Visible = false;
+            consultaempleado.Visible = true;
+            gridempleados.SelectedIndex = -1;
+        }
+
+        protected void btneditar_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                int res = 0;
+                con.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE alta_empleados SET no_empleado = '" + txtnoempleado.Text + "', nombre = '" + txtnombre.Text.ToUpper() + "',paterno = '" + txtpaterno.Text.ToUpper() + "',materno = '" + txtmaterno.Text.ToUpper() + "', fecha_nacimiento= '" + txteditfecha.Text + "', curp = '" + txtcurp.Text.ToUpper() + "', rfc = '" + txtrfc.Text.ToUpper() + "', nss = '" + txtnss.Text.ToUpper() + "' where id_empleado = '" + Session["id_empleado"] + "'", con);
+
+                res = cmd.ExecuteNonQuery();
+
+                if (res > 0)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertaExitoEditar()", true);
+                    this.txtnoempleado.Text = string.Empty;
+                    this.txtnombre.Text = string.Empty;
+                    this.txtpaterno.Text = string.Empty;
+                    this.txtmaterno.Text = string.Empty;
+                    this.txtfecha.Text = string.Empty;
+                    this.txteditfecha.Text = string.Empty;
+                    this.txtcurp.Text = string.Empty;
+                    this.txtrfc.Text = string.Empty;
+                    this.txtnss.Text = string.Empty;
+                    guardardatos.Visible = false;
+                    btnconsultar.Visible = false;
+
+                    consultaempleado.Visible = true;
+                    gridempleados.Visible = true;
+                    guardardatos.Visible = false;
+                    txtnoempleado.Visible = false;
+                    txtnombre.Visible = false;
+                    txtpaterno.Visible = false;
+                    txtmaterno.Visible = false;
+                    txtfecha.Visible = false;
+                    txtcurp.Visible = false;
+                    txtnss.Visible = false;
+                    txtrfc.Visible = false;
+                    btnguardar.Visible = false;
+                    Label1.Visible = true;
+                    txtbuscar.Visible = true;
+                    btnbuscar.Visible = true;
+                    btncancelar.Visible = true;
+                    gridempleados.SelectedIndex = -1;
+                    GVbind();
+                    Session.Clear();
+                }
+                else
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "ErrorActualizar()", true);
+                }
+            }
+        }
+        protected void gridempleados_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+
+            consultaempleado.Visible = true;
+            int id = Convert.ToInt32(gridempleados.DataKeys[e.RowIndex].Value);
+
+            try
+            {
+
+                using (SqlConnection con = new SqlConnection(cs))
+                {
+
+                    int res = 0;
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("UPDATE alta_empleados SET activo = 0 where id_empleado = '" + id + "'", con);
+                    res = cmd.ExecuteNonQuery();
+                    if (res > 0)
+                    {
+                        ClientScript.RegisterClientScriptBlock(this.GetType(), "randomtext", $"correvtoborrado({id})", true);
+                        GVbind();
+                    }
+                    else
+                    {
+                        ClientScript.RegisterClientScriptBlock(this.GetType(), "randomtext", $"errorBorrar({id})", true);
+                        GVbind();
+                    }
+
+                }
+            }
+            catch
+            {
+
+
+            }
+        }
+
+        protected void Button1_Click1(object sender, EventArgs e)
+        {
+            consultaempleado.Visible = true;
+            ClientScript.RegisterClientScriptBlock(this.GetType(), "randomtext", "confirmDelete()", true);
+        }
+
+    }
+}

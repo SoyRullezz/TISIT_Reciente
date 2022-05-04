@@ -1,0 +1,76 @@
+﻿@model CAS_1._1._1.Models.trabajadores_destajos_admin
+@{
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+    ViewBag.Title = "Actualizar - Destajo";
+
+}
+<style>
+    .aceptar_total {
+        text-decoration: underline;
+        cursor: pointer;
+        font-size: 11px;
+        color: dimgrey;
+    }
+
+    input[type=checkbox] {
+        width: 5rem;
+    }
+
+    .chek {
+        width: 20px;
+        height: 20px;
+        margin-top: 25px
+    }
+</style>
+<h4>Cambiar total</h4>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+<form action="/Destajo/cambiar_total_rev" method="post">
+    <input type="hidden" name="id_destajos_admin" id="id_destajos_admin" value="@ViewBag.id_destajos_admin" />
+
+    <input type="hidden" name="id_trabajador" id="id_trabajador" value="@Model.id_trabajador" />
+    <br />
+    <div class="col" style="align-items:center; margin:10px;">
+        <label for="nombre" class="visually">Nombre</label>
+        <input class="form-control" type="text" value="@Model.nombre @Model.apellido_pa @Model.apellido_ma" name="nombre" id="nombre" style="font-size:15px" readonly>
+    </div>
+    <div class="row gap-5" style="align-items:center; margin:10px;">
+
+        <div class="col-auto">
+            <label for="nombre" class="visually">Total establecido</label>
+            <input class="form-control" type="text" value="@Model.total" name="total" id="total" style="font-size:15px" readonly>
+        </div>
+        <div class="col-auto">
+            <label for="apellido_pa" class="visually">Total autorizado</label>
+            <input class="form-control" type="number" step="any" style="font-size:15px" name="total_aceptado" id="total_aceptado" required>
+        </div>
+        <p style="padding-top:30px" class="aceptar_total" id="aceptar_total" name="aceptar_total">Aceptar el total establecido</p>
+    </div>
+    <div class="row gap-5" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="nombre" class="visually">Adeudo de destajos pasados</label>
+            <input class="form-control" type="number" value="@Model.restante" name="adeudo" id="adeudo" style="font-size:15px" readonly>
+        </div>
+        <label style="margin-top:30px" class="visually">Pagar adeudo</label>
+        @Html.CheckBox("verSi_adeudo", false, new { @class = "chek" })
+    </div>
+    <input type="hidden" name="id_destajos_admin" id="id_destajos_admin" value="@ViewBag.id_destajos_admin" />
+
+    @*--------------------------------------------------*@
+    <br />
+    <div class="row gap-5" style="align-items:center; margin:10px;">
+        <button class="btn btn-success" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-save"> Cambiar</span></button>
+        <button class="btn btn-danger" type="reset" onclick="location.href='../Destajo/Revisar?id=@ViewBag.id_destajos_admin'" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Regresar</span></button>
+    </div>
+</form>
+<br />
+<br />
+<script>
+
+    $(function () {
+        $("#aceptar_total").click(function () {
+            let total = $("#total").val();
+            let total_aceptado = $("#total_aceptado").val(total);
+        });
+    });
+
+</script>

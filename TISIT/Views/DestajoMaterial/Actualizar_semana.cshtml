@@ -1,0 +1,174 @@
+﻿@model CAS_1._1._1.Models.destajos_material
+@{
+    ViewBag.Title = "Destajos Aministrativos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var predio = new List<CAS_1._1._1.Models.predios>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        predio = cnx.predios.ToList();
+    }
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    .hidden-small {
+        visibility: hidden;
+    }
+
+    .ocultar {
+        visibility: hidden;
+    }
+
+    #otro_elemento:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .linea {
+        margin: 200px;
+    }
+</style>
+<h4>Gestión de destajos</h4>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+
+<form action="/DestajoMaterial/Nueva_semana_2" method="post">
+    <input type="hidden" name="id_destajos_material" id="id_destajos_material" value="@Model.id_destajos_material" />
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="id_predio" class="visually"># Predio</label>
+            <input class="form-control" type="number" readonly value="@Model.id_predio" name="id_predio" id="id_predio" style="font-size:15px" required>
+        </div>
+        <div class="col-auto">
+            <label for="predio" class="visually">Nombre predio</label>
+            <input class="form-control" type="text" readonly value="@Model.predio" style="font-size:15px" name="predio" id="predio" required>
+        </div>
+        <div class="col-auto">
+            <label for="destajista" class="visually">Destajista(Maestro)</label>
+            <input class="form-control" style="font-size:15px" readonly type="text" name="destajista" value="@Model.destajista" id="destajista" required>
+        </div>
+    </div>
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <p>NOTA 1</p>
+            <p><textarea class="form-control" style="font-size:15px; width:400px; max-height:150px;height:150px" id="nota1" readonly name="nota1">@Model.nota</textarea></p>
+
+        </div>
+        <div class="col-auto">
+            <p>NOTA 2</p>
+            <p><textarea class="form-control" style="font-size:15px; width:400px; max-height:150px;height:150px" id="nota2" readonly name="nota2">@Model.nota2</textarea></p>
+        </div>
+    </div>
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="fecha_inicio" class="visually">Fecha de inicio</label>
+            <input class="form-control" type="date" name="inicio_semana" id="inicio_semana" readonly value="@Model.inicio_semana.GetValueOrDefault().ToString("yyyy-MM-dd")" style="font-size:15px" required>
+        </div><br />
+        <div class="col-auto">
+            <label for="fecha_fin" class="visually">Fecha final</label>
+            <input class="form-control" type="date" style="font-size:15px" name="fin_semana" readonly value="@Model.fin_semana.GetValueOrDefault().ToString("yyyy-MM-dd")" id="fin_semana" required>
+        </div>
+        <div class="col hidden-small">
+            <input class="form-control" type="hidden" name="elaboro" id="elaboro" value="@Session["usuario"]">
+        </div>
+
+    </div>
+    <div class="col-auto" style="margin:15px">
+        <label for="elaboro" class="visually">Observaciones</label>
+        <textarea class="form-control" style="font-size:15px; max-width:730px; max-height:150px; height:120px" readonly id="observaciones" name="observaciones">@Model.observaciones</textarea>
+    </div>
+
+    <!--CONCEPTOS-->
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>CONCEPTOS GUARDADOS</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>#</th><th>CONCEPTO</th><th>UNIDAD ELEMENTO</th><th>VOL O CONT</th><th>PX PAQUETE</th><th>VALOR TOTAL</th><th>EST ANTERIOR</th><th>A ESTIMAR</th><th>ACCIÓN</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr_g"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--TRABAJADORES-->
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>LISTA TRABAJADORES (Sólo trabajadores, no agregar al destajista)</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <button class="btn btn-secondary" type="button" id="verificar_predioSelec2"
+                                data-target="#modal_trabajador" data-toggle="modal"
+                                data-backdrop="static" data-keyboard="false">
+                            <span class="glyphicon glyphicon-list" style="color:white"> Agregar trabajador</span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>N° Empleado</th><th>Nombre</th><th>A.Paterno</th><th>A.Materno</th><th>Pago</th><th>ACCION</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr_trab"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--TRABAJADORES-->
+
+    <button class="btn btn-success" type="button" onclick="location.href = '../DestajoMaterial/finalizar_destajo_act?id_destajo=@Model.id_destajos_material'"><span class="glyphicon glyphicon-ok"> Actualizar</span></button>
+
+</form>
+
+<input class="form-control" type="hidden" name="n_semana" id="n_semana" value="@ViewBag.n_semana">
+<input class="form-control" type="hidden" name="id_destajos_material" id="id_destajos_material" value="@ViewBag.id_destajo">
+
+@Html.Partial("_Modal_Concepto")
+@Html.Partial("_Modal_Trabajador")
+@Html.Partial("_Agregado")
+
+<script src="~/Scripts/app_material.js"></script>
+<script>
+    $(document).ready(function () {
+        $.post(
+            '/DestajoMaterial/det_actualizar_des_semana', {
+            id_destajos_material: $('#id_destajos_material').val(),
+            n_semana: $('#n_semana').val()
+        }, function (res) {
+            $('#tabla_atr_g').html(res)
+        });
+    });
+
+    $(document).ready(function () {
+        $.post(
+            '/DestajoMaterial/det_actualizar_trab', {
+                id_destajos_material: $('#id_destajos_material').val()
+        }, function (res) {
+            $('#tabla_atr_trab').html(res)
+        });
+    });
+
+</script>

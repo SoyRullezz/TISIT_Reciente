@@ -1,0 +1,117 @@
+﻿@model List<CAS_1._1._1.Models.bitacora_destajos>
+@{
+    ViewBag.Title = "Destajos Aministrativos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    #div1 {
+        overflow: scroll;
+        height: 100%;
+        width: 100%;
+    }
+
+        #div1 table {
+            width: 100%;
+            background-color: lightgray;
+        }
+</style>
+<h2>BITACORA</h2>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+
+@*---------------------- Destajo general----------------------------*@
+
+<br />
+<div id="div1">
+    <table id="table_bitacora" class="table table-bordered" style="font-size:12px; border:none">
+        <thead style="background-color: #2A3F54; color: white">
+            <tr>
+                <th>#</th>
+                <th>USUARIO</th>
+                <th>NOMBRE</th>
+                <th>FECHA DE ENTRADA</th>
+                <th>ACCION</th>
+                <th>HORA</th>
+                <th>ACCION</th>
+                <th>HORA</th>
+                <th>ACCION</th>
+                <th>HORA</th>
+                <th>ACCION</th>
+                <th>HORA</th>
+                <th>ACCION</th>
+                <th>HORA</th>
+            </tr>
+        </thead>
+        <tbody style="background-color: white" id="tabla_seccion_bus">
+            @foreach (var f in Model)
+            {
+                <tr>
+                    <td style="background-color:#F6F6F6">@f.id</td>
+                    <td style="background-color:#F6F6F6">@f.usuario</td>
+                    <td style="background-color:#F6F6F6">@f.nombre_completo</td>
+                    <td style="background-color:#F6F6F6">@f.fecha_entrada.GetValueOrDefault().ToLongDateString()</td>
+                    <td>@f.accion</td>
+                    <td>@f.hora_accion.GetValueOrDefault().ToString("hh':'mm':'ss")</td>
+                    <td style="background-color:#F6F6F6">@f.accion2</td>
+                    <td style="background-color:#F6F6F6">@f.hora_accion2.GetValueOrDefault().ToString("hh':'mm':'ss")</td>
+                    <td>@f.accion3</td>
+                    <td>@f.hora_accion3.GetValueOrDefault().ToString("hh':'mm':'ss")</td>
+                    <td style="background-color:#F6F6F6">@f.accion4</td>
+                    <td style="background-color:#F6F6F6">@f.hora_accion4.GetValueOrDefault().ToString("hh':'mm':'ss")</td>
+                    <td>@f.accion5</td>
+                    <td>@f.hora_accion5.GetValueOrDefault().ToString("hh':'mm':'ss")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+<script>
+
+
+    $(document).ready(function () {
+        $('#table_bitacora').DataTable();
+    });
+
+    var table = $('#table_bitacora').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+
+
+</script>
+

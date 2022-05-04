@@ -1,0 +1,41 @@
+﻿@model CAS_1._1._1.Models.trabajadores_destajos_admin
+@{
+    Layout = "~/Views/Shared/_Layout4.cshtml";
+    ViewBag.Title = "Añadi infonavit";
+
+}
+
+<h4>Cambiar total</h4>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+<form action="/Destajo/Agr_infonavit" method="post">
+    <input type="hidden" name="id_destajos_admin" id="id_destajos_admin" value="@ViewBag.id_destajos_admin" />
+    <input type="hidden" name="id_trabajador" id="id_trabajador" value="@Model.id_trabajador" />
+
+    <input type="hidden" name="pago_dia" id="pago_dia" value="@Model.pago_dia" />
+    <input type="hidden" name="dias_trabajados" id="dias_trabajados" value="@Model.dias_trabajados" />
+    <input type="hidden" name="extra" id="extra" value="@Model.extra" />
+
+    <br />
+    <div class="row gap-5" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="nombre" class="visually">Nombre</label>
+            <input class="form-control" type="text" value="@Model.nombre @Model.apellido_pa @Model.apellido_ma" name="nombre" id="nombre" style="font-size:15px" readonly>
+        </div>
+        <div class="col-auto">
+            <label for="inf" class="visually">INF</label>
+            <input class="form-control" step="any" type="number" value="0" min="0" name="inf" id="inf" style="font-size:15px" required>
+        </div>
+        <div class="col-auto">
+            <label for="pres" class="visually">PREST</label>
+            <input class="form-control" step="any" type="number" value="0" min="0" style="font-size:15px" name="pres" id="pres" required>
+        </div>
+    </div>
+    @*--------------------------------------------------*@
+    <br /><br />
+    <div class="row gap-5" style="align-items:center; margin:10px;">
+        <button class="btn btn-success" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-save"> Agregar</span></button>
+        <button class="btn btn-danger" type="reset" onclick="location.href = '../Destajo/Index_Agr_infonavit?id=@ViewBag.id_destajos_admin'" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Regresar</span></button>
+    </div>
+</form>
+<br />
+<br />

@@ -1,0 +1,176 @@
+﻿@model List<CAS_1._1._1.Models.trabajadores_destajos_admin>
+@{
+    var user = new List<CAS_1._1._1.Models.altausuario>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        user = cnx.altausuario.ToList();
+    }
+
+    ViewBag.Title = "Trabajador";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<style>
+    .ocultar {
+        visibility: hidden;
+    }
+    #otra_categoria:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+</style>
+<h2>Gestión de Destajos</h2>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+<div>
+    <div class="x_panel tile">
+        <div class="x_title">
+            <h2>SELECCIONA EL TRABAJADOR</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table id="table_usuario" class="table table-bordered" style="font-size:14px">
+                <thead style="background-color:dimgrey; color:white">
+                    <tr>
+                        <th>Id Personal</th>
+                        <th>N° Empleado</th>
+                        <th>Nombre</th>
+                        <th>Paterno</th>
+                        <th>Materno</th>
+                        <th style="text-align:center">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody style="background-color:white">
+                    @foreach (var u in ViewBag.trabajador)
+                    {
+                        <tr>
+                            <td><span style="visibility:hidden; font-size:1px;">@u.id_personal</span><input class="form-control" type="number" style="font-size:15px" readonly value="@u.id_personal"></td>
+                            <td><span style="visibility:hidden; font-size:1px;">@u.no_empleado</span><input class="form-control" type="number" style="font-size:15px" readonly value="@u.no_empleado"></td>
+                            <td><span style="visibility:hidden; font-size:1px">@u.nombre</span><input class="form-control" type="text" value="@u.nombre" style="font-size:15px" readonly></td>
+                            <td><span style="visibility:hidden; font-size:1px">@u.apaterno</span><input class="form-control" type="text" style="font-size:15px" value="@u.apaterno" readonly></td>
+                            <td><span style="visibility:hidden; font-size:1px">@u.amaterno</span><input class="form-control" type="text" style="font-size:15px" value="@u.amaterno" readonly></td>
+                            <td style="text-align:center">
+                                <button class="btn btn-info collapse-link" style="margin: 2px; font-size:15px" type="button" id="btn_selec" name="btn_selec" onclick="seleccionar(registro = @u.no_empleado)"><span class="glyphicon glyphicon-check"> Seleccionar</span></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<form action="/Trabajadores/Index" method="post">
+    <table class="table">
+        <thead style="background-color: dimgray; color:white">
+            <tr>
+                <th>Id Personal</th>
+                <th>N° Empleado</th>
+                <th>Nombre</th>
+                <th>Paterno</th>
+                <th>Materno</th>
+            </tr>
+        </thead>
+        <tbody id="tabla_selec"></tbody>
+    </table>
+    <div class="row" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="pago_dia" class="visually">Pago por día</label>
+            <input class="form-control" style="font-size:15px" type="number" name="pago_dia" id="pago_dia" min="0" placeholder="$" required>
+        </div>
+        <div class="col-auto">
+            <br />
+            <label for="apellido_ma" class="visually">Categoria</label><br />
+            <select class="select2-container--default" name="categoria" style="font-size:15px; color:gray; border-color: gray; height:30px" id="categoria" required>
+                <option value="otra_categoria" selected>Seleccionar</option>
+                <option value="Oficial">Oficial</option>
+                <option value="Ayudante">Ayudante</option>
+                <option value="Maestro">Maestro</option>
+            </select>
+            <p name="otra_categoria" id="otra_categoria">¿No está la categoría?</p>
+        </div>
+        <div class="ocultar" id="v2">
+            <label for="categoria_extra" class="visually">Escribe la categoría</label>
+            <input class="form-control" style="font-size:15px" type="text" name="categoria_extra" id="categoria_extra">
+        </div>
+    </div>
+        <div class="row" style="align-items:center; margin:10px;">
+            <div class="col-auto">
+                <label class="visually" style="font-weight:bold">Dias trabajados</label>
+            </div>
+            <div class="col-auto">
+                <label class="visually">Lunes</label>
+                @Html.CheckBox("lunes", false)
+            </div>
+            <div class="col-auto">
+                <label class="visually">Martes</label>
+                @Html.CheckBox("martes", false)
+            </div>
+            <div class="col-auto">
+                <label class="visually">Miercoles</label>
+                @Html.CheckBox("miercoles", false)
+            </div>
+            <div class="col-auto">
+                <label class="visually">Jueves</label>
+                @Html.CheckBox("jueves", false)
+            </div>
+            <div class="col-auto">
+                <label class="visually">Viernes</label>
+                @Html.CheckBox("viernes", false)
+            </div>
+            <div class="col-auto">
+                <label class="visually">Sábado</label>
+                @Html.CheckBox("sabado", false)
+            </div>
+            <div type="button" class="btn btn-secondary" name="btn_pago_dia_extra" id="btn_pago_dia_extra" style="font-size:13px; padding:4px">Día extra</div>
+            <div class="col-auto ocultar" id="v">
+                <label for="extra" class="visually">Pago por día extra</label>
+                <input class="form-control" style="font-size:15px" type="number" name="extra" id="extra" min="0" placeholder="$" value="0" required>
+            </div>
+        </div>
+        <div class="col-auto" style="align-items:center; text-align:start; margin:10px 0 10px 30px">
+            <button class="btn btn-success" style="font-size:15px" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-save"> Agregar</span> </button>
+            <button class="btn btn-primary" style="font-size:15px" type="reset" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Resetear</span> </button>
+            <a class="btn btn-danger" href="~/Seccion/Index" style="font-size:15px"><span class="glyphicon glyphicon-backward"> Regresar</span> </a>
+        </div>
+</form>
+<script src="~/Scripts/app.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table_usuario').DataTable();
+    });
+    seleccionar = function (registro) {
+        $.post(
+            '/Trabajadores/seleccionar', {
+                registro : registro//en este caso sería el codigo
+        }, function (res) {
+                $('#tabla_selec').html(res)
+        });
+    };
+    var table = $('#table_usuario').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+</script>

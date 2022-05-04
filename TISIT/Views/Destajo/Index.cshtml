@@ -1,0 +1,234 @@
+﻿@model List<CAS_1._1._1.Models.destajos_admin>
+@{
+    ViewBag.Title = "Destajos Aministrativos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var predio = new List<CAS_1._1._1.Models.predios>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        predio = cnx.predios.ToList();
+    }
+
+    var user = new List<CAS_1._1._1.Models.altausuario>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        user = cnx.altausuario.ToList();
+    }
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    .hidden-small {
+        visibility: hidden;
+    }
+
+</style>
+
+<br />
+<h4>Gestión de destajos</h4>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+<div class="">
+    <div class="x_panel tile">
+        <div class="x_title">
+            <h2>SELECCIONA EL PREDIO</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table id="table_predios" class="table table-bordered" style="font-size:14px">
+                <thead style="background-color:dimgrey; color:white;">
+                    <tr>
+                        <th>#</th>
+                        <th>Predio</th>
+                        <th>Entidad</th>
+                        <th>Municipio</th>
+                        <th style="text-align:center">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody style="background-color:white">
+                    @foreach (var u in predio)
+                    {
+                        <tr>
+                            <td><span style="visibility:hidden; font-size:1px;">@u.id_predio</span><input class="form-control" type="number" style="font-size:15px" disabled value="@u.id_predio"></td>
+                            <td><span style="visibility:hidden; font-size:1px;">@u.predio</span><input class="form-control" type="text" value="@u.predio" style="font-size:15px" disabled></td>
+                            <td><span style="visibility:hidden; font-size:1px;">@u.entidad</span><input class="form-control" type="text" style="font-size:15px" value="@u.entidad" disabled></td>
+                            <td><span style="visibility:hidden; font-size:1px;">@u.municipio</span><input class="form-control" type="text" style="font-size:15px" value="@u.municipio" disabled></td>
+                            <td style="text-align:center">
+                                <button class="btn btn-info collapse-link" style="margin: 2px; font-size:15px" type="button" id="seleccionarPredio" name="seleccionarPredio" onclick="seleccionar(registro = @u.id_predio)"><span class="glyphicon glyphicon-check"> Seleccionar</span></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<form action="/Destajo/Index" method="post">
+    <table class="table">
+        <thead style="background-color: dimgray; color:white">
+            <tr>
+                <th>#</th>
+                <th>Predio</th>
+                <th>Entidad</th>
+                <th>Municipio</th>
+            </tr>
+        </thead>
+        <tbody id="tabla_selec"></tbody>
+    </table>
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="fecha_inicio" class="visually">Fecha de inicio</label>
+            <input class="form-control" type="date" name="fecha_inicio" id="fecha_inicio" style="font-size:15px" required>
+        </div>
+        <div class="col-auto">
+            <label for="fecha_fin" class="visually">Fecha final</label>
+            <input class="form-control" type="date" style="font-size:15px" name="fecha_fin" id="fecha_fin" required>
+        </div>
+        <div class="col">
+            <label for="elaboro" class="visually">Elaboro</label>
+            <div style="background-color:white; border: 1px solid; padding: 2px; border-radius: 5px; border: 1px solid #e1e1e1; height: 32px; width:300px">
+                <label for="elaboro" class="visually" style="text-transform: uppercase; margin:2px 2px 2px 5px"> @Session["usuario"]</label>
+                <input class="form-control" type="hidden" name="elaboro" id="elaboro" value="@Session["usuario"]">
+            </div>
+        </div>
+        <div class="col-auto">
+            <label for="estado_destajo" class="hidden-small">Estado</label>
+            @Html.CheckBox("estado_destajo", true, new { @class = "hidden-small" })
+        </div>
+    </div>
+
+    @*--------------------------------------------------*@
+
+    <br /><br />
+    <button class="btn btn-danger" type="reset" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Resetear</span></button>
+    <button class="btn btn-success" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-chevron-right"> SIGUIENTE</span></button>
+
+</form>
+
+@Html.Partial("_Modal_Error")
+<script>
+    $(document).ready(function () {
+        $('#table_predios').DataTable();
+    });
+    $(document).ready(function () {
+        $('#table_predios_g').DataTable();
+    });
+    var table = $('#table_predios').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+    var table = $('#table_predios_g').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+    seleccionar = function (registro) {
+        $.post(
+            '/Destajo/seleccionar', {
+            registro: registro//en este caso sería el codigo
+        }, function (res) {
+                $('#tabla_selec').html(res);
+
+                    document.getElementById('verificar_predioSelec').disabled = false;
+
+                    setTimeout(() => {
+                        prueba();
+                    }, 500);
+        });
+    };
+
+    $(document).ready(function () {
+        document.getElementById('verificar_predioSelec').disabled = true;
+    });
+
+
+    prueba = function () {
+        $.post(
+            '/Destajo/SetVariable',
+            {
+                value: $("#id_predio").val()
+            }, null
+        );
+    };
+
+
+    const fechaInput = document.querySelector('#fecha_fin');
+    fechaInput.addEventListener('input', e => {
+
+        var fechainicial = document.getElementById("fecha_inicio").value;
+        var fechafinal = document.getElementById("fecha_fin").value;
+
+        if (Date.parse(fechafinal) < Date.parse(fechainicial)) {
+            fechaInput.value = '';
+            $('#modal_error_fecha').modal('show');
+        }
+    });
+
+
+    /*
+                bus_sec = function () {
+                    $.post(
+                        '/Destajo/bus_sec', {
+                            tipo_bus: $('#tipo_bus').val(),//--Este es el id del combobox
+                            registro: $('#registro').val() //-- este es el id de caja de texto
+                    }, function (res) {
+                            $('#table_predios_g').html(res)//--id de la tabla
+                    });
+                };
+                */
+</script>

@@ -1,0 +1,699 @@
+﻿@model List<CAS_1._1._1.Models.Conceptos_material>
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var cont = 1;
+    var id_destajos_material = ViewData["id_destajos_material"];
+    decimal subtotal_estimado = (decimal)ViewData["subtotal_estimado"];
+    decimal total_estimado = (decimal)ViewData["total_estimado"];
+    decimal acumulados_totales_anterior = (decimal)ViewData["acumulados_totales_anterior"];
+    decimal acumulados_totales_actual = (decimal)ViewData["acumulados_totales_actual"];
+    decimal pago_destajista = (decimal)ViewData["pago_destajista"];
+
+    var n_semana = ViewData["n_semana"];
+}
+<style type="text/css">
+    .tg {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+        .tg td {
+            border-color: black;
+            border-style: solid;
+            border-width: 1px;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            overflow: hidden;
+            padding: 5px 5px;
+            word-break: keep-all;
+        }
+
+        .tg th {
+            border-color: black;
+            border-style: solid;
+            border-width: 1px;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            font-weight: normal;
+            overflow: hidden;
+            padding: 5px 5px;
+            word-break: keep-all;
+        }
+
+        .tg .tg-c3ow {
+            border-color: inherit;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .tg .tg-2qwx {
+            background-color: #ffffff;
+            border-color: #000000;
+            color: #333333;
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-mjfx {
+            border-color: inherit;
+            font-family: "Times New Roman", Times, serif !important;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-7btt {
+            border-color: inherit;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .tg .tg-0pky {
+            border-color: inherit;
+            text-align: left;
+            vertical-align: top
+        }
+
+        .tg .tg-6ic8 {
+            border-color: inherit;
+            font-weight: bold;
+            text-align: right;
+            vertical-align: top
+        }
+
+        .tg .tg-dvpl {
+            border-color: inherit;
+            text-align: right;
+            vertical-align: top
+        }
+
+    .logoo {
+        background-image: url(../../imagenes/des.png);
+        background-repeat: no-repeat;
+        background-size:85%;
+        background-position: center center;
+        height: 150px;
+        background-color:white!important;
+    }
+    .pinta {
+        background-color: #BBBBBB !important;
+     
+        font-weight: bold !important;
+    }
+</style>
+<input type="hidden" id="saca_n_semana" name="saca_n_semana" value="@n_semana">
+
+<table class="tg" style="table-layout: auto; width: 100%">
+    <colgroup>
+        <col style="width: 55px">
+        <col style="width: 170px">
+        <col style="width: 88px">
+        <col style="width: 57px">
+        <col style="width: 78px">
+        <col style="width: 25px">
+        <col style="width: 25px">
+        <col style="width: 25px">
+        <col style="width: 25px">
+        <col style="width: 25px">
+        <col style="width: 25px">
+        <col style="width: 25px">
+        <col style="width: 25px">
+        <col style="width: 25px">
+        <col style="width: 26px">
+        <col style="width: 26px">
+        <col style="width: 26px">
+        <col style="width: 27px">
+        <col style="width: 26px">
+        <col style="width: 77px">
+        <col style="width: 72px">
+        <col style="width: 87px">
+        <col style="width: 86px">
+        <col style="width: 69px">
+        <col style="width: 69px">
+    </colgroup>
+    <tbody>
+        <tr>
+            <th class="logoo" colspan="25"></th>
+        </tr>
+        <tr>
+            <td class="tg-mjfx" style="font-size: 14px" colspan="25">CALLE URUAPAN # 12 COL. CONSTITUCION DE 1917 MCPIO. TLALNEPANTLA EDO. DE MEXICO CP 54188. TEL 58 29 41 32</td>
+        </tr>
+        <tr>
+            <td class="tg-mjfx">OBRA #@ViewData["id_predio"]</td>
+            <td class="tg-mjfx" colspan="2">@ViewData["predio"]</td>
+            <td class="tg-mjfx" colspan="2">SEMANA #@ViewData["n_semana"]</td>
+            <td class="tg-mjfx" colspan="6">DESTAJISTA</td>
+            <td class="tg-mjfx" colspan="10">@ViewData["destajista"]</td>
+            <td class="tg-mjfx" colspan="4">Del @ViewData["inicio_semana"] al @ViewData["fin_semana"]</td>
+        </tr>
+        <tr>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">PART</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">CONCEPTO</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">UNIDAD<br>ELEMENTO</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">VOL O <br>CONT</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">PX<br>PAQUETE</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" colspan="14">A ESTIMAR</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">EST<br>ANT PZA</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">A EST<br>PZA</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">A EST<br>$</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">ACUM<br>ACTUAL PZA</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">ACUM<br>ANT $</td>
+            <td style="font-size:11.5px; letter-spacing: 2px" class="tg-7btt" rowspan="2">ACU <br>$</td>
+        </tr>
+        <tr>
+            <td style="font-size:11.5px" class="tg-c3ow">1</td>
+            <td style="font-size:11.5px" class="tg-c3ow">2</td>
+            <td style="font-size:11.5px" class="tg-c3ow">3</td>
+            <td style="font-size:11.5px" class="tg-c3ow">4</td>
+            <td style="font-size:11.5px" class="tg-c3ow">5</td>
+            <td style="font-size:11.5px" class="tg-c3ow">6</td>
+            <td style="font-size:11.5px" class="tg-c3ow">7</td>
+            <td style="font-size:11.5px" class="tg-c3ow">8</td>
+            <td style="font-size:11.5px" class="tg-c3ow">9</td>
+            <td style="font-size:11.5px" class="tg-c3ow">10</td>
+            <td style="font-size:11.5px" class="tg-c3ow">11</td>
+            <td style="font-size:11.5px" class="tg-c3ow">12</td>
+            <td style="font-size:11.5px" class="tg-c3ow">13</td>
+            <td style="font-size:11.5px" class="tg-c3ow">14</td>
+        </tr>
+        <!---->
+        @{
+            foreach (var a in Model)
+            {
+
+                <tr>
+                    <td style="font-size:11.5px" class="tg-c3ow" rowspan="3"><br><br>@cont<br></td>
+                    <td style="font-size:10px; letter-spacing: 2px" class="tg-c3ow" rowspan="3">@a.concepto</td>
+                    <td style="font-size:11.5px" class="tg-c3ow" colspan="3"><br></td>
+                    <td style="font-size:11.5px" class="tg-c3ow">@a.est_0</td>
+                    <td style="font-size:11.5px" class="tg-c3ow uno">@a.est_1</td>
+                    <td style="font-size:11.5px" class="tg-c3ow dos">@a.est_2</td>
+                    <td style="font-size:11.5px" class="tg-0pky tres">@a.est_3</td>
+                    <td style="font-size:11.5px" class="tg-0pky cuatro">@a.est_4</td>
+                    <td style="font-size:11.5px" class="tg-0pky cinco">@a.est_5</td>
+                    <td style="font-size:11.5px" class="tg-0pky seis">@a.est_6</td>
+                    <td style="font-size:11.5px" class="tg-0pky siete">@a.est_7</td>
+                    <td style="font-size:11.5px" class="tg-0pky ocho">@a.est_8</td>
+                    <td style="font-size:11.5px" class="tg-0pky nueve">@a.est_9</td>
+                    <td style="font-size:11.5px" class="tg-0pky diez">@a.est_10</td>
+                    <td style="font-size:11.5px" class="tg-0pky once">@a.est_11</td>
+                    <td style="font-size:11.5px" class="tg-0pky doce">@a.est_12</td>
+                    <td style="font-size:11.5px" class="tg-0pky trece">@a.est_13</td>
+                    <td style="font-size:11.5px" class="tg-0pky"></td>
+                    <td style="font-size:11.5px" class="tg-0pky"></td>
+                    <td style="font-size:11.5px" class="tg-0pky"></td>
+                    <td style="font-size:11.5px" class="tg-0pky"></td>
+                    <td style="font-size:11.5px" class="tg-0pky"></td>
+                    <td style="font-size:11.5px" class="tg-0pky"></td>
+                </tr>
+                <tr>
+                    <td style="font-size:11.5px" class="tg-c3ow">@a.unidad_elemento</td>
+                    <td style="font-size:11.5px" class="tg-c3ow">@a.vol_cont</td>
+                    <td style="font-size:11.5px" class="tg-c3ow">@a.px_paquete.ToString("$###,###,##0.00")</td>
+                    <td style="font-size:11.5px" class="tg-c3ow catorce">@a.est_14</td>
+                    <td style="font-size:11.5px" class="tg-c3ow quince">@a.est_15</td>
+                    <td style="font-size:11.5px" class="tg-c3ow diezysesis">@a.est_16</td>
+                    <td style="font-size:11.5px" class="tg-0pky diezysiete">@a.est_17</td>
+                    <td style="font-size:11.5px" class="tg-0pky diezyocho">@a.est_18</td>
+                    <td style="font-size:11.5px" class="tg-0pky diezynueve">@a.est_19</td>
+                    <td style="font-size:11.5px" class="tg-0pky veinte">@a.est_20</td>
+                    <td style="font-size:11.5px" class="tg-0pky veintiuno">@a.est_21</td>
+                    <td style="font-size:11.5px" class="tg-0pky veintidos">@a.est_22</td>
+                    <td style="font-size:11.5px" class="tg-0pky veintitres">@a.est_23</td>
+                    <td style="font-size:11.5px" class="tg-0pky veinticuatro">@a.est_24</td>
+                    <td style="font-size:11.5px" class="tg-0pky veinticinco">@a.est_25</td>
+                    <td style="font-size:11.5px" class="tg-0pky veintiseis">@a.est_26</td>
+                    <td style="font-size:11.5px" class="tg-0pky veintisiete">@a.est_27</td>
+                    <td style="font-size:11.5px" class="tg-0pky">@a.est_ant_pza</td>
+                    <td style="font-size:11.5px" class="tg-0pky">@a.a_est_pza</td>
+                    <td style="font-size:11.5px" class="tg-0pky">@a.a_est_cash.GetValueOrDefault().ToString("$###,###,##0.00")</td>
+                    <td style="font-size:11.5px" class="tg-0pky">@a.acum_actual_pza</td>
+                    <td style="font-size:11.5px" class="tg-0pky">@a.acum_ant_cash.GetValueOrDefault().ToString("$###,###,##0.00")</td>
+                    <td style="font-size:11.5px" class="tg-0pky">@a.acu_cash.GetValueOrDefault().ToString("$###,###,##0.00")</td>
+                </tr>
+                <tr>
+                    <td class="tg-c3ow" colspan="2">VALOR TOTAL</td>
+                    <td class="tg-c3ow" style="background-color:lightgray">@a.valor_total.ToString("$###,###,##0.00")</td>
+                    <td class="tg-c3ow veintiocho">@a.est_28</td>
+                    <td class="tg-c3ow veintinueve">@a.est_29</td>
+                    <td class="tg-c3ow treinta">@a.est_30</td>
+                    <td class="tg-0pky treintayuno">@a.est_31</td>
+                    <td class="tg-0pky treintaydos">@a.est_32</td>
+                    <td class="tg-0pky treintaytres">@a.est_33</td>
+                    <td class="tg-0pky treintaycuatro">@a.est_34</td>
+                    <td class="tg-0pky treintaycinco">@a.est_35</td>
+                    <td class="tg-0pky treintayseis">@a.est_36</td>
+                    <td class="tg-0pky trentaysiete">@a.est_37</td>
+                    <td class="tg-0pky treintayocho">@a.est_38</td>
+                    <td class="tg-0pky treintaynueve">@a.est_39</td>
+                    <td class="tg-0pky cuarenta">@a.est_40</td>
+                    <td class="tg-0pky cuarentayuno">@a.est_41</td>
+                    <td class="tg-0pky"></td>
+                    <td class="tg-0pky"></td>
+                    <td class="tg-0pky"></td>
+                    <td class="tg-0pky"></td>
+                    <td class="tg-0pky"></td>
+                    <td class="tg-0pky"></td>
+                </tr>
+                <!---->
+                cont++;
+                <tr style="border:none" >
+                    <td></td>
+                </tr>
+            }
+        }
+        <tr>
+            <td class="tg-c3ow" colspan="2" rowspan="3"></td>
+            <td class="tg-c3ow" colspan="3" rowspan="3"></td>
+            <td class="tg-c3ow" colspan="8" rowspan="3"></td>
+            <td class="tg-0pky" colspan="8"></td>
+            <td class="tg-7btt">ESTIMADO</td>
+            <td class="tg-7btt" colspan="3">ACUMULADOS TOTALES</td>
+        </tr>
+        <tr>
+            <td class="tg-6ic8" colspan="8">SUBTOTAL</td>
+            <td class="tg-0pky">@subtotal_estimado.ToString("$###,###,##0.00")</td>
+            <td class="tg-7btt">ANTERIOR</td>
+            <td class="tg-dvpl" colspan="2">@acumulados_totales_anterior.ToString("$###,###,##0.00")</td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="tg-7btt" colspan="2">ELABORO</td>
+            <td class="tg-7btt" colspan="3">AUTORIZO</td>
+            <td class="tg-7btt" colspan="8">MAESTRO</td>
+            <td class="tg-6ic8" colspan="8">TOTAL</td>
+            <td class="tg-0pky">@total_estimado.ToString("$###,###,##0.00")</td>
+            <td class="tg-7btt">ACTUAL</td>
+            <td class="tg-dvpl" colspan="2">@acumulados_totales_actual.ToString("$###,###,##0.00")</td>
+        </tr>
+        <tr>
+            <td class="tg-c3ow" colspan="2">@ViewData["elaboro"]</td>
+            <td class="tg-c3ow" colspan="3">@ViewData["autorizo"]</td>
+            <td class="tg-c3ow" colspan="8">@ViewData["destajista"]</td>
+            <td class="tg-7btt" colspan="6">OBSERVACIONES</td>
+            <td class="tg-0pky" colspan="6">@ViewData["observaciones"]</td>
+        </tr>
+        <tr>
+            <td class="tg-7btt" colspan="2">NOTA 1</td>
+            <td class="tg-c3ow" colspan="23">@ViewData["nota"]</td>
+        </tr>
+        <tr>
+            <td class="tg-7btt" colspan="2">NOTA 2</td>
+            <td class="tg-c3ow" colspan="23">@ViewData["nota2"]</td>
+        </tr>
+    </tbody>
+</table>
+
+<br />
+<br />
+<style type="text/css">
+    .tg {
+        border-collapse: collapse;
+        border-color: #ccc;
+        border-spacing: 0;
+    }
+
+        .tg td {
+            background-color: #fff;
+            border-color: #ccc;
+            border-style: solid;
+            border-width: 1px;
+            color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            overflow: hidden;
+            padding: 10px 5px;
+            word-break: normal;
+        }
+
+        .tg th {
+            background-color: #f0f0f0;
+            border-color: #ccc;
+            border-style: solid;
+            border-width: 1px;
+            color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            overflow: hidden;
+            padding: 10px 5px;
+            word-break: normal;
+        }
+
+        .tg .tg-8blb {
+            border-color: inherit;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            text-align: center;
+            vertical-align: top;
+            font-weight:700; 
+        }
+
+        .tg .tg-kfxc {
+            border-color: inherit;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-xe3i {
+            border-color: inherit;
+            font-size: 18px;
+            font-style: italic;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-0pky {
+            border-color: inherit;
+            text-align: center;
+            vertical-align: top
+        }
+    .page-breaker {
+        display: block;
+        clear: both;
+        page-break-after: always;
+    }
+</style>
+<div class="page-breaker"> </div>
+<table class="tg" style="table-layout: auto; width: 100%; letter-spacing: 1px">
+    <colgroup>
+        <col style="width: 128px">
+        <col style="width: 149px">
+        <col style="width: 179px">
+        <col style="width: 183px">
+        <col style="width: 190px">
+    </colgroup>
+    <thead>
+        <tr>
+            <th class="tg-xe3i" colspan="5">LISTA TRABAJADORES</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="5" class="tg-kfxc">OBRA: @ViewData["predio"] #@ViewData["id_predio"]</td>  
+        </tr>
+        <tr>
+            <td colspan="2" class="tg-8blb">SEMANA #@ViewData["n_semana"]</td>
+            <td colspan="3" class="tg-8blb">Del @ViewData["inicio_semana"] al @ViewData["fin_semana"]</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="tg-8blb">DESTAJISTA</td>
+            <td colspan="3" class="tg-8blb">@ViewData["destajista"]</td>
+
+        </tr>
+        <tr>
+            <td style=" background-color: #f0f0f0;" class="tg-kfxc">N° EMPLEADO</td>
+            <td style=" background-color: #f0f0f0;" class="tg-8blb">NOMBRE</td>
+            <td style=" background-color: #f0f0f0;" class="tg-8blb">APELLIDO PATERNO</td>
+            <td style=" background-color: #f0f0f0;" class="tg-8blb">APELLIDO MATERNO</td>
+            <td style=" background-color: #f0f0f0;" class="tg-8blb">PAGO</td>
+        </tr>
+        @{
+            foreach (var item in ViewBag.trabajador)
+            {
+                <tr>
+                    <td class="tg-0pky">@item.no_empleado</td>
+                    <td class="tg-0pky">@item.nombre</td>
+                    <td class="tg-0pky">@item.apellido_pa</td>
+                    <td class="tg-0pky">@item.apellido_ma</td>
+                    <td class="tg-0pky">@item.pago.ToString("$###,###,##0.00")</td>
+                </tr>
+            }
+        }
+
+    </tbody>
+    <tr>
+        <td style="font-size:15px" colspan="5"> <span style="font-weight: 700">Restante destajista:</span> @pago_destajista.ToString("$###,###,##0.00")</td>
+    </tr>
+</table>
+
+<br />
+@using (Html.BeginForm("Print", "DestajoMaterial", new { id_destajos_material = Convert.ToInt32(id_destajos_material), nombreP = ViewData["predio"], n_semana = Convert.ToInt32(n_semana) }))
+{
+    <button id="submitButton" class="btn btn-outline-primary" type="submit"><span class="glyphicon glyphicon-open-file"> DESCARGAR PDF </span></button>
+}
+<br />
+
+
+<script>
+    $(document).ready(function () {
+        const n_sem = $('#saca_n_semana').val();
+        if (n_sem == 1) {
+            const est = document.querySelectorAll('.uno');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            }); 
+        }
+        else if (n_sem == 2) {
+            const est = document.querySelectorAll('.dos');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            }); 
+        }
+        else if (n_sem == 3) {
+            const est = document.querySelectorAll('.tres');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 4) {
+            const est = document.querySelectorAll('.cuatro');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 5) {
+            const est = document.querySelectorAll('.cinco');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 6) {
+            const est = document.querySelectorAll('.seis');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 7) {
+            const est = document.querySelectorAll('.siete');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 8) {
+            const est = document.querySelectorAll('.ocho');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 9) {
+            const est = document.querySelectorAll('.nueve');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 10) {
+            const est = document.querySelectorAll('.diez');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 11) {
+            const est = document.querySelectorAll('.once');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 12) {
+            const est = document.querySelectorAll('.doce');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 13) {
+            const est = document.querySelectorAll('.trece');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 14) {
+            const est = document.querySelectorAll('.catorce');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 15) {
+            const est = document.querySelectorAll('.quince');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 16) {
+            const est = document.querySelectorAll('.diezysesis');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 17) {
+            const est = document.querySelectorAll('.diezysiete');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 18) {
+            const est = document.querySelectorAll('.diezyocho');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 19) {
+            const est = document.querySelectorAll('.diezynueve');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 20) {
+            const est = document.querySelectorAll('.veinte');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 21) {
+            const est = document.querySelectorAll('.veintiuno');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 22) {
+            const est = document.querySelectorAll('.veintidos');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 23) {
+            const est = document.querySelectorAll('.veintitres');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 24) {
+            const est = document.querySelectorAll('.veinticuatro');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 25) {
+            const est = document.querySelectorAll('.veinticinco');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 26) {
+            const est = document.querySelectorAll('.veintiseis');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 27) {
+            const est = document.querySelectorAll('.veintisiete');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 28) {
+            const est = document.querySelectorAll('.veintiocho');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 29) {
+            const est = document.querySelectorAll('.veintinueve');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 30) {
+            const est = document.querySelectorAll('.treinta');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 31) {
+            const est = document.querySelectorAll('.treintayuno');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 32) {
+            const est = document.querySelectorAll('.treintaydos');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 33) {
+            const est = document.querySelectorAll('.treintaytres');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 34) {
+            const est = document.querySelectorAll('.treintaycuatro');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 35) {
+            const est = document.querySelectorAll('.treintaycinco');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 36) {
+            const est = document.querySelectorAll('.treintayseis');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 37) {
+            const est = document.querySelectorAll('.trentaysiete');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 38) {
+            const est = document.querySelectorAll('.treintayocho');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 39) {
+            const est = document.querySelectorAll('.treintaynueve');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 40) {
+            const est = document.querySelectorAll('.cuarenta');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        }
+        else if (n_sem == 41) {
+            const est = document.querySelectorAll('.cuarentayuno');
+            est.forEach(item => {
+                item.classList.add('pinta');
+            });
+        } else {
+
+        }
+
+    });
+   
+
+</script>

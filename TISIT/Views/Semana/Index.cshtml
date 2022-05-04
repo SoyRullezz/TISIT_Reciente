@@ -1,0 +1,103 @@
+﻿@model List<CAS_1._1._1.Models.semana_destajos_admin>
+@{
+    ViewBag.Title = "Semanas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<style>
+    #div1 {
+        overflow: scroll;
+        height: 100%;
+        width: 100%;
+    }
+
+        #div1 table {
+            width: 100%;
+            background-color: lightgray;
+        }
+</style>
+
+<h2>Gestión de Destajos Administración</h2>
+<div class="alert alert-@ViewBag.alerta">--<b>@ViewBag.res</b>--</div>
+<form action="/Semana/Index" method="post">
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="fecha_inicio" class="visually">Fecha de inicio</label>
+            <input class="form-control" type="date" name="fecha_inicio" id="fecha_inicio" style="font-size:15px" required>
+        </div>
+        <div class="col-auto">
+            <label for="fecha_fin" class="visually">Fecha final</label>
+            <input class="form-control" type="date" style="font-size:15px" name="fecha_fin" id="fecha_fin" required>
+        </div>
+        <div class="m-3">
+            <label for="apellido_ma" class="visually">Descripción semana</label>
+            <textarea class="form-control" style="font-size:15px" id="descripcion_semana" name="descripcion_semana"></textarea>
+        </div>
+    </div>
+    <div style="margin-left:25px">
+        <button class="btn btn-success" style="font-size:15px" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-save"> Agregar</span> </button>
+        <button class="btn btn-primary" style="font-size:15px" type="reset" name="btn2" id="btn1"><span class="glyphicon glyphicon-remove"> Resetear</span> </button>
+        <a class="btn btn-danger" href="~/Seccion/Index" style="font-size:15px"><span class="glyphicon glyphicon-backward"> Regresar</span> </a>
+    </div>
+</form>
+<br />
+<br />
+<br />
+<br />
+<div id="div1">
+    <table id="table_semana" class="table table-bordered" style="font-size:14px">
+        <thead style="background-color:dimgrey; color:white">
+            <tr>
+                <th>#</th>
+                <th>Fecha inicio</th>
+                <th>Fecha fin</th>
+                <th>Descripcion</th>
+                <th style="text-align:center">Opciones</th>
+            </tr>
+        </thead>
+        <tbody style="background-color:white">
+            @foreach (var f in Model)
+            {
+                <tr>
+                    <td>@f.id_semana</td>
+                    <td>@f.fecha_inicio.ToLongDateString()</td>
+                    <td>@f.fecha_fin.ToLongDateString()</td>
+                    <td>@f.descripcion_semana</td>
+                    <td style="text-align:center">
+                        <button class="btn btn-warning" style="margin: 2px; font-size:15px" type="button" id="btn_act" name="btn_act" onclick="location.href = '../Semana/Editar?id=@f.id_semana'"><span class="glyphicon glyphicon-edit"> Actualizar</span></button>
+                        <button class="btn btn-danger" style="margin: 2px; font-size:15px" type="button" id="btn_eli" name="btn_eli" onclick="location.href = '../Semana/Eliminar?id=@f.id_semana'"><span class="glyphicon glyphicon-trash"> Eliminar</span></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+
+
+    $(document).ready(function () {
+        $('#table_semana').DataTable();
+    });
+    var table = $('#table_semana').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+</script>

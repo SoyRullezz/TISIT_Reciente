@@ -1,0 +1,120 @@
+﻿@model List<CAS_1._1._1.Models.destajos_admin>
+@{
+    ViewBag.Title = "Destajos Aministrativos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var predio = new List<CAS_1._1._1.Models.predios>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        predio = cnx.predios.ToList();
+    }
+
+    var user = new List<CAS_1._1._1.Models.altausuario>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        user = cnx.altausuario.ToList();
+    }
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    .hidden-small {
+        visibility: hidden;
+    }
+</style>
+
+<br />
+<h4>Gestión de destajos</h4>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+
+<form action="/Destajo/Index_2" method="post">
+
+    <table class="table">
+        <thead style="background-color: dimgray; color:white; text-align:center">
+            <tr>
+                <th>#</th>
+                <th>Predio</th>
+                <th>Elaboro</th>
+                <th>Fecha inicio</th>
+                <th>Fecha final</th>
+            </tr>
+        </thead>
+        <tbody style="text-align:center">
+            <tr>
+                <td><input class="form-control" type="number" readonly style="font-size:15px" id="id_predio" name="id_predio" value="@ViewBag.id_predio"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" id="predio" name="predio" value="@ViewBag.predio"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" id="elaboro" name="elaboro" value="@ViewBag.elaboro"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" id="fecha_inicio" name="fecha_inicio" value="@ViewBag.fecha_inicio"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" id="fecha_fin" name="fecha_fin" value="@ViewBag.fecha_fin"></td>
+            </tr>
+        </tbody>
+    </table>
+    @*--------------------------------------------------*@
+    <!--TRABAJADORES-->
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>TRABAJADORES AGREGADOS</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <button class="btn btn-secondary" type="button" id="verificar_predioSelec"
+                                data-target="#modal_trabajador" data-toggle="modal"
+                                data-backdrop="static" data-keyboard="false">
+                            <span class="glyphicon glyphicon-list" style="color:white"> Agregar trabajador</span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>Id personal</th><th>N° Empleado</th><th>Nombre</th><th>A.Paterno</th><th>A.Materno</th><th>Categoria</th><th>Pago día</th><th>Dias trabajados</th><th>Día extra</th><th>Subtotal</th><th>Total</th><th>ACCION</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--TRABAJADORES-->
+
+
+    <br /><br />
+    <button class="btn btn-danger" type="button" onclick="location.href = '../Destajo/cancelar_destajo?id_destajo=@ViewBag.id_destajo'"><span class="glyphicon glyphicon-chevron-left"> REGRESAR</span></button>
+    <button class="btn btn-success" type="button" id="agregado"
+            data-target="#modal_agregado" data-toggle="modal"
+            data-backdrop="static" data-keyboard="false">
+        <span class="glyphicon glyphicon-ok">AGREGAR</span>
+    </button>
+</form>
+@Html.Partial("_Modal_Trabajador")
+@Html.Partial("_Modal_Error")
+@Html.Partial("_Agregado")
+<script>
+    $(document).ready(function () {
+        const agregado = document.querySelector('#agregado');
+        agregado.addEventListener('click', () => {
+            setTimeout(() => {
+                location.href = '../Destajo/Ver_destajos';
+            }, 4000);
+
+        });
+    });
+   
+</script>

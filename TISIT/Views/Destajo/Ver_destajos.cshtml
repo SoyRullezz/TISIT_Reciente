@@ -1,0 +1,165 @@
+﻿@model List<CAS_1._1._1.Models.destajos_admin>
+@{
+    ViewBag.Title = "Destajos Aministrativos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var predio = new List<CAS_1._1._1.Models.predios>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        predio = cnx.predios.ToList();
+    }
+
+
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    #div1 {
+        overflow: scroll;
+        height: 100%;
+        width: 100%;
+    }
+
+        #div1 table {
+            width: 100%;
+            background-color: lightgray;
+        }
+</style>
+<h2>TUS DESTAJOS</h2>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+
+@*---------------------- Destajo general----------------------------*@
+<div class="container" style="display:flex; align-items: flex-end">
+    <button class="btn btn-info" type="button" id="btn_act2" name="btn_act2" onclick="location.href='../Destajo/Index_Pdf_general'"><span class="glyphicon glyphicon-file"> Generar documento general</span></button>
+</div>
+<br />
+<div id="div1">
+    <table id="table_predios_g" class="table table-bordered">
+        <thead style="background-color: dimgrey; color: white">
+            <tr>
+                <th>#</th>
+                <th>Id predio</th>
+                <th>Predio</th>
+                <th>N° Semana</th>
+                <th>Semana</th>
+                <th>Estado</th>
+                <th>Elaboro</th>
+                <th>Reviso</th>
+                <th>Autorizo</th>
+                <th style="text-align: center">Mantenimiento</th>
+            </tr>
+        </thead>
+        <tbody style="background-color: white" id="tabla_seccion_bus">
+            @foreach (var f in Model)
+            {
+            <tr>
+                <td>@f.id_destajos_admin</td>
+                <td>@f.id_predio</td>
+                <td>@f.predio</td>
+                <td>@f.n_semana</td>
+                <td>
+                    Del @f.fecha_inicio.ToLongDateString() al @f.fecha_fin.ToLongDateString()
+                </td>
+                @{
+                    string estado = "Activo";
+                    if (f.estado_destajo.Equals(false))
+                    {
+                        estado = "No " + estado;
+                    }
+                }
+                <td>@estado</td>
+                <td>@f.elaboro</td>
+                <td>@f.reviso</td>
+                <td>@f.autorizo</td>
+                <td style="text-align: center">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; grid-gap: 2px">
+                        <button class="btn btn-light" type="button"  style="font-size:14px; font-weight:700;font-family:'Yu Gothic'"
+                                data-target="#modal_detalle_destajo" data-toggle="modal"
+                                data-backdrop="static" data-keyboard="false"
+                                onclick="detalle_destajo('@f.id_destajos_admin')">
+                            <span class="glyphicon glyphicon-eye-open"></span> DETALLE
+                        </button>
+                        @if (f.autorizo != null)
+                        {
+                            <button style="font-weight: 900; font-family: 'Yu Gothic'; color:#BD1616; border:none" class="btn btn-link" type="button" id="btn_act1" name="btn_act1" onclick="location.href='../Destajo/Pdf?id_destajos_admin=@f.id_destajos_admin'"><i class="fas fa-file-pdf"></i> PDF</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-warning" type="button" id="btn_act" name="btn_act" onclick="location.href='../Destajo/Actualizar?id=@f.id_destajos_admin'"><span class="glyphicon glyphicon-edit"> Actualizar</span></button>
+                            <button class="btn btn-danger" type="button" id="btn_eli" name="btn_eli" onclick="location.href='../Destajo/Eliminar?id=@f.id_destajos_admin'"><span class="glyphicon glyphicon-trash"> Eliminar</span></button>
+
+                        }
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+<br />
+@Html.Partial("_Modal_Detalle_Destajo")
+@Html.Partial("_Modal_Trabajador")
+<script>
+    $(document).ready(function () {
+        $('#table_predios_g').DataTable();
+    });
+    var table = $('#table_predios_g').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+    seleccionar = function (registro) {
+        $.post(
+            '/Destajo/seleccionar', {
+            registro: registro//en este caso sería el codigo
+        }, function (res) {
+            $('#tabla_selec').html(res)
+        });
+    };
+
+
+    /*
+                bus_sec = function () {
+                    $.post(
+                        '/Destajo/bus_sec', {
+                            tipo_bus: $('#tipo_bus').val(),//--Este es el id del combobox
+                            registro: $('#registro').val() //-- este es el id de caja de texto
+                    }, function (res) {
+                            $('#table_predios_g').html(res)//--id de la tabla
+                    });
+                };
+                */
+</script>

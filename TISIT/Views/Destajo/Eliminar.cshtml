@@ -1,0 +1,82 @@
+﻿@model CAS_1._1._1.Models.destajos_admin
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Eliminar - Destajo";
+
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+</style>
+<br />
+<h4>Gestión de destajos</h4>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+<form action="/Destajo/Eliminar" method="post">
+    <input type="hidden" name="id" id="id" value="@Model.id_destajos_admin" />
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="id_predio" class="visually"># Predio</label>
+            <input class="form-control" type="number" value="@Model.id_predio" name="id_predio" id="id_predio" style="font-size:15px" disabled>
+        </div>
+        <div class="col-auto">
+            <label for="predio" class="visually">Nombre predio</label>
+            <input class="form-control" type="text" value="@Model.predio" style="font-size:15px" name="predio" id="predio" disabled>
+        </div>
+        <div class="col-auto">
+            <label for="destajista" class="visually">Fecha inicio</label>
+            <input class="form-control" style="font-size:15px" type="text" name="destajista" value="@Model.fecha_inicio" id="destajista" disabled>
+            <label for="destajista" class="visually">Fecha final</label>
+            <input class="form-control" style="font-size:15px" type="text" name="destajista" value="@Model.fecha_fin" id="destajista" disabled>
+        </div>
+    </div>
+
+    <div class="col-auto" style="margin:15px">
+        <label for="elaboro" class="visually">Elaboró</label>
+        <input class="form-control" style="font-size:15px" type="text" name="destajista" value="@Model.elaboro" id="destajista" disabled>
+    </div>
+    @*--------------------------------------------------*@
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>TRABAJADORES AGREGADOS</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>N° Empleado</th><th>Nombre</th><th>A.Paterno</th><th>A.Materno</th><th>Categoria</th><th>Pago día</th><th>Dias trabajados</th><th>Día extra</th><th>Subtotal</th><th>Total</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @*--------------------------------------------------*@
+    <br /><br />
+    <button class="btn btn-success" type="submit" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Confirmar</span></button>
+
+    <button class="btn btn-danger" type="button" onclick="location.href='../Destajo/Ver_destajos'" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Regresar</span></button>
+</form>
+<br />
+<br />
+<script>
+    $(document).ready(function () {
+        $.post(
+            '/Destajo/det_actualizar_des_eliminar', {
+            id: $('#id').val()
+        }, function (res) {
+            $('#tabla_atr').html(res)
+        });
+    });
+</script>

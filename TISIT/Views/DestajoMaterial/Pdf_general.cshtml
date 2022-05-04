@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div id="tabla_pdf_general" class="container">
+
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        iniciarApp();
+    });
+
+    function iniciarApp() {
+        Pdf_general();
+    }
+
+    function Pdf_general() {
+        $.post(
+            '/DestajoMaterial/Pdf_general', {
+        }, function (res) {
+            $('#tabla_pdf_general').html(res)//--id de la tabla
+
+        });
+    };
+</script>

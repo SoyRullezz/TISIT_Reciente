@@ -1,0 +1,177 @@
+﻿@model List<CAS_1._1._1.Models.destajos_material>
+@{
+    ViewBag.Title = "Destajos Aministrativos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var predio = new List<CAS_1._1._1.Models.predios>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        predio = cnx.predios.ToList();
+    }
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    .hidden-small {
+        visibility: hidden;
+    }
+
+    .ocultar {
+        visibility: hidden;
+    }
+
+    #otro_elemento:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .linea {
+        margin: 200px;
+    }
+</style>
+<h4>Gestión de destajos</h4>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+
+<form action="/DestajoMaterial/Index_2" method="post">
+    <table class="table">
+        <thead style="background-color: dimgray; color:white; text-align:center">
+            <tr>
+                <th>#</th>
+                <th>Predio</th>
+                <th>Destajista</th>
+                <th>Elaboro</th>
+                <th>Fecha inicio</th>
+                <th>Fecha final</th>
+            </tr>
+        </thead>
+        <tbody style="text-align:center">
+            <tr>
+                <td><input class="form-control" type="number" readonly style="font-size:15px" value="@ViewBag.id_predio"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" value="@ViewBag.predio"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" value="@ViewBag.destajista"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" value="@ViewBag.elaboro"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" value="@ViewBag.inicio_semana"></td>
+                <td><input class="form-control" type="text" readonly style="font-size:15px" value="@ViewBag.fin_semana"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            Nota 1
+            <textarea class="form-control" readonly style="font-size:15px; max-width:730px; max-height:150px; height:120px">@ViewBag.nota1</textarea>
+        </div>
+        <div class="col-auto">
+            Nota 2
+            <textarea class="form-control" readonly style="font-size:15px; max-width:730px; max-height:150px; height:120px">@ViewBag.nota2</textarea>
+        </div>
+    </div>
+    <div class="col-auto" style="margin:15px">
+        <label for="elaboro" class="visually">Observaciones</label>
+        <textarea class="form-control" readonly style="font-size:15px; max-width:730px; max-height:150px; height:120px">@ViewBag.observaciones</textarea>
+    </div>
+
+
+    <!--CONCEPTOS-->
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>CONCEPTOS AGREGADOS</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <button class="btn btn-secondary" type="button" id="verificar_predioSelec"
+                                data-target="#modal_concepto" data-toggle="modal"
+                                data-backdrop="static" data-keyboard="false">
+                            <span class="glyphicon glyphicon-list" style="color:white"> Agregar Concepto</span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>#</th><th>CONCEPTO</th><th>UNIDAD ELEMENTO</th><th>VOL O CONT</th><th>PX PAQUETE</th><th>VALOR TOTAL</th><th>EST ANTETIOR</th><th>A ESTIMAR</th><th>ACCIÓN</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--CONCEPTOS-->
+    <div class="linea"></div>
+    <!--TRABAJADORES-->
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>LISTA TRABAJADORES</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <button class="btn btn-secondary" type="button" id="verificar_predioSelec2"
+                                data-target="#modal_trabajador" data-toggle="modal"
+                                data-backdrop="static" data-keyboard="false">
+                            <span class="glyphicon glyphicon-list" style="color:white"> Agregar trabajador</span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>N° Empleado</th><th>Nombre</th><th>A.Paterno</th><th>A.Materno</th><th>Pago</th><th>ACCION</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr_trab"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--TRABAJADORES-->
+    <br /><br />
+    <button class="btn btn-danger" type="button" onclick="location.href = '../DestajoMaterial/cancelar_destajo?id_destajo=@ViewBag.id_destajo'"><span class="glyphicon glyphicon-chevron-left"> REGRESAR</span></button>
+
+
+    <button class="btn btn-success" type="button" onclick="location.href = '../DestajoMaterial/finalizar_destajo?id_destajo=@ViewBag.id_destajo'"><span class="glyphicon glyphicon-ok"> AGREGAR</span></button>
+
+</form>
+
+@Html.Partial("_Modal_Concepto")
+@Html.Partial("_Modal_Trabajador")
+@Html.Partial("_Agregado")
+
+<script src="~/Scripts/app_material.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $.post(
+            '/DestajoMaterial/det_nueva_semana', {
+            id_destajos_material: $('#id_destajos_material').val()
+        }, function (res) {
+            $('#tabla_atr').html(res)
+        });
+    });
+    $(document).ready(function () {
+        const agregado = document.querySelector('#agregado');
+        agregado.addEventListener('click', () => {
+            setTimeout(() => {
+                location.href = '../Destajo/Ver_destajos';
+            }, 3000);
+
+        });
+    });
+
+</script>

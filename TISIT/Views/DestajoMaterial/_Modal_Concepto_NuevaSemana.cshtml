@@ -1,0 +1,150 @@
+﻿<style>
+    .ocultar {
+        visibility: hidden;
+    }
+
+    #otro_elemento:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+</style>
+
+<div id="modal_concepto" class="modal fade">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content" style="width:100%">
+            <div class="modal-header">
+                <h4 class="modal-title">Nuevo concepto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row gap-3" style="align-items:center; margin:10px;">
+                    <div class="col-auto">
+                        <label for="pago_dia" class="visually">Concepto</label>
+                        <textarea class="form-control" style="font-size:15px; width:715px" id="concepto" name="concepto"></textarea>
+                    </div>
+                </div>
+                <div class="row" style="align-items:center; margin:10px;">
+                    <div class="col-auto">
+                        <br />
+                        <label for="unidad_elemento" class="visually">Unidad elemento</label><br />
+                        <select class="select2-container--default" name="unidad_elemento" style="font-size:15px; color:gray; border-color: gray; height:30px" id="unidad_elemento" required>
+                            <option value="otra_unidad" readonly selected>Seleccionar</option>
+                            <option value="PAQ">PAQ</option>
+                            <option value="TON">TON</option>
+                            <option value="ACC">ACC</option>
+                            <option value="M2">M2</option>
+                            <option value="KG">KG</option>
+                        </select>
+                        <p name="otro_elemento" id="otro_elemento">¿No está la unidad/elemento?</p>
+                    </div>
+                    <div class="ocultar" id="v3">
+                        <label for="categoria_extra" class="visually">Escribe la unidad/elemento</label>
+                        <input class="form-control" style="font-size:15px" type="text" name="elemento_extra" id="elemento_extra">
+                    </div>
+                </div>
+                <div class="row gap-3" style="align-items:center; margin:10px;">
+                    <div class="col">
+                        <label for="pago_dia" class="visually">Vol o cont</label>
+                        <input class="form-control" style="font-size:15px" type="number" name="vol_cont" min="0" id="vol_cont" required>
+                    </div>
+                    <div class="col">
+                        <label for="pago_dia" class="visually">Px paquete</label>
+                        <input class="form-control" style="font-size:15px" type="number" name="px_paquete" min="0" id="px_paquete" required>
+                    </div>
+                    <div class="col">
+                        <label for="estimacion_anterior" class="visually">Estimacion anterior  <a style="font-size:11px" href="" title="SOLO SI ES EL PRIMER REGISTRO DEL CONCEPTO" alt="SOLO SI ES EL PRIMER REGISTRO DEL CONCEPTO"><span class="glyphicon glyphicon-eye-open"></span></a></label>
+                        <input class="form-control" style="font-size:15px" type="number" name="estimacion_anterior" min="0" id="estimacion_anterior" required>
+                    </div>
+                    <div class="col">
+                        <label for="pago_dia" class="visually">A estimar</label>
+                        <input class="form-control" style="font-size:15px" type="number" name="est" id="est" required>
+                    </div>
+                </div>
+                <div class="row" style="align-items:center; margin:25px;">
+
+                    <button class="btn btn-success" id="btnGuarda" data-dismiss="modal"><span class="glyphicon glyphicon-save"> Guardar</span></button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"> Cancelar</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+        $("#btnGuarda").click(function () {
+                var concepto = $("#concepto").val();
+                var unidad_elemento = $("#unidad_elemento").val();
+                var elemento_extra = $("#elemento_extra").val();
+                var vol_cont = $("#vol_cont").val();
+                var px_paquete = $("#px_paquete").val();
+                var est = $("#est").val();
+                var elaboro = $("#elaboro").val();
+                var id_destajo = $("#id_destajo").val();
+                var n_semana = $("#n_semana").val();
+                var estimacion_anterior = $("#estimacion_anterior").val();
+                $.ajax({
+                    url: "@Url.Action("agregar_concepto")",
+                    data: { concepto: concepto, unidad_elemento: unidad_elemento, elemento_extra: elemento_extra, vol_cont: vol_cont, px_paquete: px_paquete, est: est, elaboro: elaboro, id_destajo: id_destajo, n_semana: n_semana, estimacion_anterior: estimacion_anterior },
+                    type: "POST",
+                    success: function (response) {
+                        $("#tabla_atr").hide("slow", function () {
+                            $(this).html(response);
+                            $(this).show("slow");
+                            $('#concepto').val('');
+                            $('#elemento_extra').val('');
+                            let select = document.getElementById("unidad_elemento");
+                            select.value = "otra_unidad";
+                            $('#vol_cont').val('');
+                            $('#px_paquete').val('');
+                            $('#est').val('');
+                            $('#estimacion_anterior').val('');
+                            const input3 = document.querySelector('#v3');
+                            input3.classList.add('ocultar');
+                        });
+                    }
+                });
+        });
+    });
+
+    $('#tabla_atr').on('click', '.quitar', function () {
+        contador--;
+    });
+
+    bor_atr = function (id_concepto, id_destajo) {
+        $.post(
+            '/DestajoMaterial/bor_atr', {
+                id_concepto: id_concepto,
+                id_destajo: id_destajo
+        }, function (res) {
+                $('#tabla_atr').html(res);
+        });
+    };
+
+    $(document).ready(function () {
+        const input3 = document.querySelector('#v3');
+        const otro_elemento = document.querySelector('#otro_elemento');
+        otro_elemento.addEventListener('click', e => {
+            if (input3.classList.contains('ocultar')) {
+                input3.classList.remove('ocultar');
+            } else {
+                input3.classList.add('ocultar');
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        const btn = document.querySelector('#otro_elemento');
+        btn.addEventListener('click', e => {
+            if (input3.classList.contains('ocultar')) {
+                input3.classList.remove('ocultar');
+            } else {
+                input3.classList.add('Actionocultar');
+            }
+        });
+    });
+
+</script>
+

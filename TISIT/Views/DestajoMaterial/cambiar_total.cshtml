@@ -1,0 +1,1012 @@
+﻿@model CAS_1._1._1.Models.Conceptos_material
+@{
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+    ViewBag.Title = "Cambiar total";
+
+    decimal est = 0;
+    switch (ViewBag.n_semana)
+    {
+        case 1:
+            est = Model.est_1.GetValueOrDefault();
+            break;
+        case 2:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+
+            break;
+        case 3:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+
+            break;
+        case 4:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+
+            break;
+        case 5:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_5.GetValueOrDefault();
+            }
+
+            break;
+        case 6:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est = Model.est_5.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_6.GetValueOrDefault();
+            }
+
+            break;
+        case 7:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est = Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est = Model.est_6.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_7.GetValueOrDefault();
+            }
+
+            break;
+        case 8:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est = Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est = Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est = Model.est_7.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_8.GetValueOrDefault();
+            }
+
+            break;
+        case 9:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est = Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est = Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est = Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est = Model.est_8.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_9.GetValueOrDefault();
+            }
+
+            break;
+        case 10:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est = Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est = Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est = Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est = Model.est_8.GetValueOrDefault();
+            }
+            else if (Model.est_10 == null)
+            {
+                est = Model.est_9.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_10.GetValueOrDefault();
+            }
+
+            break;
+        case 11:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est = Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est = Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est = Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est = Model.est_8.GetValueOrDefault();
+            }
+            else if (Model.est_10 == null)
+            {
+                est = Model.est_9.GetValueOrDefault();
+            }
+            else if (Model.est_11 == null)
+            {
+                est = Model.est_10.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_11.GetValueOrDefault();
+            }
+
+            break;
+        case 12:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est = Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est = Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est = Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est = Model.est_8.GetValueOrDefault();
+            }
+            else if (Model.est_10 == null)
+            {
+                est = Model.est_9.GetValueOrDefault();
+            }
+            else if (Model.est_11 == null)
+            {
+                est = Model.est_10.GetValueOrDefault();
+            }
+            else if (Model.est_12 == null)
+            {
+                est = Model.est_11.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_12.GetValueOrDefault();
+            }
+
+            break;
+        case 13:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est = Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est = Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est = Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est = Model.est_8.GetValueOrDefault();
+            }
+            else if (Model.est_10 == null)
+            {
+                est = Model.est_9.GetValueOrDefault();
+            }
+            else if (Model.est_11 == null)
+            {
+                est = Model.est_10.GetValueOrDefault();
+            }
+            else if (Model.est_12 == null)
+            {
+                est = Model.est_11.GetValueOrDefault();
+            }
+            else if (Model.est_13 == null)
+            {
+                est = Model.est_12.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_13.GetValueOrDefault();
+            }
+
+            break;
+        case 14:
+            if (Model.est_2 == null)
+            {
+                est = Model.est_1.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est = Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est = Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est = Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est = Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est = Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est = Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est = Model.est_8.GetValueOrDefault();
+            }
+            else if (Model.est_10 == null)
+            {
+                est = Model.est_9.GetValueOrDefault();
+            }
+            else if (Model.est_11 == null)
+            {
+                est = Model.est_10.GetValueOrDefault();
+            }
+            else if (Model.est_12 == null)
+            {
+                est = Model.est_11.GetValueOrDefault();
+            }
+            else if (Model.est_13 == null)
+            {
+                est = Model.est_12.GetValueOrDefault();
+            }
+            else if (Model.est_14 == null)
+            {
+                est = Model.est_13.GetValueOrDefault();
+            }
+            else
+            {
+                est = Model.est_14.GetValueOrDefault();
+            }
+
+            break;
+
+    }
+
+    decimal px = Model.px_paquete;
+    decimal est_cash = px * est;
+
+    decimal est_ant = 0;
+    switch (ViewBag.n_semana)
+    {
+        case 1:
+            est_ant = Model.est_0.GetValueOrDefault();
+            break;
+        case 2:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+
+            break;
+        case 3:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+
+            break;
+        case 4:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+
+            break;
+        case 5:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else if(Model.est_5 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_5.GetValueOrDefault();
+            }
+
+            break;
+        case 6:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+            else if(Model.est_6 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_5.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_6.GetValueOrDefault();
+            }
+
+            break;
+        case 7:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_5.GetValueOrDefault();
+            }
+            else if(Model.est_7 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_6.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_7.GetValueOrDefault();
+            }
+
+            break;
+        case 8:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_6.GetValueOrDefault();
+            }
+            else if(Model.est_8 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_7.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_8.GetValueOrDefault();
+            }
+
+            break;
+        case 9:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_7.GetValueOrDefault();
+            }
+            else if(Model.est_9 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_8.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_9.GetValueOrDefault();
+            }
+
+            break;
+        case 10:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_8.GetValueOrDefault();
+            }
+            else if(Model.est_10 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_9.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_10.GetValueOrDefault();
+            }
+
+            break;
+        case 11:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_8.GetValueOrDefault();
+            }
+            else if (Model.est_10 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_9.GetValueOrDefault();
+            }
+            else if(Model.est_11 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_10.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_11.GetValueOrDefault();
+            }
+
+            break;
+        case 12:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_8.GetValueOrDefault();
+            }
+            else if (Model.est_10 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_9.GetValueOrDefault();
+            }
+            else if (Model.est_11 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_10.GetValueOrDefault();
+            }
+            else if(Model.est_12 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_11.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_12.GetValueOrDefault();
+            }
+
+            break;
+        case 13:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_8.GetValueOrDefault();
+            }
+            else if (Model.est_10 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_9.GetValueOrDefault();
+            }
+            else if (Model.est_11 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_10.GetValueOrDefault();
+            }
+            else if (Model.est_12 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_11.GetValueOrDefault();
+            }
+            else if(Model.est_13 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_12.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_13.GetValueOrDefault();
+            }
+
+            break;
+        case 14:
+            if (Model.est_2 == null)
+            {
+                est_ant = Model.est_0.GetValueOrDefault();
+            }
+            else if (Model.est_3 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_2.GetValueOrDefault();
+            }
+            else if (Model.est_4 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_3.GetValueOrDefault();
+            }
+            else if (Model.est_5 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_4.GetValueOrDefault();
+            }
+            else if (Model.est_6 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_5.GetValueOrDefault();
+            }
+            else if (Model.est_7 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_6.GetValueOrDefault();
+            }
+            else if (Model.est_8 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_7.GetValueOrDefault();
+            }
+            else if (Model.est_9 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_8.GetValueOrDefault();
+            }
+            else if (Model.est_10 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_9.GetValueOrDefault();
+            }
+            else if (Model.est_11 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_10.GetValueOrDefault();
+            }
+            else if (Model.est_12 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_11.GetValueOrDefault();
+            }
+            else if (Model.est_13 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_12.GetValueOrDefault();
+            }
+            else if(Model.est_14 == null)
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_13.GetValueOrDefault();
+            }
+            else
+            {
+                est_ant = Model.acum_actual_pza.GetValueOrDefault() - Model.est_14.GetValueOrDefault();
+            }
+
+
+            break;
+
+    }
+
+
+}
+<style>
+    .aceptar_total {
+        text-decoration: underline;
+        cursor: pointer;
+        font-size: 11px;
+        color: dimgrey;
+    }
+</style>
+<h4>Cambiar total</h4>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+<form action="/DestajoMaterial/cambiar_total" method="post">
+
+    <input type="hidden" name="id_destajos_material" id="id_destajos_material" value="@ViewBag.id_destajos_material" />
+    <input type="hidden" name="n_semana" id="n_semana" value="@ViewBag.n_semana" />
+    <input type="hidden" name="est_ant" id="est_ant" value="@est_ant" />
+    <input type="hidden" name="acum_actual_pza" id="acum_actual_pza" value="@ViewBag.acum_actual_pza" />
+
+    <input type="hidden" name="id_concepto" id="id_concepto" value="@Model.id_concepto" />
+    <br />
+    <div class="col-auto" style="margin:15px">
+        <label for="elaboro" class="visually">Concepto</label>
+        <textarea class="form-control" readonly style="font-size:15px; max-width:730px; max-height:150px; height:120px" id="concepto" name="concepto">@Model.concepto</textarea>
+    </div>
+    <div class="row gap-5" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="nombre" class="visually">Unidad elemento</label>
+            <input class="form-control" type="text" value="@Model.unidad_elemento" name="unidad_elemento" id="unidad_elemento" style="font-size:15px" readonly>
+        </div>
+        <div class="col-auto">
+            <label for="nombre" class="visually">Vol o Cont</label>
+            <input class="form-control" type="text" value="@Model.vol_cont" name="vol_cont" id="vol_cont" style="font-size:15px" readonly>
+        </div>
+        <div class="col-auto">
+            <label for="nombre" class="visually">Px paquete</label>
+            <input class="form-control" type="text" value="@Model.px_paquete" name="px_paquete" id="px_paquete" style="font-size:15px" readonly>
+        </div>
+        <div class="col-auto">
+            <label for="nombre" class="visually">Valor total</label>
+            <input class="form-control" type="text" value="@Model.valor_total.ToString("$###,###,##0.00")" name="valor_total" id="valor_total" style="font-size:15px" readonly>
+        </div>
+    </div>
+    <div class="row gap-5" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="apellido_pa" class="visually">Estimado pza</label>
+            <input class="form-control" type="number" style="font-size:15px" value="@est" name="est" id="est" readonly>
+            <label class="visually">@est_cash.ToString("$###,###,##0.00")</label>
+        </div>
+        <div class="col-auto">
+            <label for="apellido_pa" class="visually">Estimado aceptado pza</label>
+            <input step="any" class="form-control" type="number" style="font-size:15px" name="est_bien" id="est_bien" required>
+            <label id="cash_bien" class="visually"></label>
+        </div>
+        <p style="padding-top:30px" class="aceptar_total" id="aceptar_total" name="aceptar_total">Aceptar lo estimado establecido</p>
+
+    </div>
+    @*--------------------------------------------------*@
+    <br /><br />
+    <button class="btn btn-success" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-save"> Cambiar</span></button>
+    <button class="btn btn-danger" type="reset" onclick="location.href='../DestajoMaterial/Autorizar?id_destajos_material=@ViewBag.id_destajos_material'" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Regresar</span></button>
+</form>
+<br />
+<br />
+<script>
+
+    $(function () {
+        $("#aceptar_total").click(function () {
+            let est = $("#est").val();
+            let est_bien = $("#est_bien").val(est);
+        });
+    });
+
+ 
+</script>

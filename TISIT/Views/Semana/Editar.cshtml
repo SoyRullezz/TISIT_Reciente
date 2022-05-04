@@ -1,0 +1,51 @@
+﻿@model CAS_1._1._1.Models.semana_destajos_admin
+@{
+    ViewBag.Title = "Editar semana";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<h2>Gestión de Destajos Administración</h2>
+<div class="alert alert-@ViewBag.alerta">--<b>@ViewBag.res</b>--</div>
+<form action="/Semana/Editar" method="post">
+    <input type="hidden" id="id_semana" name="id_semana" value="@Model.id_semana" />
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="fecha_inicio" class="visually">Fecha de inicio</label>
+            <input class="form-control" type="datetime-local" value="@Model.fecha_inicio.ToString("yyyy-MM-dd")" name="fecha_inicio" id="fecha_inicio" style="font-size:15px" required>
+        </div>
+        <div class="col-auto">
+            <label for="fecha_fin" class="visually">Fecha final</label>
+            <input class="form-control" type="datetime-local" value="@Model.fecha_fin.ToString("yyyy-MM-dd")" style="font-size:15px" name="fecha_fin" id="fecha_fin" required>
+        </div>
+        <div class="m-3">
+            <label for="apellido_ma" class="visually">Descripción semana</label>
+            <textarea class="form-control" style="font-size:15px" id="descripcion_semana" name="descripcion_semana">@Model.descripcion_semana</textarea>
+        </div>
+    </div>
+    <div style="margin-left:25px">
+        <button class="btn btn-success" style="font-size:15px" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-save"> Actualizar</span> </button>
+        <a class="btn btn-danger" href="~/Semana/Index" style="font-size:15px"><span class="glyphicon glyphicon-backward"> Regresar</span> </a>
+    </div>
+   
+</form>
+<br />
+<table id="table_semana" class="table table-bordered" style="font-size:14px">
+    <thead style="background-color:dimgrey; color:white">
+        <tr>
+            <th>#</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th>Descripcion</th>
+        </tr>
+    </thead>
+    <tbody style="background-color:white">
+        <tr>
+            <td>@Model.id_semana</td>
+            <td>@Model.fecha_inicio.ToLongDateString()</td>
+            <td>@Model.fecha_fin.ToLongDateString()</td>
+            <td>@Model.descripcion_semana</td>
+        </tr>
+    </tbody>
+</table>

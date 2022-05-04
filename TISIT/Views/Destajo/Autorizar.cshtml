@@ -1,0 +1,88 @@
+﻿@model CAS_1._1._1.Models.destajos_admin
+@{
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+    ViewBag.Title = "Actualizar - Destajo";
+
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+    .hidden-small{
+        visibility:hidden;
+    }
+    #div1 {
+        overflow: scroll;
+        height: 100%;
+        width: 100%;
+    }
+
+        #div1 table {
+            width: 100%;
+            background-color: lightgray;
+        }
+</style>
+<br />
+<h4>Destajo #@Model.id_destajos_admin</h4>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+<form action="/Destajo/Autorizar" method="post">
+    <input type="hidden" name="id_destajos_admin" id="id_destajos_admin" value="@Model.id_destajos_admin" />
+    <input class="form-control" type="hidden" value="@Session["usuario"]" style="font-size:15px" name="autorizo" id="autorizo" required>
+
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="id_predio" class="visually"># Predio</label>
+            <input class="form-control" type="number" value="@Model.id_predio" id="id_predio" name="id_predio" style="font-size:15px" readonly>
+        </div>
+        <div class="col-auto">
+            <label for="predio" class="visually">Nombre predio</label>
+            <input class="form-control" type="text" value="@Model.predio" style="font-size:15px" readonly>
+        </div>
+        <div class="col">
+            <label for="elaboro" class="visually">Elaboro</label>
+            <input class="form-control" type="text" value="@Model.elaboro" style="font-size:15px" readonly>
+        </div>
+    </div>
+    <div class="col-auto hidden-small">
+        <label for="estado_destajo" class="visually">Estado</label>
+        @Html.CheckBox("estado_destajo", @Model.estado_destajo, new { @class = "hidden-small" })
+    </div>
+    <br />
+    <h4>Trabajadores</h4>
+    <div id="div1">
+        <table class="table table-bordered">
+            <thead style="background-color: darkgrey; color:white">
+                <tr><th>#</th><th>Nombre</th><th>A.Paterno</th><th>A.Materno</th><th>Categoria</th><th>Pago día</th><th>Dias trabajados</th><th>Inf</th><th>Pres</th><th>Tiempo extra</th><th>Subtotal</th><th>Total</th><th>Total aceptado</th><th>Adeudo</th><th>ACCION</th></tr>
+            </thead>
+            <tbody id="tabla_atr"></tbody>
+        </table>
+    </div>
+        @*--------------------------------------------------*@
+        <br /><br />
+        <div class="row gap-3" style="align-items:center; margin:10px;">
+            <button class="btn btn-success" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-save"> Autorizar</span></button>
+            <button class="btn btn-danger" type="reset" onclick="location.href='/Destajo/Index_autorizar'" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Regresar</span></button>
+        </div>
+</form>
+<br />
+
+<script>
+
+    $(document).ready(function () {
+        $.post(
+            '/Destajo/det_actualizar_des_autorizar', {
+            id_destajos_admin: $('#id_destajos_admin').val()
+        }, function (res) {
+            $('#tabla_atr').html(res)
+        });
+    });
+
+</script>

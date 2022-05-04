@@ -1,0 +1,157 @@
+﻿@model List<CAS_1._1._1.Models.destajos_material>
+@{
+    ViewBag.Title = "Destajos Materiales";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+
+    var predio = new List<CAS_1._1._1.Models.predios>();
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        predio = cnx.predios.ToList();
+    }
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    #div1 {
+        overflow: scroll;
+        height: 100%;
+        width: 100%;
+    }
+
+        #div1 table {
+            width: 100%;
+            background-color: lightgray;
+        }
+</style>
+<h2>Listado</h2>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+
+@*---------------------- Destajo general----------------------------*@
+<button class="btn btn-light" style="font-size:12px" onclick="location.href='../DestajoMaterial/Index_autorizar'"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;&nbsp;&nbsp;&nbsp;REGRESAR</button>
+
+<br />
+<br />
+<br />
+<div id="div1">
+    <table id="table_predios_g" class="table table-bordered">
+        <thead style="background-color: dimgrey; color: white">
+            <tr>
+                <th>#</th>
+                <th>Id predio</th>
+                <th>Predio</th>
+                <th>N° Semana</th>
+                <th>Semana</th>
+                <th>Destajista</th>
+                <th>Elaboro</th>
+                <th>Reviso</th>
+                <th>Autorizo</th>
+                <th style="text-align: center">Mantenimiento</th>
+            </tr>
+        </thead>
+        <tbody style="background-color: white">
+            @foreach (var f in Model)
+            {
+            <tr>
+                <td>@f.id_destajos_material</td>
+                <td>@f.id_predio</td>
+                <td>@f.predio</td>
+                <td>@f.n_semana</td>
+                <td>Del @f.inicio_semana.GetValueOrDefault().ToLongDateString() al @f.fin_semana.GetValueOrDefault().ToLongDateString()</td>
+                <td>@f.destajista</td>
+                <td>@f.elaboro</td>
+                <td>@f.reviso</td>
+                <td>@f.autorizo</td>
+                <td style="text-align: center">
+
+                    <button class="btn btn-light" type="button" style="font-size:14px; font-weight:700;font-family:'Yu Gothic'"
+                            data-target="#modal_detalle_destajo" data-toggle="modal"
+                            data-backdrop="static" data-keyboard="false"
+                            onclick="detalles(codigo = @f.id_destajos_material)">
+                        <span class="glyphicon glyphicon-eye-open"></span> DETALLE
+                    </button>
+                    @if (f.reviso != null && f.autorizo == null)
+                    {
+                        <div style="display:grid; grid-template-columns:repeat(1,1fr); grid-gap: 2px">
+                            <label style="font-weight:900; color:#D79771; font-family:'Yu Gothic'"><span class="glyphicon glyphicon-ok"></span> REVISADO</label>
+                            <button style="font-weight: 900; font-family: 'Yu Gothic'; font-size:13px; border:none" class="btn btn-success" type="button" id="btn_act" name="btn_act" onclick="location.href='../DestajoMaterial/Autorizar?id_destajos_material=@f.id_destajos_material'"><i class="fas fa-check-double"></i> AUTORIZAR</button>
+                        </div>
+                    }
+                    else if (f.autorizo != null && f.reviso != null)
+                    {
+                        <div style="display:grid; grid-template-columns:repeat(1,1fr); grid-gap: 2px">
+                            <label style="font-weight:900; color:#D79771; font-family:'Yu Gothic'"><span class="glyphicon glyphicon-ok"></span> REVISADO</label>
+                            <label style="font-weight:900; color:#57837B; font-family:'Yu Gothic'"><span class="glyphicon glyphicon-ok"></span> AUTORIZADO</label>
+                            <button style="font-weight: 900; font-family: 'Yu Gothic'; color:#BD1616; border:none" class="btn btn-link" type="button" id="btn_act1" name="btn_act1" onclick="location.href = '../DestajoMaterial/Pdf?id_destajos_material=@f.id_destajos_material&n_semana=@f.n_semana'"><i class="fas fa-file-pdf"></i> PDF</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="display:flex; justify-content:space-between">
+                            <button style="font-weight: 900; font-family: 'Yu Gothic'; border: none; font-size:13px" class="btn btn-info" type="button" id="btn_act" name="btn_act" onclick="location.href='../DestajoMaterial/Revisar?id_destajos_material=@f.id_destajos_material'"><i class="fas fa-search"></i> REVISAR</button>
+                            <button disabled title="AÚN NO SE HA REVISADO" alt="AÚN NO SE HA REVISADO" style="font-weight: 900; font-family: 'Yu Gothic'; border: none ; font-size:13px" class="btn btn-success" type="button" id="btn_act" name="btn_act" onclick="location.href='../DestajoMaterial/Autorizar?id_destajos_material=@f.id_destajos_material'"><i class="fas fa-check-double"></i> AUTORIZAR</button>
+                        </div>
+                    }
+
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+<br />
+@Html.Partial("_Modal_Detalle_Destajo")
+<script>
+    $(document).ready(function () {
+        $('#table_predios_g').DataTable();
+    });
+    var table = $('#table_predios_g').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+
+    /*
+                bus_sec = function () {
+                    $.post(
+                        '/Destajo/bus_sec', {
+                            tipo_bus: $('#tipo_bus').val(),//--Este es el id del combobox
+                            registro: $('#registro').val() //-- este es el id de caja de texto
+                    }, function (res) {
+                            $('#table_predios_g').html(res)//--id de la tabla
+                    });
+                };
+                */
+</script>

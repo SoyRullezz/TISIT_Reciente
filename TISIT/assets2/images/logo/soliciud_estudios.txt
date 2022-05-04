@@ -1,0 +1,250 @@
+using (StringWriter sw = new StringWriter())
+            {
+                StringWriter sw1 = new StringWriter();
+
+                using (HtmlTextWriter hw = new HtmlTextWriter(sw))
+
+                {
+                    HtmlTextWriter hw1 = new HtmlTextWriter(sw1);
+
+
+
+                    Response.ContentType = "application/pdf";
+                    Response.AddHeader("content-disposition", "attachment;filename=solicitud_estudios.pdf");
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    gridConsulta.RenderControl(hw);
+
+                    StringReader sr = new StringReader(sw.ToString());
+
+                    Document documento = new Document(PageSize.A4, 25f, 25f, 25f, 25f);
+                    PdfWriter writer = PdfWriter.GetInstance(documento, Response.OutputStream);
+
+                    documento.Open();
+
+                    BaseFont _titulo = BaseFont.CreateFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, true);
+                    Font titulo = new iTextSharp.text.Font(_titulo, 22f, Font.BOLD);
+
+                    BaseFont _subtitulo = BaseFont.CreateFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, true);
+                    Font subtitulo = new iTextSharp.text.Font(_subtitulo, 12f);
+
+                    BaseFont _subtitulo2 = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, true);
+                    Font subtitulo2 = new iTextSharp.text.Font(_subtitulo2, 10f, Font.BOLD);
+
+                    BaseFont _subtitulo3 = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, true);
+                    Font subtitulo3 = new iTextSharp.text.Font(_subtitulo3, 14f);
+
+                    BaseFont _footer = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, true);
+                    Font footer = new iTextSharp.text.Font(_footer, 9f, Font.BOLD);
+
+                    BaseFont _parrafor = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, true);
+                    Font parrafo = new iTextSharp.text.Font(_parrafor, 10f, Font.NORMAL);
+
+                    BaseFont _espacio = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, true);
+                    Font espacio = new iTextSharp.text.Font(_espacio, 10f, Font.NORMAL,BaseColor.WHITE);
+                    
+
+                    Image logo = Image.GetInstance(System.Web.HttpContext.Current.Server.MapPath(@"~/assets/images/logo/santa_lucia.png"));
+                    logo.ScalePercent(40f);
+
+                    Image ojos = Image.GetInstance(System.Web.HttpContext.Current.Server.MapPath(@"~/assets/images/logo/ojoso.png"));
+                    ojos.ScalePercent(70f);
+
+                    Image circle_white = Image.GetInstance(System.Web.HttpContext.Current.Server.MapPath(@"~/assets/images/logo/circle_white.png"));
+                    circle_white.ScalePercent(1.5f);
+
+                    Image circle_dark = Image.GetInstance(System.Web.HttpContext.Current.Server.MapPath(@"~/assets/images/logo/circle_dark.png"));
+                    circle_dark.ScalePercent(3.2f);
+
+                    Image croquis = Image.GetInstance(System.Web.HttpContext.Current.Server.MapPath(@"~/assets/images/logo/santa_lucia_croquis.PNG"));
+                    croquis.ScalePercent(70f);
+
+                    Image telefono = Image.GetInstance(System.Web.HttpContext.Current.Server.MapPath(@"~/assets/images/logo/telefono.png"));
+                    telefono.ScalePercent(5f);
+
+                    Image carta = Image.GetInstance(System.Web.HttpContext.Current.Server.MapPath(@"~/assets/images/logo/letra.png"));
+                    carta.ScalePercent(5f);
+
+                    var cell_espacio = new PdfPCell(new PdfPCell(new Phrase("")) { Border = 0, MinimumHeight = 7f, CalculatedHeight = 7f });
+
+                    //HEADER//
+                    var tb1 = new PdfPTable(new float[] { 100f }) { WidthPercentage = 100f };
+                    tb1.AddCell(new PdfPCell(new Phrase("Solicitud de estudios", titulo)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb1.AddCell(cell_espacio);
+                    tb1.AddCell(cell_espacio);
+                    documento.Add(tb1);
+
+
+                    ////HEADER 2//
+                    var tb2 = new PdfPTable(new float[] { 25f, 30f, 10f, 35f }) { WidthPercentage = 100f };
+                    tb2.AddCell(new PdfPCell(logo) { Rowspan = 5, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb2.AddCell(new PdfPCell(ojos) { Rowspan = 5, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb2.AddCell(new PdfPCell(new Phrase("Fecha:____/____/____", subtitulo)) {Colspan=2,Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+
+
+                    tb2.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb2.AddCell(new PdfPCell(new Phrase("Sin interpretación", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb2.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb2.AddCell(new PdfPCell(new Phrase("Urgente", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb2.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb2.AddCell(new PdfPCell(new Phrase("Con interpretación", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb2.AddCell(new PdfPCell(new Phrase("Especificar zona de prioridad", parrafo)) { Colspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+
+                    documento.Add(tb2);
+
+                    tb1.AddCell(cell_espacio);
+
+                    var tb3 = new PdfPTable(new float[] { 100f }) { WidthPercentage = 100f };
+                    tb3.AddCell(new PdfPCell(new Phrase("Paciente:_____________________________________________________________________________________", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb3.AddCell(new PdfPCell(new Phrase(".", espacio)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb3.AddCell(new PdfPCell(new Phrase("Dr:__________________________________________________________________________________________", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb3.AddCell(new PdfPCell(new Phrase(".", espacio)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb3.AddCell(new PdfPCell(new Phrase("Diagnóstico:___________________________________________________________________________________", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb3.AddCell(new PdfPCell(new Phrase(".", espacio)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+
+                    documento.Add(tb3);
+
+
+                    var tb4 = new PdfPTable(new float[] { 5f, 5f, 40f, 5f, 40f }) { WidthPercentage = 95f };
+
+                    tb4.AddCell(new PdfPCell(new Phrase("Córnea Cirugía Refractiva", subtitulo)) { Colspan = 3, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb4.AddCell(new PdfPCell(new Phrase("Giaucoma", subtitulo)) { Colspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb4.AddCell(new PdfPCell(new Phrase(".", espacio)) {Colspan=5, Border = 0});
+
+
+                    tb4.AddCell(new PdfPCell(new Phrase("1)", subtitulo)) { Rowspan = 3, Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(circle_white) { Rowspan = 3, Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Topografía óptica con cámara de Scheimpflug y anillos de placido (Sirius)", parrafo)) {Rowspan =3, Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb4.AddCell(new PdfPCell(circle_white) { Rowspan = 3, Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Campos Visuales (Humphery 860)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb4.AddCell(new PdfPCell(new Phrase("  OD__________________________", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb4.AddCell(new PdfPCell(new Phrase("  OI___________________________", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb4.AddCell(new PdfPCell(new Phrase("1)", subtitulo)) { Rowspan = 6, Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Topografía óptica con doble cámara de Scheimpflug y anillos de placido(Galilei)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb4.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("OCT Nervio Óptico (spectrallis)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb4.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Microscopia Especular (CSO)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb4.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Paquimetría Óptica con camara de Scheimpflug", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb4.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Paquimetría Óptica con camara de Scheimpflug", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb4.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Microscopia Especular", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb4.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Ultrabiomicroscópía-UBM Quantec Medical Aviso)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb4.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Ultrabiomicroscópía-UBM Quantec Medical Aviso)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb4.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Ecografía MODO B(Quantec Medical aviso)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb4.AddCell(new PdfPCell(circle_white) { Rowspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Ecografía MODO B nervio óptico(Quantec Medical aviso)", parrafo)) {Rowspan=2, Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb4.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb4.AddCell(new PdfPCell(new Phrase("Topografía y aberrometria ORBSCAN lll", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+
+                    documento.Add(tb4);
+
+                    var tb5 = new PdfPTable(new float[] { 5f, 5f, 40f, 5f, 40f }) { WidthPercentage = 95f };
+
+                    tb5.AddCell(new PdfPCell(new Phrase("Retina", subtitulo)) { Colspan = 3, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb5.AddCell(new PdfPCell(new Phrase("Segmento Anterior", subtitulo)) { Colspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb5.AddCell(new PdfPCell(new Phrase(".", espacio)) { Colspan = 5, Border = 0 });
+
+                    tb5.AddCell(new PdfPCell(new Phrase("2)", subtitulo)) { Rowspan = 6, Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(new Phrase("Fluorangiografía de retina(VISUCAM 500)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb5.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(new Phrase("Ultrasonido Modo B(Quantec Medical aviso)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb5.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(new Phrase("OCT Retina (spectrallis)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb5.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(new Phrase("Ecografía Modo B(Quantec Medical aviso)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb5.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(new Phrase("OCT Mácula (spectrallis)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb5.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(new Phrase("Microscopia Especular (CSO)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb5.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(new Phrase("Fotografía polo posterior (VISUCAM 500)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb5.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(new Phrase("Ultrabiomicroscopía-UBM Quantec Medical Aivo)", parrafo)) { Rowspan=3, Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb5.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(new Phrase("Ultrabiomicroscopía-UBM Quantec Medical Aviso)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb5.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb5.AddCell(new PdfPCell(new Phrase("Ecografía MODO B (Quantec Medical aviso)", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    documento.Add(tb5);
+
+
+                    var tb6 = new PdfPTable(new float[] { 10f, 15f, 15f, 10f }) { WidthPercentage = 50f, HorizontalAlignment = Element.ALIGN_LEFT };
+
+                    tb6.AddCell(new PdfPCell(new Phrase("Laser", subtitulo)) { Colspan = 4, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb6.AddCell(new PdfPCell(new Phrase(".", espacio)) { Colspan = 4, Border = 0 });
+
+                    tb6.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb6.AddCell(new PdfPCell(new Phrase("Láser argón", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb6.AddCell(new PdfPCell(new Phrase("TP", parrafo)) {Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb6.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb6.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb6.AddCell(new PdfPCell(new Phrase("Láser YAG", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb6.AddCell(new PdfPCell(new Phrase("PIL", parrafo)) { Rowspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb6.AddCell(new PdfPCell(circle_white) { Rowspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+
+                    tb6.AddCell(new PdfPCell(circle_white) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb6.AddCell(new PdfPCell(new Phrase("Láser SLT", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    documento.Add(tb6);
+
+
+
+                    var tb7 = new PdfPTable(new float[] { 100f }) { WidthPercentage = 100f };
+                    tb7.AddCell(new PdfPCell(new Phrase(".", espacio)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+
+                    tb7.AddCell(new PdfPCell(new Phrase("Notas:____________________________________________________________________________________________", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb7.AddCell(new PdfPCell(new Phrase(".", espacio)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb7.AddCell(new PdfPCell(new Phrase("________________________________________________________________________________________________", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb7.AddCell(new PdfPCell(new Phrase(".", espacio)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb7.AddCell(new PdfPCell(new Phrase("________________________________________________________________________________________________", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb7.AddCell(new PdfPCell(new Phrase(".", espacio)) { Border = 0, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tb7.AddCell(new PdfPCell(new Phrase("1) Retirar lente de contacto rígido", parrafo)) { Border = 0});
+                    tb7.AddCell(new PdfPCell(new Phrase("2) No consumir lácteos ni huevo 24 hrs antes de su estudio, asistir en ayunas  y con un acompañante", parrafo)) { Border = 0 });
+
+                    
+                    documento.Add(tb7);
+
+                    var tb8 = new PdfPTable(new float[] { 30f,70f }) { WidthPercentage = 100f };
+                    tb8.AddCell(new PdfPCell(croquis) {Colspan=2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb8.AddCell(new PdfPCell(new Phrase("HORARIOS", subtitulo3)) { Colspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb8.AddCell(new PdfPCell(new Phrase("Lunes a Viernes 9am a 6pm", subtitulo3)) { Colspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb8.AddCell(new PdfPCell(new Phrase("Sábado 9am a 1pm", subtitulo3)) { Colspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb8.AddCell(new PdfPCell(new Phrase("PREVIA CITA", subtitulo3)) { Colspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb8.AddCell(new PdfPCell(telefono) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb8.AddCell(new PdfPCell(new Phrase("     (722)719 8975 / 705 0759", subtitulo3)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb8.AddCell(new PdfPCell(new Phrase("Felipe Villanueva #1102 Col. Morelos,", subtitulo3)) { Colspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb8.AddCell(new PdfPCell(new Phrase("Toluca, Estado de México, C.P.50120", subtitulo3)) { Colspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+                    tb8.AddCell(new PdfPCell(carta) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                    tb8.AddCell(new PdfPCell(new Phrase("clinicasantaluciatoluca@gmail.com", subtitulo3)) { Border = 0, HorizontalAlignment = Element.ALIGN_LEFT });
+                    tb8.AddCell(new PdfPCell(new Phrase("¡Contamos con estacionamiento propio!", subtitulo3)) { Colspan = 2, Border = 0, HorizontalAlignment = Element.ALIGN_CENTER });
+
+                    documento.Add(tb8);
+
+                    documento.Close();
+                    Response.Write(documento);
+                    Response.End();
+
+
+
+                }
+            }

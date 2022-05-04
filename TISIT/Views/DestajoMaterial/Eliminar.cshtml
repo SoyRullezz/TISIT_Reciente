@@ -1,0 +1,133 @@
+﻿@model CAS_1._1._1.Models.destajos_material
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Actualizar - Destajo";
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+</style>
+<br />
+<h4>Gestión de destajos</h4>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+<form action="/DestajoMaterial/Eliminar" method="post">
+    <input type="hidden" name="id" id="id" value="@Model.id_destajos_material" />
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="id_predio" class="visually"># Predio</label>
+            <input class="form-control" type="number" value="@Model.id_predio" name="id_predio" id="id_predio" style="font-size:15px" disabled>
+        </div>
+        <div class="col-auto">
+            <label for="predio" class="visually">Nombre predio</label>
+            <input class="form-control" type="text" value="@Model.predio" style="font-size:15px" name="predio" id="predio" disabled>
+        </div>
+        <div class="col-auto">
+            <label for="destajista" class="visually">Destajista(Maestro)</label>
+            <input class="form-control" style="font-size:15px" type="text" name="destajista" value="@Model.destajista" id="destajista" disabled>
+        </div>
+    </div>
+
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <p>NOTA 1</p>
+            <p><textarea class="form-control" style="font-size:15px; width:200px; max-height:80px" id="nota1" disabled name="nota1">@Model.nota</textarea></p>
+
+        </div>
+        <div class="col-auto">
+            <p>NOTA 2</p>
+            <p><textarea class="form-control" style="font-size:15px; width:200px; max-height:80px" id="nota2" disabled name="nota2">@Model.nota2</textarea></p>
+        </div>
+        <div class="col-auto">
+            <label for="fecha_inicio" class="visually">Fecha de inicio</label>
+            <input class="form-control" type="date" name="inicio_semana" id="inicio_semana" disabled value="@Model.inicio_semana.GetValueOrDefault().ToString("yyyy-MM-dd")" style="font-size:15px" required>
+        </div><br />
+        <div class="col-auto">
+            <label for="fecha_fin" class="visually">Fecha final</label>
+            <input class="form-control" type="date" style="font-size:15px" name="fin_semana" disabled value="@Model.fin_semana.GetValueOrDefault().ToString("yyyy-MM-dd")" id="fin_semana" required>
+        </div>
+        <div class="col hidden-small">
+            <input class="form-control" type="hidden" name="elaboro" id="elaboro" value="@Session["usuario"]">
+        </div>
+
+    </div>
+    <div class="col-auto" style="margin:15px">
+        <label for="elaboro" class="visually">Observaciones</label>
+        <textarea class="form-control" style="font-size:15px; max-width:730px; max-height:150px; height:120px" id="observaciones" disabled name="observaciones">@Model.observaciones</textarea>
+    </div>
+    @*--------------------------------------------------*@
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>CONCEPTOS AGREGADOS</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>#</th><th>CONCEPTO</th><th>UNIDAD ELEMENTO</th><th>VOL O CONT</th><th>PX PAQUETE</th><th>VALOR TOTAL</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @*--------------------------------------------------*@
+    @*--------------------------------------------------*@
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>TRABAJADORES AGREGADOS</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>N° Empleado</th><th>Nombre</th><th>A.Paterno</th><th>A.Materno</th><th>Pago</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr_trab"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @*--------------------------------------------------*@
+    <br /><br />
+    <button class="btn btn-success" type="submit" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Confirmar</span></button>
+
+    <button class="btn btn-danger" type="button" onclick="location.href='../DestajoMaterial/Ver_destajos_index'" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Regresar</span></button>
+</form>
+<br />
+
+<br />
+<script>
+    $(document).ready(function () {
+        $.post(
+            '/DestajoMaterial/det_actualizar_des_eliminar', {
+            id: $('#id').val()
+        }, function (res) {
+            $('#tabla_atr').html(res)
+        });
+    });
+    $(document).ready(function () {
+        $.post(
+            '/DestajoMaterial/det_actualizar_trab_eliminar', {
+            id: $('#id').val()
+        }, function (res) {
+            $('#tabla_atr_trab').html(res)
+        });
+    });
+
+
+</script>

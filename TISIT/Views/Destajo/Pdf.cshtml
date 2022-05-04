@@ -1,0 +1,198 @@
+﻿@model List<CAS_1._1._1.Models.trabajadores_destajos_admin>
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var cont = 1;
+    var id_destajos_admin = ViewData["id_destajos_admin"];
+}
+<style type="text/css">
+    .tg {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border-color: #ccc;
+    }
+
+        .tg td {
+            border-color: black;
+            border-style: solid;
+            border-width: 1px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            overflow: hidden;
+            padding: 10px 5px;
+            word-break: normal;
+        }
+
+        .tg th {
+            border-color: black;
+            border-style: solid;
+            border-width: 1px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            overflow: hidden;
+            padding: 10px 5px;
+            word-break: normal;
+        }
+        .tg .tg-0pky {
+            border-color: inherit;
+            text-align: center;
+            vertical-align: top;
+        }
+    .colorear {
+        background-color: #000080;
+        color: aliceblue;
+    }
+        .tg .tg-0pky1 {
+            border-color: transparent;
+            border-bottom: hidden;
+            border-left: hidden;
+            border-right: hidden;
+        }
+        .tg .tg-0pky_1 {
+            border-bottom: hidden;
+            border-left: hidden;
+        }
+
+        .tg .tg-5w99 {
+            border-color: inherit;
+            font-size: 33px;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tg .tg-7btt {
+            border-color: inherit;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: top;
+        }
+
+    .tg .tg-fymr {
+        border-color: inherit;
+        font-weight: bold;
+        text-align: center;
+        vertical-align: top;
+        font-size: 12px;
+        letter-spacing: 2px
+    }
+    .quitar_boton {
+        display: none;
+    }
+</style>
+
+<table class="tg" style="letter-spacing: 1px">
+    <thead>
+        <tr>
+            <th class="tg-5w99" colspan="23">
+                    <img src="~/imagenes/des.png" alt="Image" width="1135">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="tg-7btt" colspan="23">CALLE URUAPAN #12 COL. CONSTITUCION DE 1917 MCPIO. TLALNEPANTLA EDO. DE MEXICO CP. 54788</td>
+        </tr>
+        <tr>
+            <td class="tg-0pky" colspan="4">Obra <span style="font-weight:bold">@ViewData["id_predio"]</span></td>
+            <td class="tg-0pky" colspan="2"><span style="font-weight:bold">@ViewData["predio"]</span></td>
+            <td class="tg-0pky" colspan="8">Semana <span style="font-weight:bold">@ViewData["n_semana"]</span></td>
+            <td class="tg-0pky" colspan="7">Semana del <span style="font-weight:bold">@ViewData["inicio_sem"]</span> al <span style="font-weight:bold">@ViewData["fin_sem"]</span></td>
+        </tr>
+        <tr>
+            <td class="tg-7btt" colspan="23">ADMINISTRACIÓN</td>
+        </tr>
+        <tr>
+            <td class="tg-fymr" rowspan="2">#</td>
+            <td class="tg-fymr" rowspan="2">APELLIDO<br>PATERNO</td>
+            <td class="tg-fymr" rowspan="2">APELLIDO<br>MATERNO</td>
+            <td class="tg-fymr" rowspan="2">NOMBRE</td>
+            <td class="tg-fymr" rowspan="2">CATEGORIA</td>
+            <td class="tg-fymr" rowspan="2">PAGO<br>POR DÍA</td>
+            <td class="tg-fymr" colspan="6">DÍAS TRABAJADOS</td>
+            <td class="tg-fymr" rowspan="2">DÍA<br>EXTRA</td>
+            <td class="tg-fymr" rowspan="2">TOTAL<br>DÍAS</td>
+            <td class="tg-fymr" rowspan="2">INF</td>
+            <td class="tg-fymr" rowspan="2">PREST</td>
+            <td class="tg-fymr" rowspan="2">SUBTOTAL</td>
+            <td class="tg-fymr" rowspan="2">TIEMPO<br>EXTRA</td>
+            <td class="tg-fymr" rowspan="2">TOTAL</td>
+            <td class="tg-fymr" rowspan="2">TOTAL AUTORIZADO</td>
+            <td class="tg-fymr" rowspan="2">RESTANTE</td>
+        </tr>
+        <tr>
+            <td class="tg-fymr">L</td>
+            <td class="tg-fymr">M</td>
+            <td class="tg-fymr">M</td>
+            <td class="tg-fymr">J</td>
+            <td class="tg-fymr">V</td>
+            <td class="tg-fymr">S</td>
+        </tr>
+        @{
+            var lunes = "";
+            var martes = "";
+            var miercoles = "";
+            var jueves = "";
+            var viernes = "";
+            var sabado = "";
+            var dia_extra = "";
+            decimal total_todo = 0;
+            foreach (var a in Model)
+            {
+                total_todo = total_todo + a.total_aceptado.GetValueOrDefault();
+                if (a.lunes == true) { lunes = "|"; }
+                else { lunes = ""; }
+                if (a.martes == true) { martes = "|"; }
+                else { martes = ""; }
+                if (a.miercoles == true) { miercoles = "|"; }
+                else { miercoles = ""; }
+                if (a.jueves == true) { jueves = "|"; }
+                else { jueves = ""; }
+                if (a.viernes == true) { viernes = "|"; }
+                else { viernes = ""; }
+                if (a.sabado == true) { sabado = "|"; }
+                else { sabado = ""; }
+                if (a.dia_extra == true) { dia_extra = "|"; }
+                else { dia_extra = ""; }
+                <tr>
+                    <td class="tg-0pky">@cont</td>
+                    <td class="tg-0pky">@a.apellido_pa</td>
+                    <td class="tg-0pky">@a.apellido_ma</td>
+                    <td class="tg-0pky">@a.nombre</td>
+                    <td class="tg-0pky">@a.categoria</td>
+                    <td class="tg-0pky">@a.pago_dia.ToString("$###,###,##0.00")</td>
+                    <td class="tg-0pky">@lunes</td>
+                    <td class="tg-0pky">@martes</td>
+                    <td class="tg-0pky">@miercoles</td>
+                    <td class="tg-0pky">@jueves</td>
+                    <td class="tg-0pky">@viernes</td>
+                    <td class="tg-0pky">@sabado</td>
+                    <td class="tg-0pky">@dia_extra</td>
+                    <td class="tg-0pky">@a.dias_trabajados</td>
+                    <td class="tg-0pky">@a.inf.GetValueOrDefault().ToString("$###,###,##0.00")</td>
+                    <td class="tg-0pky">@a.pres.GetValueOrDefault().ToString("$###,###,##0.00")</td>
+                    <td class="tg-0pky">@a.subtotal.ToString("$###,###,##0.00")</td>
+                    <td class="tg-0pky">@a.extra.GetValueOrDefault().ToString("$###,###,##0.00")</td>
+                    <td class="tg-0pky">@a.total.ToString("$###,###,##0.00")</td>
+                    <td class="tg-0pky">@a.total_aceptado.GetValueOrDefault().ToString("$###,###,##0.00")</td>
+                    <td class="tg-0pky">@a.restante.GetValueOrDefault().ToString("$###,###,##0.00")</td>
+                </tr>
+                cont++;
+            }
+        }
+        <tr>
+            <td class="tg-fymr" colspan="4">ELABORO<br /><span style="font-weight:200">@ViewData["elaboro"]</span></td>
+            <td class="tg-fymr" colspan="4">REVISO<br /><span style="font-weight:200">@ViewData["reviso"]</span></td>
+            <td class="tg-fymr" colspan="6">AUTORIZO<br /><span style="font-weight:200">@ViewData["autorizo"]</span></td>
+            <td class="tg-fymr" colspan="5">TOTAL</td>
+            <td class="tg-fymr colorear" style="font-size:18px" colspan="4">@total_todo.ToString("$###,###,##0.00")</td>
+        </tr>
+    </tbody>
+</table>
+<br />
+    @using (Html.BeginForm("Print", "Destajo", new { id_destajos_admin = Convert.ToInt32(id_destajos_admin), nombreP = ViewData["predio"] }))
+    {
+        <button id="submitButton" class="btn btn-outline-primary" type="submit"><span class="glyphicon glyphicon-open-file"> DESCARGAR PDF </span></button>
+    }
+<br />

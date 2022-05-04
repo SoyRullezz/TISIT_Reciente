@@ -1,0 +1,27 @@
+﻿<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!------ Include the above in your HEAD tag ---------->
+<style>
+</style>
+<link rel="stylesheet" href="~/Styles/style.css">
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div id="alert" class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+        <div class="fadeIn first">
+            <img src="~/imagenes/logo_destajos.png" id="icon" alt="User Icon" />
+        </div>
+        <br /><br />
+        <!-- Login Form -->
+        <form action="/Login/Login" method="post">
+            <input type="text" id="login" class="fadeIn second" name="login" placeholder="Nombre">
+            <input type="password" id="password" class="fadeIn third" name="password" placeholder="Contraseña">
+            <input type="submit" class="fadeIn fourth ver" style="background-color:#3C2C3E" id="btn_alert" value="Ingresar">
+        </form>
+
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+            <a class="underlineHover" href="#">¿Olvidaste tu contraseña?</a>
+        </div>
+    </div>
+</div>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

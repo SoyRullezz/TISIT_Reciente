@@ -1,0 +1,67 @@
+﻿@model CAS_1._1._1.Models.trabajadores_destajos_admin
+@{
+    ViewBag.Title = "Eliminar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h2>Gestión de Destajos Administración</h2>
+<div class="alert alert-@ViewBag.alerta">--<b>@ViewBag.res</b>--</div>
+<form action="/Trabajadores/Eliminar" method="post">
+    <input type="hidden" id="id_trabajador" name="id_trabajador" value="@Model.id_trabajador" />
+    <table>
+        <tr>
+            <td style="padding: 10px">Nombre: </td>
+            <td style="padding: 10px"><input class="form-control" readonly value="@Model.nombre" type="text" name="nombre" id="nombre" /></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px">Apellido paterno: </td>
+            <td style="padding: 10px"><input class="form-control" type="text" readonly value="@Model.apellido_pa" name="apellido_pa" id="apellido_pa" /></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px">Apellido materno: </td>
+            <td style="padding: 10px"><input class="form-control" type="text" readonly value="@Model.apellido_ma" name="apellido_ma" id="apellido_ma" /></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px">Categoria: </td>
+            <td style="padding: 10px"><input class="form-control" type="text" readonly value="@Model.categoria" name="categoria" id="categoria" /></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px">Pago por día: </td>
+            <td style="padding: 10px"><input class="form-control" type="text" readonly value="@Model.pago_dia" name="pago_dia" id="pago_dia" /></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px">Dias trabajados: </td>
+            <td style="padding: 10px"><input class="form-control" type="text" readonly value="@Model.dias_trabajados" name="dias_trabajados" id="dias_trabajados" /></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px">Deducciones: </td>
+            <td style="padding: 10px"><input class="form-control" value="@Model.pres" readonly type="text" name="deducciones" id="deducciones" /></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px">Subtotal: </td>
+            <td style="padding: 10px"><input class="form-control" type="text" readonly value="@Model.subtotal" name="subtotal" id="subtotal" /></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px">Extras: </td>
+            <td style="padding: 10px"><input class="form-control" type="text" readonly value="@Model.extra" name="extra" id="extra" /></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px">Total: </td>
+            <td style="padding: 10px"><input class="form-control" type="text" readonly value="@Model.total" name="total" id="total" /></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px"></td>
+
+            <td style="padding: 10px">
+                <a class="btn btn-danger" href="~/Trabajadores/Index"><span class="glyphicon glyphicon-backward">   Regresar</span> </a>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#table_trabajador').DataTable();
+    });
+</script>

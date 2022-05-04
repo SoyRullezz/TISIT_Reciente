@@ -1,0 +1,97 @@
+﻿@model CAS_1._1._1.Models.trabajadores_destajos_admin
+@{
+    ViewBag.Title = "Editar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h2>Gestión de Destajos Administración</h2>
+<div class="alert alert-@ViewBag.alerta">--<b>@ViewBag.res</b>--</div>
+<form action="/Trabajadores/Editar" method="post">
+    <input type="hidden" id="id_trabajador" name="id_trabajador" value="@Model.id_trabajador" />
+    <div class="row gap-5" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="nombre" class="visually">Nombre</label>
+            <input class="form-control" type="text" value="@Model.nombre" name="nombre" id="nombre" style="font-size:15px" required>
+        </div>
+        <div class="col-auto">
+            <label for="apellido_pa" class="visually">Apellido paterno</label>
+            <input class="form-control" type="text" value="@Model.apellido_pa" style="font-size:15px" name="apellido_pa" id="apellido_pa" required>
+        </div>
+        <div class="col-auto">
+            <label for="apellido_ma" class="visually">Apellido materno</label>
+            <input class="form-control" type="text" value="@Model.apellido_ma" style="font-size:15px" name="apellido_ma" id="apellido_ma" required>
+        </div>
+    </div>
+    <div class="row" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <br />
+            <label for="apellido_ma" class="visually">Categoria</label><br />
+            <select class="select2-container--default" name="categoria" style="font-size:15px; color:gray; border-color: gray" id="categoria" required>
+                <option value="otra_categoria" selected>Seleccionar</option>
+                <option value="Oficial">Oficial</option>
+                <option value="Ayudante">Ayudante</option>
+                <option value="Maestro">Maestro</option>
+            </select>
+            <p name="otra_categoria" id="otra_categoria">¿No está la categoría?</p>
+        </div>
+        <div class="ocultar" id="v2">
+            <label for="categoria_extra" class="visually">Escribe la categoría</label>
+            <input class="form-control" style="font-size:15px" type="text" name="categoria_extra" id="categoria_extra">
+        </div>
+    </div>
+    <div class="row" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="pago_dia" class="visually">Pago por día</label>
+            <input class="form-control" style="font-size:15px" type="number" value="@Model.pago_dia" name="pago_dia" id="pago_dia" min="0" placeholder="$" required>
+        </div>
+        <div class="col-auto">
+            <label for="deducciones" class="visually">Infracciones</label>
+            <input class="form-control" type="number" style="font-size:15px" value="@Model.inf" name="inf" min="0" placeholder="$" id="inf" required>
+        </div>
+        <div class="col-auto">
+            <label for="extra" class="visually">Prestaciones</label>
+            <input class="form-control" type="number" style="font-size:15px" value="@Model.pres" name="pres" placeholder="$" id="pres" min="0" required>
+        </div>
+    </div>
+    <div class="row" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label class="visually">Dias trabajados</label>
+        </div>
+        <div class="col-auto">
+            <label class="visually">Lunes</label>
+            @Html.CheckBox("lunes", Model.lunes)
+        </div>
+        <div class="col-auto">
+            <label class="visually">Martes</label>
+            @Html.CheckBox("martes", Model.martes)
+        </div>
+        <div class="col-auto">
+            <label class="visually">Miercoles</label>
+            @Html.CheckBox("miercoles", Model.miercoles)
+        </div>
+        <div class="col-auto">
+            <label class="visually">Jueves</label>
+            @Html.CheckBox("jueves", Model.jueves)
+        </div>
+        <div class="col-auto">
+            <label class="visually">Viernes</label>
+            @Html.CheckBox("viernes", Model.viernes)
+        </div>
+        <div class="col-auto">
+            <label class="visually">Sábado</label>
+            @Html.CheckBox("sabado", Model.sabado)
+        </div>
+        <div class="col-auto">
+            <div type="button" class="btn btn-secondary" name="btn_pago_dia_extra" id="btn_pago_dia_extra">DÍA EXTRA</div>
+        </div>
+        <div class="col-auto ocultar" id="v">
+            <label for="extra" class="visually">Pago por día extra</label>
+            <input class="form-control" style="font-size:15px" type="number" name="extra" value="@Model.extra" id="extra" min="0" placeholder="$" required>
+        </div>
+    </div>
+    <button class="btn btn-success" style="font-size:15px" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-save"> Actualizar</span> </button>
+    <a class="btn btn-danger" style="font-size:15px" href="~/Trabajadores/Index"><span class="glyphicon glyphicon-backward"> Regresar</span> </a>
+
+</form>
+<script src="~/Scripts/app.js"></script>

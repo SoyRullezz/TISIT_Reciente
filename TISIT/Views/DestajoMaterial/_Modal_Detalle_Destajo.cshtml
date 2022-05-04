@@ -1,0 +1,92 @@
+﻿<style>
+    #div1 {
+        overflow: scroll;
+        height: 100%;
+        width: 100%;
+    }
+
+        #div1 table {
+            width: 100%;
+            background-color: lightgray;
+        }
+</style>
+<div id="modal_detalle_destajo" class="modal fade">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content" style="width:100%">
+            <div class="modal-header">
+                <h4 class="modal-title">Conceptos</h4>
+            </div>
+            <div class="modal-body" id="Grid">
+                <div id="div1">
+                    <table class="table table-bordered">
+                        <thead style="background-color: dimgray; color:white">
+                            <tr>
+                                <th>#</th>
+                                <th>Concepto</th>
+                                <th>Unidad elemento</th>
+                                <th>Vol o cont</th>
+                                <th>Px paquete</th>
+                                <th>Valor total</th>
+                                <th>Est anteriror</th>
+                                <th>A estimar esta semana</th>
+                                <th style="background-color:darkgoldenrod">ACUMULADO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_det_des"></tbody>
+                    </table>
+                </div>
+                </div>
+                <br />
+                <div class="modal-header">
+                    <h4 class="modal-title">Trabajadores</h4>
+                </div>
+                <div class="modal-body" id="Grid">
+                    <div id="div1">
+                        <table class="table table-bordered">
+                            <thead style="background-color: dimgray; color:white">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido paterno</th>
+                                    <th>Apellido materno</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla_det_trab"></tbody>
+                        </table>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"> Cerrar</span></button>
+                    </div>
+                </div>
+    </div>
+</div>
+
+<script>
+    function detalles(codigo) {
+        detalle_destajo(codigo);
+        detalle_destajo_trab(codigo);
+    }
+
+    
+
+    function detalle_destajo_trab(codigo) {
+        $.post(
+            '/DestajoMaterial/detalle_destajo_trab', {
+            id_destajos_material: codigo
+        }, function (res) {
+                $('#tabla_det_trab').html(res)
+        });
+    };
+
+    function detalle_destajo(codigo) {
+        $.post(
+            '/DestajoMaterial/detalle_destajo', {
+            id_destajos_material: codigo
+        }, function (res) {
+            $('#tabla_det_des').html(res)
+        });
+    };
+</script>
+
+

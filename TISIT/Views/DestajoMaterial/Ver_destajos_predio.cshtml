@@ -1,0 +1,111 @@
+﻿@model List<CAS_1._1._1.Models.predios>
+
+@{
+    ViewBag.Title = "Destajos Materiales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+
+    #div1 {
+        overflow: scroll;
+        height: 100%;
+        width: 100%;
+    }
+
+        #div1 table {
+            width: 100%;
+            background-color: lightgray;
+        }
+</style>
+<h2>SELECCIONA EL PREDIO</h2>
+<div class="alert alert-@ViewBag.alerta"><b>@ViewBag.res</b></div>
+
+@*---------------------- Destajo general----------------------------*@
+<button class="btn btn-light" style="font-size:12px" onclick="location.href='../DestajoMaterial/Ver_destajos_index'"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;&nbsp;&nbsp;&nbsp;REGRESAR</button>
+
+<br />
+<br />
+<input type="hidden" name="destajista" id="destajista" value="@ViewBag.destajista" />
+<div id="div1">
+    <table id="table_predios" class="table table-bordered">
+        <thead style="background-color: dimgrey; color: white">
+            <tr>
+                <th>#</th>
+                <th>PREDIO</th>
+                <th style="text-align: center">Opciones</th>
+            </tr>
+        </thead>
+        <tbody style="background-color: white; text-align:center">
+            @foreach (var f in Model)
+            {
+                <tr>
+                    <td>@f.id_predio</td>
+                    <td>@f.predio</td>
+                    <td style="text-align: center">
+                        <button class="btn btn-info" type="button" onclick="location.href = '../DestajoMaterial/Ver_destajos?destajista=@ViewBag.destajista&id_predio=@f.id_predio'">SELECCIONAR</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<br />
+<br />
+
+<script>
+    $(document).ready(function () {
+        $('#table_predios').DataTable();
+    });
+    var table = $('#table_predios').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+
+    /*
+                bus_sec = function () {
+                    $.post(
+                        '/Destajo/bus_sec', {
+                            tipo_bus: $('#tipo_bus').val(),//--Este es el id del combobox
+                            registro: $('#registro').val() //-- este es el id de caja de texto
+                    }, function (res) {
+                            $('#table_predios_g').html(res)//--id de la tabla
+                    });
+                };
+                */
+</script>

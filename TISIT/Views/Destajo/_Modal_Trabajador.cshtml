@@ -1,0 +1,280 @@
+﻿@{ 
+    var trab = new List<CAS_1._1._1.Models.altausuario>();
+
+    string cadena = "SELECT a.* FROM altausuario a INNER JOIN contrato_laboral c ON c.no_empleado = a.no_empleado WHERE (c.area LIKE '%OBRAXCAMPO%') OR (c.area LIKE '%(NINGUNO)%')";
+
+    using (var cnx = new CAS_1._1._1.Models.conexion2())
+    {
+        trab = cnx.Database.SqlQuery<CAS_1._1._1.Models.altausuario>(cadena).ToList();
+    }
+
+}
+<style>
+    .ocultar {
+        visibility: hidden;
+    }
+
+    #otra_categoria:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    #div1 {
+        overflow: scroll;
+        height: 100%;
+        width: 100%;
+    }
+
+        #div1 table {
+            width: 100%;
+            background-color: lightgray;
+        }
+
+
+</style>
+<div id="modal_trabajador" class="modal fade">
+    <div class="modal-dialog  modal-xl">
+        <div class="modal-content" style="width:100%">
+            <div class="modal-header">
+                <h4 class="modal-title">Añadir trabajador</h4>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel tile">
+                    <div class="x_title">
+                        <h2>SELECCIONA EL TRABAJADOR</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div id="div1">
+                            <table id="table_usuario" class="table table-bordered" style="font-size:14px">
+                                <thead style="background-color:dimgrey; color:white">
+                                    <tr>
+                                        <th>Id Personal</th>
+                                        <th>N° Empleado</th>
+                                        <th>Nombre</th>
+                                        <th>Paterno</th>
+                                        <th>Materno</th>
+                                        <th style="text-align:center">Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="background-color:white">
+                                    @foreach (var u in trab)
+                                    {
+                                        <tr>
+                                            <td><span style="visibility:hidden; font-size:1px;">@u.id_personal</span><input class="form-control" type="number" style="font-size:15px" readonly value="@u.id_personal"></td>
+                                            <td><span style="visibility:hidden; font-size:1px;">@u.no_empleado</span><input class="form-control" type="number" style="font-size:15px" readonly value="@u.no_empleado"></td>
+                                            <td><span style="visibility:hidden; font-size:1px">@u.nombre</span><input class="form-control" type="text" value="@u.nombre" style="font-size:15px" readonly></td>
+                                            <td><span style="visibility:hidden; font-size:1px">@u.apaterno</span><input class="form-control" type="text" style="font-size:15px" value="@u.apaterno" readonly></td>
+                                            <td><span style="visibility:hidden; font-size:1px">@u.amaterno</span><input class="form-control" type="text" style="font-size:15px" value="@u.amaterno" readonly></td>
+                                            <td style="text-align:center">
+                                                <button class="btn btn-info ui-state-default" style="margin: 2px; font-size:15px; height:45px" type="button" id="btn_selec" name="btn_selec" onclick="seleccionar_trab(registro = @u.id_personal)"><span class="glyphicon glyphicon-check"> Seleccionar</span></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--FORM-->
+                <table class="table" style="padding: 10px">
+                    <thead style="background-color: dimgray; color:white">
+                        <tr>
+                            <th>Id Personal</th>
+                            <th>N° Empleado</th>
+                            <th>Nombre</th>
+                            <th>Paterno</th>
+                            <th>Materno</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_selec_trab"></tbody>
+                </table>
+                <div class="row" style="align-items:center; margin:10px;">
+                    <div class="col-auto">
+                        <label for="pago_dia" class="visually">Pago por día</label>
+                        <input class="form-control" style="font-size:15px" type="number" name="pago_dia" id="pago_dia" min="0" placeholder="$" required>
+                    </div>
+                    <div class="col-auto">
+                        <br />
+                        <label for="apellido_ma" class="visually">Categoria</label><br />
+                        <select class="select2-container--default" name="categoria" style="font-size:15px; color:gray; border-color: gray; height:30px" id="categoria" required>
+                            <option value="otra_categoria" selected>Seleccionar</option>
+                            <option value="Oficial">Oficial</option>
+                            <option value="Ayudante">Ayudante</option>
+                            <option value="Maestro">Maestro</option>
+                        </select>
+                        <p name="otra_categoria" id="otra_categoria">¿No está la categoría?</p>
+                    </div>
+                    <div class="ocultar" id="v2">
+                        <label for="categoria_extra" class="visually">Escribe la categoría</label>
+                        <input class="form-control" style="font-size:15px" type="text" name="categoria_extra" id="categoria_extra">
+                    </div>
+                </div>
+                <div class="row" style="align-items:center; margin:10px;">
+                    <div class="col-auto">
+                        <label class="visually" style="font-weight:bold">Dias trabajados</label>
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually">Lunes</label>
+                        @Html.CheckBox("lunes", false)
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually">Martes</label>
+                        @Html.CheckBox("martes", false)
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually">Miercoles</label>
+                        @Html.CheckBox("miercoles", false)
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually">Jueves</label>
+                        @Html.CheckBox("jueves", false)
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually">Viernes</label>
+                        @Html.CheckBox("viernes", false)
+                    </div>
+                    <div class="col-auto">
+                        <label class="visually">Sábado</label>
+                        @Html.CheckBox("sabado", false)
+                    </div>
+                </div>
+                <input class="form-control" type="hidden" name="elaboro" id="elaboro" value="@ViewBag.elaboro">
+                <input class="form-control" type="hidden" name="id_destajo" id="id_destajo" value="@ViewBag.id_destajo">
+                <div class="row" style="align-items:center; margin:10px;">
+                    <div class="col-auto">
+                        <div type="button" class="btn btn-secondary" name="btn_pago_dia_extra" id="btn_pago_dia_extra" style="font-size:13px; padding:4px">Día extra</div>
+                    </div>
+                    <div class="col-auto ocultar" id="v">
+                        <label for="extra" class="visually">Pago por día extra</label>
+                        <input class="form-control" style="font-size:15px" type="number" name="extra" id="extra" min="0" placeholder="$" value="0">
+                    </div>
+                </div><br />
+                <div class="col-auto" style="align-items:center; text-align:start; margin:10px 0 10px 30px">
+                    <button class="btn btn-success" id="btnGuarda" data-dismiss="modal"><span class="glyphicon glyphicon-save"> Guardar</span></button>
+                </div>
+                <!--FIN-FORM-->
+            </div>
+           
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"> Cancelar</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/app.js"></script>
+<script>
+      //FORM//
+     $(function () {
+        $("#btnGuarda").click(function () {
+                var id_personal = $("#id_personal").val();
+                var no_empleado = $("#no_empleado").val();
+                var nombre = $("#nombre").val();
+                var apellido_pa = $("#apellido_pa").val();
+                var apellido_ma = $("#apellido_ma").val();
+                var categoria = $("#categoria").val();
+                var categoria_extra = $("#categoria_extra").val();
+                var pago_dia = $("#pago_dia").val();
+                var lunes = $("#lunes").is(":checked");
+                var martes = $("#martes").is(":checked");
+                var miercoles = $("#miercoles").is(":checked");
+                var jueves = $("#jueves").is(":checked");
+                var viernes = $("#viernes").is(":checked");
+            var sabado = $("#sabado").is(":checked");
+            var elaboro = $("#elaboro").val();
+            var id_destajo = $("#id_destajo").val();
+            var extra = $("#extra").val();
+                $.ajax({
+                    url: "@Url.Action("agregar_trabajador")",
+                    data: { id_personal: id_personal, no_empleado: no_empleado, nombre: nombre, apellido_pa: apellido_pa, apellido_ma: apellido_ma, categoria: categoria, categoria_extra: categoria_extra, pago_dia: pago_dia, lunes: lunes, martes: martes, miercoles: miercoles, jueves: jueves, viernes: viernes, sabado: sabado, extra: extra, elaboro: elaboro, id_destajo: id_destajo},
+                    type: "POST",
+                    success: function (response) {
+                        $("#tabla_atr").hide("slow", function () {
+                            $(this).html(response);
+                            $(this).show("slow");
+                            $('#id_personal').val('');
+                            $('#nombre').val('');
+                            $('#no_empleado').val('');
+                            $('#apellido_pa').val('');
+                            $('#apellido_ma').val('');
+                            $('#categoria').val('');
+                            let select = document.getElementById("categoria");
+                            select.value = "otra_categoria";
+                            $("#categoria_extra").val('');
+                            $('#pago_dia').val('');
+                            $('#lunes').prop('checked', false);
+                            $('#martes').prop('checked', false);
+                            $('#miercoles').prop('checked', false);
+                            $('#jueves').prop('checked', false);
+                            $('#viernes').prop('checked', false);
+                            $('#sabado').prop('checked', false);
+                            $('#extra').val('0');
+                            const input3 = document.querySelector('#v2');
+                            input3.classList.add('ocultar');
+                            const input4 = document.querySelector('#v');
+                            input4.classList.add('ocultar');
+                        });
+                    }
+                });
+        });
+     });
+
+    bor_atr = function (id_trabajador, id_destajo) {
+        $.post(
+            '/Destajo/bor_atr', {
+                id_trabajador: id_trabajador,
+                id_destajo: id_destajo
+        }, function (res) {
+            $('#tabla_atr').html(res);
+        });
+    };
+
+    $(document).ready(function () {
+        $('#table_usuario').DataTable();
+    });
+    seleccionar_trab = function (registro) {
+        $.post(
+            '/Destajo/seleccionar_trab', {
+            registro: registro//en este caso sería el codigo
+        }, function (res) {
+                $('#tabla_selec_trab').html(res)
+        });
+    };
+    var table = $('#table_usuario').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+
+
+    $(function () {
+        $('.ui-state-default').click(function () {
+            $('html, #modal_trabajador').animate({
+                scrollTop: $(document).height()
+            }, 'slow');
+            return false;
+        });
+    });
+</script>
+

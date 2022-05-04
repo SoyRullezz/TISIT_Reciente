@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Pruebas";
+}
+
+<h2>Pruebas</h2>
+<form  action="/Index/Pruebas" method="post">
+    <input type="text" name="people[0].FirstName" value="George" />
+    <input type="text" name="people[0].LastName" value="Washington" />
+    <input type="text" name="people[1].FirstName" value="Abraham" />
+    <input type="text" name="people[1].LastName" value="Lincoln" />
+    <input type="text" name="people[3].FirstName" value="Thomas" />
+    <input type="text" name="people[3].LastName" value="Jefferson" />
+    <button type="submit">ENVIAR</button>
+</form>

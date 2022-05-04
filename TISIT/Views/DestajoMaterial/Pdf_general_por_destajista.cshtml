@@ -1,0 +1,152 @@
+﻿
+@model List<CAS_1._1._1.Models.destajos_material>
+
+@{
+    var cont = 1;
+
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    ViewBag.Title = "Pdf_general_por_destajista";
+    var destajista = ViewData["destajista"];
+
+    var trabajadores = new List<CAS_1._1._1.Models.trabajadores_destajos_material>();
+    foreach (var item in ViewBag.id_destajo)
+    {
+
+        string cadena = "SELECT DISTINCT t.* FROM destajos_material a INNER JOIN Detalle_asig_concepto_destajo_material d ON d.id_destajos_material = a.id_destajos_material INNER JOIN trabajadores_destajos_material t ON t.id_trabajador = d.id_trabajador WHERE(a.destajista LIKE '%" + destajista + "%') AND (a.id_destajos_material = " + item.id_destajos_material + ")";
+        using (var cnx = new CAS_1._1._1.Models.conexion3())
+        {
+            trabajadores = cnx.Database.SqlQuery<CAS_1._1._1.Models.trabajadores_destajos_material>(cadena).ToList();
+        }
+    }
+
+
+
+}
+
+
+
+
+<style type="text/css">
+    .tg {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+        .tg td {
+            border-color: black;
+            border-style: solid;
+            border-width: 1px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            overflow: hidden;
+            padding: 6px 20px;
+            word-break: normal;
+        }
+
+        .tg th {
+            border-color: black;
+            border-style: solid;
+            border-width: 1px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            overflow: hidden;
+            padding: 6px 20px;
+            word-break: normal;
+        }
+
+        .tg .tg-awri {
+            border-color: inherit;
+            font-size: 14px;
+            font-style: italic;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-0pky {
+            border-color: inherit;
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-2xbj {
+            border-color: inherit;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-umgj {
+            border-color: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-fymr {
+            border-color: inherit;
+            font-weight: bold;
+            text-align: left;
+            vertical-align: top;
+            font-size: 18px;
+        }
+</style>
+<div>
+    <table class="tg">
+        <thead>
+            <tr>
+                <th class="tg-0pky" colspan="7">
+                    <img src="~/imagenes/des.png" alt="Image" width="1135">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tg-2xbj" colspan="7">DESTAJOS POR DESTAJISTA</td>
+            </tr>
+            <tr style="background-color: lightgray; text-align:center; font-weight:bold ">
+                <td class="tg-awri" colspan="7">DESTAJISTA: @destajista</td>
+            </tr>
+            <tr>
+                <td class="tg-umgj">#</td>
+                <td class="tg-umgj">#Destajo</td>
+                <td class="tg-umgj">#Predio</td>
+                <td class="tg-umgj">Nombre predio</td>
+                <td class="tg-umgj">Fecha</td>
+                <td class="tg-umgj">Total pagado</td>
+                <td class="tg-umgj">Pago destajista</td>
+            </tr>
+            @foreach (var destajo in Model)
+            {
+
+        <tr>
+            <td class="tg-0pky">@cont</td>
+            <td class="tg-0pky">@destajo.id_destajos_material</td>
+            <td class="tg-0pky">@destajo.id_predio</td>
+            <td class="tg-0pky">@destajo.predio</td>
+            <td class="tg-0pky">
+                <span style="font-weight:bold">DEL </span> @destajo.inicio_semana.GetValueOrDefault().ToLongDateString()
+                <span style="font-weight:bold">AL </span> @destajo.fin_semana.GetValueOrDefault().ToLongDateString()
+            </td>
+            <td class="tg-0pky">@destajo.acumulados_totales_actual.GetValueOrDefault().ToString("$###,###,##0.00")</td>
+            <td class="tg-0pky">@destajo.pago_destajista.GetValueOrDefault().ToString("$###,###,##0.00")</td>
+        </tr>
+                cont++;
+
+            }
+        </tbody>
+    </table>
+    <br />
+
+</div>
+
+
+<br />
+@using (Html.BeginForm("Print_general_por_destajista", "DestajoMaterial", new { destajista = destajista }))
+{
+    <button id="submitButton" class="btn btn-outline-primary" type="submit"><span class="glyphicon glyphicon-open-file"> DESCARGAR PDF </span></button>
+}
+<br />

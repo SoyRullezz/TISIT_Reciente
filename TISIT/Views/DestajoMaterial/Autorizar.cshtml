@@ -1,0 +1,127 @@
+﻿@model CAS_1._1._1.Models.destajos_material
+@{
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+    ViewBag.Title = "Actualizar - Destajo";
+
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .hidden-small {
+        visibility: hidden;
+    }
+</style>
+<br />
+<h4>Destajo #@Model.id_destajos_material</h4>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+<form action="/DestajoMaterial/Autorizar" method="post">
+    <input type="hidden" name="id_destajos_material" id="id_destajos_material" value="@Model.id_destajos_material" />
+    <input class="form-control" type="hidden" value="@Session["usuario"]" style="font-size:15px" name="autorizo" id="autorizo" required>
+    <input type="hidden" name="n_semana" id="n_semana" value="@Model.n_semana" />
+
+
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col-auto">
+            <label for="id_predio" class="visually"># Predio</label>
+            <input class="form-control" type="number" value="@Model.id_predio" id="id_predio" name="id_predio" style="font-size:15px" readonly>
+        </div>
+        <div class="col-8">
+            <label for="predio" class="visually">Nombre predio</label>
+            <input class="form-control" type="text" value="@Model.predio" style="font-size:15px" readonly>
+        </div>
+    </div>
+    <div class="row gap-3" style="align-items:center; margin:10px;">
+        <div class="col">
+            <label for="elaboro" class="visually">Elaboro</label>
+            <input class="form-control" type="text" value="@Model.elaboro" style="font-size:15px" readonly>
+        </div>
+        <div class="col">
+            <label for="elaboro" class="visually">Semana del: </label>
+            <input class="form-control" type="text" value="@Model.inicio_semana.GetValueOrDefault().ToLongDateString()" style="font-size:15px" readonly>
+        </div>
+        <div class="col">
+            <label for="elaboro" class="visually">al: </label>
+            <input class="form-control" type="text" value="@Model.fin_semana.GetValueOrDefault().ToLongDateString()" style="font-size:15px" readonly>
+        </div>
+    </div>
+    <br />
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>CONCEPTOS AGREGADOS</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>#</th><th>CONCEPTO</th><th>UNIDAD ELEMENTO</th><th>VOL O CONT</th><th>PX PAQUETE</th><th>VALOR TOTAL</th><th>EST ANTERIOR</th><th>A ESTIMAR</th><th>ACUMULADO TOTAL</th><th>ACCIÓN</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @*--------------------------------------------------*@
+    @*--------------------------------------------------*@
+    <div class="">
+        <div class="x_panel tile">
+            <div class="x_title">
+                <h2>TRABAJADORES AGREGADOS</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead style="background-color: darkgrey; color:white">
+                        <tr><th>N° Empleado</th><th>Nombre</th><th>A.Paterno</th><th>A.Materno</th><th>Pago</th></tr>
+                    </thead>
+                    <tbody id="tabla_atr_trab"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @*--------------------------------------------------*@
+    <br /><br />
+    <button class="btn btn-success" type="submit" name="btn1" id="btn1"><span class="glyphicon glyphicon-save"> Autorizar</span></button>
+    <button class="btn btn-danger" type="reset" onclick="location.href='../DestajoMaterial/Index_autorizar'" name="btn2" id="btn2"><span class="glyphicon glyphicon-remove"> Regresar</span></button>
+</form>
+<br />
+<br />
+@Html.Partial("_Modal_Concepto")
+@Html.Partial("_Modal_Trabajador")
+@Html.Partial("_Modal_Error")
+<script>
+    $(document).ready(function () {
+        $.post(
+            '/DestajoMaterial/det_actualizar_des_autorizar', {
+            id_destajos_material: $('#id_destajos_material').val(),
+            n_semana: $('#n_semana').val()
+        }, function (res) {
+            $('#tabla_atr').html(res)
+        });
+    });
+
+ 
+    $(document).ready(function () {
+        $.post(
+            '/DestajoMaterial/det_actualizar_trab_autorizar', {
+            id_destajos_material: $('#id_destajos_material').val()
+        }, function (res) {
+            $('#tabla_atr_trab').html(res)
+        });
+    });
+   
+</script>

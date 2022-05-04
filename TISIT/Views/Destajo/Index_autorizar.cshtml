@@ -1,0 +1,89 @@
+﻿@model List<CAS_1._1._1.Models.predios>
+@{
+    ViewBag.Title = "Destajos Aministrativos";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+
+}
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .selec:hover {
+        cursor: pointer;
+    }
+</style>
+<h2>Listado</h2>
+<div class="alert alert-@ViewBag.alerta"> - - <b>@ViewBag.res</b> - - </div>
+
+<br />
+<table id="table_predios_g" class="table table-bordered">
+    <thead style="background-color: #2A3F54; color: white">
+        <tr>
+            <th>#Predio</th>
+            <th>Predio</th>
+            <th>Calle</th>
+            <th>Colonia</th>
+            <th>Municipio</th>
+            <th style="text-align: center">Opciones</th>
+        </tr>
+    </thead>
+    <tbody style="background-color: white" id="tabla_seccion_bus">
+        @foreach (var f in Model)
+        {
+        <tr>
+            <td>@f.id_predio</td>
+            <td>@f.predio</td>
+            <td>@f.calle</td>
+            <td>@f.colonia</td>
+            <td>@f.municipio</td>
+            <td style="text-align: center">
+                <button class="btn btn-secondary" type="button" id="btn_act" name="btn_act" onclick="location.href='../Destajo/Index_autorizar_predio?id_predio=@f.id_predio'"><span class="glyphicon glyphicon-eye-open"></span>  Ver destajos</button>
+
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<br />
+<br />
+@Html.Partial("_Modal_Detalle_Destajo")
+@Html.Partial("_Modal_Trabajador")
+<script>
+
+    $(document).ready(function () {
+        $('#table_predios_g').DataTable();
+    });
+    
+    var table = $('#table_predios_g').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+    });
+
+</script>
