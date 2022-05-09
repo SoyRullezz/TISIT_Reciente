@@ -414,7 +414,7 @@
                                         <a href="ingreso.aspx">Solicitud de Ingreso y Consentimiento Santa Lucía</a>
                                     </li>
                                     <li class="submenu-item " runat="server" id="inglink">
-                                        <a href="#">Reporte de Ingresos</a>
+                                        <a href="corte_caja.aspx">Reporte de Ingresos</a>
                                     </li>
                                 </ul>
                             </li>
@@ -437,7 +437,7 @@
                                         <a href="nuevo_producto.aspx">Productos Nuevos</a>
                                     </li>
                                     <li class="submenu-item " runat="server" id="consulink">
-                                        <a href="#">Ventas</a>
+                                        <a href="ventas.aspx">Ventas</a>
                                     </li>
                                 </ul>
                             </li>

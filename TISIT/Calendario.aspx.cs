@@ -19,15 +19,52 @@ namespace TISIT
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            lbcorreo.Text = HttpUtility.HtmlDecode((string)Session["correo"]);
 
-            //perm();
-            //permisosGenerales();
         }
         protected void btncerrar_Click(object sender, EventArgs e)
         {
             Response.Redirect("login.aspx");
             Session.Abandon();
+        }
+
+
+        [WebMethod]
+
+        public static bool actualizarCita(string fecha, string hora, string id_cita)
+        {
+            bool response = false;
+            Calendario calendario = new Calendario();
+            calendario.id_cita = Convert.ToInt32(id_cita);
+            calendario.fechaCita = fecha;
+            calendario.hora = hora;
+
+            response = CalendarioLN.getInstance().actualizarCita(calendario);
+
+            return response;
+        }
+
+        [WebMethod]
+        public static List<Calendario> listarCalendario()
+        {
+            List<Calendario> lista = new List<Calendario>();
+            try
+            {
+                lista = CalendarioLN.getInstance().listarCalendario();
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+
+
+            //System.Diagnostics.Debug.WriteLine("listas");
+            //foreach (var item in lista)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(item.Nombre);
+
+            //}
+            return lista;
         }
 
         protected void permisosGenerales()
@@ -289,29 +326,6 @@ namespace TISIT
         }
 
 
-        [WebMethod]
-        public static List<Calendario> listarCalendario()
-        {
-            List<Calendario> lista = new List<Calendario>();
-            try
-            {
-                lista = CalendarioLN.getInstance().listarCalendario();
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
-
-
-            //System.Diagnostics.Debug.WriteLine("listas");
-            //foreach (var item in lista)
-            //{
-            //    System.Diagnostics.Debug.WriteLine(item.Nombre);
-
-            //}
-            return lista;
-        }
 
 
     }

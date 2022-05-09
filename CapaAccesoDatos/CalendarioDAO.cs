@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CapaEntidades;
 
+
 namespace CapaAccesoDatos
 {
     public class CalendarioDAO
@@ -26,6 +27,36 @@ namespace CapaAccesoDatos
             return daoCalendario;
         }
 
+
+
+        public bool actualizarCita(Calendario calendario)
+        {
+
+            SqlConnection con = null;
+            SqlCommand cmd = null;
+            bool response = false;
+            try
+            {
+                con = Conexion.getInstance().ConexionBD();
+                cmd = new SqlCommand();
+                cmd.CommandText = "UPDATE recurrentes SET [fechaCita] = '" + calendario.fechaCita + "', [hora] = '" + calendario.hora + "' WHERE [id_cita]=" + calendario.id_cita + "";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                con.Open();
+
+                int filas = cmd.ExecuteNonQuery();
+                if (filas > 0) response = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+            }
+            return response;
+        }
 
         #endregion
 

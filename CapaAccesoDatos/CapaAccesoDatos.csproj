@@ -47,9 +47,11 @@
     <Compile Include="CitasDAO.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Conexion.cs" />
+    <Compile Include="Detalle_VentasDAO.cs" />
     <Compile Include="IngresoDAO.cs" />
     <Compile Include="ProductosDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VentasDAO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CapaEntidades\CapaEntidades.csproj">

@@ -270,6 +270,7 @@
     <Content Include="assets2\js\bootstrap.bundle.min.js" />
     <Content Include="assets2\js\bootstrap.min.js" />
     <Content Include="assets2\js\Calendario.js" />
+    <Content Include="assets2\js\Corte_Caja.js" />
     <Content Include="assets2\js\extensions\rater-js.js" />
     <Content Include="assets2\js\extensions\sweetalert2.js" />
     <Content Include="assets2\js\extensions\toastify.js" />
@@ -282,6 +283,7 @@
     <Content Include="assets2\js\pages\ui-chartjs.js" />
     <Content Include="assets2\js\Productos.js" />
     <Content Include="assets2\js\vendors.js" />
+    <Content Include="assets2\js\Ventas.js" />
     <Content Include="assets2\vendors\apexcharts\apexcharts.amd.js" />
     <Content Include="assets2\vendors\apexcharts\apexcharts.common.js" />
     <Content Include="assets2\vendors\apexcharts\apexcharts.css" />
@@ -1845,6 +1847,7 @@
     <Content Include="cancelar_cita.aspx" />
     <Content Include="consentimiento.aspx" />
     <Content Include="contrato_laboral.aspx" />
+    <Content Include="corte_caja.aspx" />
     <Content Include="direccion_personal.aspx" />
     <Content Include="doctores.aspx" />
     <Content Include="documentacion_personal.aspx" />
@@ -1866,6 +1869,7 @@
     <Content Include="requisiciones.aspx" />
     <Content Include="requisicion_hospital.aspx" />
     <Content Include="Site.Master" />
+    <Content Include="ventas.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -1921,6 +1925,13 @@
     <Compile Include="consentimiento.aspx.designer.cs">
       <DependentUpon>consentimiento.aspx</DependentUpon>
     </Compile>
+    <Compile Include="corte_caja.aspx.cs">
+      <DependentUpon>corte_caja.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="corte_caja.aspx.designer.cs">
+      <DependentUpon>corte_caja.aspx</DependentUpon>
+    </Compile>
     <Compile Include="estudios.aspx.cs">
       <DependentUpon>estudios.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1969,6 +1980,13 @@
     </Compile>
     <Compile Include="requisicion_hospital.aspx.designer.cs">
       <DependentUpon>requisicion_hospital.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ventas.aspx.cs">
+      <DependentUpon>ventas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ventas.aspx.designer.cs">
+      <DependentUpon>ventas.aspx</DependentUpon>
     </Compile>
     <Compile Include="WC.cs" />
     <Compile Include="contrato_laboral.aspx.cs">

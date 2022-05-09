@@ -12,6 +12,8 @@ namespace CapaAccesoDatos
     public class ProductosDAO
     {
 
+
+
         #region "Patron Singleton"
 
         private static ProductosDAO daoProductos = null;
@@ -28,6 +30,8 @@ namespace CapaAccesoDatos
 
 
         #endregion
+
+
 
 
         public List<Productos> listarProductos()
@@ -69,6 +73,8 @@ namespace CapaAccesoDatos
                     producto.FechaSalida = dr.GetString(8);
                     producto.Unidad = dr.GetString(9);
                     producto.Ubicacion = dr.GetString(10);
+
+
 
 
                     //Añadir objeto a la lista

@@ -1,198 +1,83 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="inicio.aspx.cs" Inherits="TISIT.inicio" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ventas.aspx.cs" Inherits="TISIT.ventas" ClientIDMode="Static" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets2/css/bootstrap.css">
+     <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="Last-Modified" content="0" />
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
 
-    <link rel="stylesheet" href="assets2/vendors/simple-datatables/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets2/css/bootstrap.css" />
 
-    <link rel="stylesheet" href="assets2/vendors/perfect-scrollbar/perfect-scrollbar.css">
-    <link rel="stylesheet" href="assets2/vendors/bootstrap-icons/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets2/css/app.css">
-    <link rel="shortcut icon" href="assets2/images/favicon.svg" type="image/x-icon">
-    <%--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">--%>
+    <link rel="stylesheet" href="assets2/vendors/simple-datatables/style.css" />
 
+    <link rel="stylesheet" href="assets2/vendors/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="assets2/vendors/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="assets2/css/app.css" />
 
-    <!--========== CSS ==========-->
-    <%--<link rel="stylesheet" href="assets/css/styles.css">--%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" />
+    <link rel="shortcut icon" href="assets2/images/logo/MATI PNG.ico" type="image/x-icon" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="_framework/blazor.webassembly.js"></script>
+
+
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
-        function errorBorrar(id) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'NO SE PUDO DAR DE BAJA CORRECTAMENTE CON EL ID: ' + id
-            })
-        }
-        function correvtoborrado(id) {
-            Swal.fire({
-                icon: 'success',
-                title: 'SE DIO DE BAJA CORRECTAMENTE CON EL ID:' + id,
-                showConfirmButton: false,
-                timer: 1500
-            })
-        }
-        function confirmDelete() {
-            Swal.fire({
-                title: '¿DAR DE BAJA?',
-                text: "ESTE USUARIO SERA DADO DE BAJA",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'DAR DE BAJA',
-
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    await document.getElementById('gridempleados_btnbaja_0').click();
-
-                }
-            })
-        }
-        function alertaExito() {
-            Swal.fire(
-                'DATOS INSERTADOS',
-                'Los datos han sido guardados correctamente',
-                'success'
-            )
+        function Exitoso() {
+            swal("REGISTRO EXITOSO", "El producto fue registrado", "success");
         }
 
-        function alertaExitoEditar() {
-            Swal.fire(
-                'DATOS ACTUALIZADOS',
-                'Los datos han sido actualizados correctamente',
-                'success'
-            )
+        function MostrarMensaje(mensaje) {
+            //swal(mensaje);
+            swal("ALERTA PRODUCTOS", mensaje, "info");
         }
 
-        function alertaExitoDarDeBaja() {
-            Swal.fire(
-                'BAJA EXITOSA',
-                'El usuario ha sido dado de baja exitosamente',
-                'success'
-            )
-        }
 
-        function alertaError() {
-            Swal.fire({
-                icon: 'error',
-                title: 'USUARIO INVALIDO',
-                text: 'LOS DATOS ESTAN INCORRECTOS',
-            })
-        }
-
-        function ErrorEmpleado() {
-            Swal.fire({
-                icon: 'error',
-                title: 'USUARIO INVALIDO',
-                text: 'EL NÃšMERO DE EMPLEADO YA SE ENCUENTRA REGISTRADO',
-            })
-        }
-
-        function ErrorID() {
-            Swal.fire({
-                icon: 'error',
-                title: 'USUARIO INVALIDO',
-                text: 'EL ID PERSONAL YA SE ENCUENTRA REGISTRADO, INTENTE DE NUEVO',
-            })
-        }
-
-        function ErrorActualizar() {
-            Swal.fire({
-                icon: 'error',
-                title: 'ERROR AL ACTUALIZAR',
-                text: 'NO SE PUDO ACTUALIZAR, VERIFIQUE',
-            })
-        }
-        function ErrorDarDeBaja() {
-            Swal.fire({
-                icon: 'error',
-                title: 'ERROR AL DAR DE BAJA',
-                text: 'POR FAVOR VERIFIQUE LA INFORMACIÓN',
-            })
-        }
-        function ConfirmDelete(ev) {
-            if (object.status) { return true; };
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!',
-                preConfirm: function () {
-                    return new Promise(function (resolve) {
-                        setTimeout(function () {
-                            resolve()
-                        }, 2000)
-                    })
-                    object.status = true;
-                    object.ele = ev;
-                    object.ele.click();
-                }
-            }).then(function () {
-            })
-            return false;
-
-        };
     </script>
-    <style>
-        .intento {
-            color: red;
-            font-size: 1.2em;
-            font-style: italic;
-        }
-
-        .ok {
-            display: none;
-        }
-
-        .activate_ok {
-            background-color: #4B778D !important;
-        }
-
-        .desactivate_ok {
-            display: none;
-        }
-
-        .bloq:hover {
-            cursor: no-drop;
-        }
-
-        .centrado {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .usuario {
-            position: absolute;
-            top: 20px;
-            right: 115px;
-        }
-
-        .btn-danger1 {
-            display: none;
-            background: none;
-            color: inherit;
-            border: none;
-            padding: 0;
-            font: inherit;
-            cursor: pointer;
-            outline: inherit;
-        }
-    </style>
-
 </head>
 <body>
-    <form id="frmAltaPersonal" data-parsley-validate runat="server">
+    <style>
+        .logo img {
+            min-width: 200px;
+            min-height: 300px;
+            position: center;
+        }
+
+        @media screen and (max-width: 736px) {
+            .logo img {
+                min-width: 100px;
+                min-height: 200px;
+                position: center;
+            }
+        }
+
+        footer {
+            position: fixed;
+            right: 0px;
+            bottom: 0px;
+            margin-right: 1rem;
+        }
+
+        .scroll {
+            overflow: scroll;
+            height: 100%;
+            width: 100%;
+        }
+
+            .scroll table {
+                width: 100%;
+            }
+    </style>
+
+    <form id="form1" runat="server">
 
         <div id="app">
             <div id="sidebar" class="active">
@@ -337,34 +222,125 @@
                 </div>
             </div>
 
-            <!--========== CONTENTS ==========-->
+
             <div id="main">
                 <header class="mb-3">
                     <a href="#" class="burger-btn d-block d-xl-none">
                         <i class="bi bi-justify fs-3"></i>
                     </a>
                 </header>
+
+                <%--PARTE DE LA PAGINA--%>
+                <asp:TextBox CssClass="form-control" ID="producto" runat="server" Visible="false"></asp:TextBox>
+
+                 <div class="card">
+                    <div class="card-header">
+                        <p style="font-weight: bold">
+                            Registrar Venta
+                           
+                        </p>
+                    </div>
+                    <div class="card-content">
+                        <section class="container">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="box box-primary">
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <label class="form-label">Codigo de barras</label>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <asp:TextBox AutoPostBack="false" CssClass="form-control" ID="txbCB" runat="server" placeholder="Ingrese el codigo de barras del producto"></asp:TextBox>
+                                            </div>
+                                           
+                                            <div class="text-center">
+                                            <asp:LinkButton CssClass="btn btn-success" ID="btnVender" runat="server"><i class="fa-solid fa-receipt"></i> Realizar Venta</asp:LinkButton>
+                                            </div>
+
+                                            <div class="text-center mt-3">
+                                            <h4 class="text-success m-0">TOTAL</h4>
+                                            <h4 id="lb_Total" class="text-success m-0">$0</h4>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                        <div class="box-body table table-responsive">
+                                            <table id="tbl_Productos" class="table table-responsive table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        
+                                                        <th>Nombre</th>
+                                                        
+                                                        <th>Precio</th>
+                                                        
+                                                        <th>Cantidad</th>
+
+                                                        <th>Total</th>
+                                                        
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbl_bodyProductos">
+                                                    <!--Aqui se insertan  los datos de la BD-->
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                </div>
+                            </div>
+
+                            
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                          
+
+                        </section>
+
+
+                      
+                    </div>
+                </div>
+
+                <%--FIN PARTE DE LA PAGINA--%>
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <br />
+                            <p>2022 &copy; Todos los derechos reservados.</p>
+                        </div>
+                        <div class="float-end">
+                            <p>
+                                <img src="assets2/images/logo/mati_tenkui2.png" width="250px" />
+                            </p>
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
-        <!--==========  Boton inexistente para confirmacion delet ==========-->
-
     </form>
 
     <script src="assets2/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="assets2/js/bootstrap.bundle.min.js"></script>
     <script src="assets2/js/permisos.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="assets2/vendors/simple-datatables/simple-datatables.js"></script>
-    <script>
-        // Simple Datatable
-        let tablep = document.querySelector('#gridempleados');
-        let dataTable = new simpleDatatables.DataTable(tablep);
-    </script>
-    <script>
-        // Simple Datatable
-        let tablep1 = document.querySelector('#gridempleados2');
-        let dataTable1 = new simpleDatatables.DataTable(tablep1);
-    </script>
+
+    <script src="https://kit.fontawesome.com/4c35c9df44.js" crossorigin="anonymous"></script>
+    }
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+
+
+
     <script src="assets2/js/main.js"></script>
+
+    <script src="assets2/js/Ventas.js"></script>
 </body>
 </html>

@@ -23,6 +23,19 @@ namespace CapaLogicaNegocio
         }
         #endregion
 
+
+        public bool actualizarCita(Calendario calendario)
+        {
+            try
+            {
+                return CalendarioDAO.getInstance().actualizarCita(calendario);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public List<Calendario> listarCalendario()
         {
             List<Calendario> lista = new List<Calendario>();

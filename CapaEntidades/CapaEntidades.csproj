@@ -45,10 +45,17 @@
     <Compile Include="Calendario.cs" />
     <Compile Include="Categorias.cs" />
     <Compile Include="Citas.cs" />
+    <Compile Include="citasReporte.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Detalle_Ventas.cs" />
+    <Compile Include="infoCitasReportes.cs" />
+    <Compile Include="infoConsultaReportes.cs" />
     <Compile Include="Ingresos.cs" />
+    <Compile Include="itemReporteVenta.cs" />
     <Compile Include="Productos.cs" />
+    <Compile Include="productosReporte.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ventas.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
